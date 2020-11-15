@@ -46,12 +46,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         Vector3 newPlayerPos = playerPosition.position;
         Vector2 moveValue = controls.Player.Move.ReadValue<Vector2>();
 
-        newPlayerPos.x += Time.deltaTime * moveValue.x * playerSpeed;
-        newPlayerPos.z += Time.deltaTime * moveValue.y * playerSpeed;
+        newPlayerPos.x += Time.fixedDeltaTime * moveValue.x * playerSpeed;
+        newPlayerPos.z += Time.fixedDeltaTime * moveValue.y * playerSpeed;
         
         playerPosition.position = newPlayerPos;
         
