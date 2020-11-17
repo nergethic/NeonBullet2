@@ -67,6 +67,14 @@ namespace _Config
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PickUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""c36e4aba-2ef7-4083-bb8c-a79494c65944"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -190,6 +198,44 @@ namespace _Config
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0873150b-0afe-4f74-b0dd-ae34d158b4ff"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""d82ad8ac-436e-485a-b284-1d04ffa923fc"",
+            ""actions"": [
+                {
+                    ""name"": ""ButtonClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""7ce0d072-d653-441e-8823-43d294ee3caf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a4d2db25-10a6-42b3-884d-58a91d918dfd"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ButtonClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +250,10 @@ namespace _Config
             m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Back = m_Player.FindAction("Back", throwIfNotFound: true);
+            m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
+            // UI
+            m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+            m_UI_ButtonClick = m_UI.FindAction("ButtonClick", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -259,6 +309,7 @@ namespace _Config
         private readonly InputAction m_Player_Select;
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Back;
+        private readonly InputAction m_Player_PickUp;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -269,6 +320,7 @@ namespace _Config
             public InputAction @Select => m_Wrapper.m_Player_Select;
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Back => m_Wrapper.m_Player_Back;
+            public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -296,6 +348,9 @@ namespace _Config
                     @Back.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
                     @Back.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
                     @Back.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
+                    @PickUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
+                    @PickUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
+                    @PickUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -318,10 +373,46 @@ namespace _Config
                     @Back.started += instance.OnBack;
                     @Back.performed += instance.OnBack;
                     @Back.canceled += instance.OnBack;
+                    @PickUp.started += instance.OnPickUp;
+                    @PickUp.performed += instance.OnPickUp;
+                    @PickUp.canceled += instance.OnPickUp;
                 }
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
+
+        // UI
+        private readonly InputActionMap m_UI;
+        private IUIActions m_UIActionsCallbackInterface;
+        private readonly InputAction m_UI_ButtonClick;
+        public struct UIActions
+        {
+            private @Controls m_Wrapper;
+            public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @ButtonClick => m_Wrapper.m_UI_ButtonClick;
+            public InputActionMap Get() { return m_Wrapper.m_UI; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+            public void SetCallbacks(IUIActions instance)
+            {
+                if (m_Wrapper.m_UIActionsCallbackInterface != null)
+                {
+                    @ButtonClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnButtonClick;
+                    @ButtonClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnButtonClick;
+                    @ButtonClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnButtonClick;
+                }
+                m_Wrapper.m_UIActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @ButtonClick.started += instance.OnButtonClick;
+                    @ButtonClick.performed += instance.OnButtonClick;
+                    @ButtonClick.canceled += instance.OnButtonClick;
+                }
+            }
+        }
+        public UIActions @UI => new UIActions(this);
         public interface IPlayerActions
         {
             void OnFire(InputAction.CallbackContext context);
@@ -330,6 +421,11 @@ namespace _Config
             void OnSelect(InputAction.CallbackContext context);
             void OnMove(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);
+            void OnPickUp(InputAction.CallbackContext context);
+        }
+        public interface IUIActions
+        {
+            void OnButtonClick(InputAction.CallbackContext context);
         }
     }
 }

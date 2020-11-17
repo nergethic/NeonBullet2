@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform playerPosition;
     [SerializeField] float playerSpeed = 1.0f;
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] Player player;
     private Controls controls;
 
     private void OnEnable() {
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Dash.Enable();
         controls.Player.Select.Enable();
         controls.Player.Back.Enable();
+        controls.Player.PickUp.Enable();
     }
     
     private void OnDisable() {
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Dash.Disable();
         controls.Player.Select.Disable();
         controls.Player.Back.Disable();
+        controls.Player.PickUp.Disable();
     }
 
     // Update is called once per frame
@@ -115,4 +118,31 @@ public class PlayerController : MonoBehaviour {
     private void OnBack(InputAction.CallbackContext context) {
         Debug.Log("Back");
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            controls.Player.PickUp.Enable();
+            controls.Player.PickUp.performed += context => OnPickUp(other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            controls.Player.PickUp.Disable();
+        }
+    }
+
+    void OnPickUpWithContext(InputAction.CallbackContext context) { 
+    }
+
+    void OnPickUp(Collider other)
+    {
+        player.playerInventory.AddItem(other.GetComponent<Item>());
+        other.gameObject.SetActive(false);
+    }
 }
+
