@@ -11,7 +11,7 @@ public class ItemSlot : MonoBehaviour
     private Item item;
     public Item Item
     {
-        get => Item;
+        get => item;
         set
         {
             item = value;

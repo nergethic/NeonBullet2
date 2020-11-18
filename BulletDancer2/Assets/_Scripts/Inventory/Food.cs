@@ -12,4 +12,9 @@ public class Food : Item
 		FoodType.turkey => 30,
 		_ => 0
 	};
+
+    public override void Use()
+    {
+        throw new System.NotImplementedException();
+    }
 }

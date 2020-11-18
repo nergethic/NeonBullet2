@@ -6,7 +6,7 @@ public class PlayerInventory : MonoBehaviour
     private List<ItemSlot> slots;
     [SerializeField] int numberOfSlots;
     public bool IsInventoryActive => inventoryPanel.isActiveAndEnabled;
-    [SerializeField] InventoryDisplay inventoryPanel;
+    [SerializeField] InventoryDisplayer inventoryPanel;
 
     private void Start()
     {

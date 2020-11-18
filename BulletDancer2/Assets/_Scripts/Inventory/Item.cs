@@ -6,5 +6,6 @@ public abstract class Item : MonoBehaviour
 {
     public Sprite sprite;
     public string Name { get; }
-    
+
+    public abstract void Use();
 }
