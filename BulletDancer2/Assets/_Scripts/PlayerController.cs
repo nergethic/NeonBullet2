@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using _Config;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +9,15 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] float playerSpeed = 1.0f;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
+    
+    private Item pickableItem;
     private Controls controls;
+
+    private void Start()
+    {
+        controls.Player.ShowInventory.performed += OnShowInventory;
+        controls.Player.ShowInventory.Enable();
+    }
 
     private void OnEnable() {
         controls = new Controls();
@@ -21,6 +27,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Dash.performed   += OnDash;
         controls.Player.Select.performed += OnSelect;
         controls.Player.Back.performed   += OnBack;
+        controls.Player.PickUp.performed += OnPickUp;
         
         controls.Player.Fire.Enable();
         controls.Player.Aim.Enable();
@@ -38,7 +45,8 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Dash.performed   -= OnDash;
         controls.Player.Select.performed -= OnSelect;
         controls.Player.Back.performed   -= OnBack;
-        
+        controls.Player.PickUp.performed -= OnPickUp;
+
         controls.Player.Fire.Disable();
         controls.Player.Aim.Disable();
         controls.Player.Move.Disable();
@@ -118,31 +126,49 @@ public class PlayerController : MonoBehaviour {
     private void OnBack(InputAction.CallbackContext context) {
         Debug.Log("Back");
     }
+    void OnPickUp(InputAction.CallbackContext context)
+    {
+        if (pickableItem != null)
+        {
+            player.AddItemToPlayerInventory(pickableItem);
+            pickableItem.gameObject.SetActive(false);
+            pickableItem = null;
+        }
+
+    }
+
+    void OnShowInventory(InputAction.CallbackContext context)
+    {
+        if (player.IsInventoryActive)
+        {
+            OnEnable();
+            player.HidePlayerInventory();
+        }
+        else
+        {
+            OnDisable();
+            player.ShowPlayerInventory();
+        }
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Item"))
         {
-            controls.Player.PickUp.Enable();
-            controls.Player.PickUp.performed += context => OnPickUp(other);
+            pickableItem = other.GetComponent<Item>();
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Item"))
         {
-            controls.Player.PickUp.Disable();
+            pickableItem = null;
         }
     }
 
-    void OnPickUpWithContext(InputAction.CallbackContext context) { 
-    }
 
-    void OnPickUp(Collider other)
-    {
-        player.playerInventory.AddItem(other.GetComponent<Item>());
-        other.gameObject.SetActive(false);
-    }
 }
 

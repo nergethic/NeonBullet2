@@ -75,6 +75,14 @@ namespace _Config
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShowInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""46a8aaa0-74d8-4f99-8507-7e4a74a3de28"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -209,6 +217,17 @@ namespace _Config
                     ""action"": ""PickUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2884e48a-c075-47f1-bbb9-48537b994a90"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -251,6 +270,7 @@ namespace _Config
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Back = m_Player.FindAction("Back", throwIfNotFound: true);
             m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
+            m_Player_ShowInventory = m_Player.FindAction("ShowInventory", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ButtonClick = m_UI.FindAction("ButtonClick", throwIfNotFound: true);
@@ -310,6 +330,7 @@ namespace _Config
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Back;
         private readonly InputAction m_Player_PickUp;
+        private readonly InputAction m_Player_ShowInventory;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -321,6 +342,7 @@ namespace _Config
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Back => m_Wrapper.m_Player_Back;
             public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
+            public InputAction @ShowInventory => m_Wrapper.m_Player_ShowInventory;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -351,6 +373,9 @@ namespace _Config
                     @PickUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
                     @PickUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
                     @PickUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
+                    @ShowInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowInventory;
+                    @ShowInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowInventory;
+                    @ShowInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowInventory;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -376,6 +401,9 @@ namespace _Config
                     @PickUp.started += instance.OnPickUp;
                     @PickUp.performed += instance.OnPickUp;
                     @PickUp.canceled += instance.OnPickUp;
+                    @ShowInventory.started += instance.OnShowInventory;
+                    @ShowInventory.performed += instance.OnShowInventory;
+                    @ShowInventory.canceled += instance.OnShowInventory;
                 }
             }
         }
@@ -422,6 +450,7 @@ namespace _Config
             void OnMove(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);
             void OnPickUp(InputAction.CallbackContext context);
+            void OnShowInventory(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

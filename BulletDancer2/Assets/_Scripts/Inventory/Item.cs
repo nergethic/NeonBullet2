@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
+    public Sprite sprite;
     public string Name { get; }
-
+    
 }
