@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (pickableItem != null)
         {
-            player.AddItemToPlayerInventory(pickableItem);
+            player.Inventory.AddItem(pickableItem);
             pickableItem.gameObject.SetActive(false);
             pickableItem = null;
         }
@@ -139,15 +139,15 @@ public class PlayerController : MonoBehaviour {
 
     void OnShowInventory(InputAction.CallbackContext context)
     {
-        if (player.IsInventoryActive)
+        if (player.Inventory.IsInventoryActive)
         {
             OnEnable();
-            player.HidePlayerInventory();
+            player.Inventory.HideInventory();
         }
         else
         {
             OnDisable();
-            player.ShowPlayerInventory();
+            player.Inventory.ShowInventory();
         }
 
     }

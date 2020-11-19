@@ -5,7 +5,7 @@ using UnityEngine;
 public class Food : Item
 {
     [SerializeField] FoodType type;
-	public int HealthRegen => type switch
+	private int HealthRegen => type switch
 	{
 		FoodType.apple => 10,
 		FoodType.banana => 20,
@@ -15,6 +15,13 @@ public class Food : Item
 
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        if (Owner.Health < Owner.MaxHealth)
+        {
+            Owner.Health += HealthRegen;
+            if (Owner.Health > Owner.MaxHealth)
+            {
+                Owner.Health = Owner.MaxHealth;
+            }
+        }
     }
 }

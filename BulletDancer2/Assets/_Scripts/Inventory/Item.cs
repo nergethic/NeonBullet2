@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class Item : MonoBehaviour
 {
     public Sprite sprite;
-    public string Name { get; }
-
+    public Player Owner { get; set; }
     public abstract void Use();
 }

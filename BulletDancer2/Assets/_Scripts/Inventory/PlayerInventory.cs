@@ -5,8 +5,10 @@ public class PlayerInventory : MonoBehaviour
 {
     private List<ItemSlot> slots;
     [SerializeField] int numberOfSlots;
-    public bool IsInventoryActive => inventoryPanel.isActiveAndEnabled;
     [SerializeField] InventoryDisplayer inventoryPanel;
+    [SerializeField] Player player;
+    public bool IsInventoryActive => inventoryPanel.isActiveAndEnabled;
+
 
     private void Start()
     {
@@ -18,15 +20,11 @@ public class PlayerInventory : MonoBehaviour
         {
             if (!slot.HasItem)
             {
+                item.Owner = player;
                 slot.Item = item;
                 break;
             }
         }
-    }
-
-    public void DeleteItem(Item item)
-    {
-        //items.Remove(item);
     }
     public void ShowInventory()
     {
@@ -38,7 +36,5 @@ public class PlayerInventory : MonoBehaviour
         inventoryPanel.gameObject.SetActive(false);
     }
 
-    public void DisplayItems()
-    {
-    }
+
 }
