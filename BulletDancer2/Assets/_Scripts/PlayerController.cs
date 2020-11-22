@@ -101,9 +101,15 @@ public class PlayerController : MonoBehaviour {
 
     private void OnFire(InputAction.CallbackContext context) {
         Debug.Log("Fire");
-        var bullet = Instantiate(bulletPrefab).GetComponent<Projectile>();
-        bullet.Initialize(GetCentralizedMousePos());
-        bullet.transform.position = playerPosition.position;
+        if (!context.performed)
+            return;
+        
+        if (player.energy >= 1) {
+            player.energy -= 1;
+            var bullet = Instantiate(bulletPrefab).GetComponent<Projectile>();
+            bullet.Initialize(GetCentralizedMousePos(), true, Projectile.ProjectileType.Standard);
+            bullet.transform.position = playerPosition.position;
+        }
     }
     
     private void OnAim(InputAction.CallbackContext context) {
@@ -117,6 +123,7 @@ public class PlayerController : MonoBehaviour {
     
     private void OnDash(InputAction.CallbackContext context) {
         Debug.Log("Dash");
+        player.Dash();
     }
     
     private void OnSelect(InputAction.CallbackContext context) {
@@ -154,9 +161,21 @@ public class PlayerController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Item"))
-        {
+        if (other.CompareTag("Item")) {
             pickableItem = other.GetComponent<Item>();
+        } else if (other.CompareTag("Projectile")) {
+            var projectile = other.GetComponent<Projectile>();
+            if (projectile != null) {
+                var projectileData = projectile.projectileData;
+                if (!projectileData.ownedByPlayer) {
+                    if (player.isAbsorbingEnergy && projectileData.typeMask == (int)Projectile.ProjectileType.Energy) {
+                        player.energy += 1;
+                    } else if (!player.isImmuneToDamage) {
+                        player.PlayerHitByProjectileAction(ref projectileData);
+                    }
+                    Destroy(projectile.gameObject);
+                }
+            }
         }
     }
 
@@ -168,7 +187,5 @@ public class PlayerController : MonoBehaviour {
             pickableItem = null;
         }
     }
-
-
 }
 

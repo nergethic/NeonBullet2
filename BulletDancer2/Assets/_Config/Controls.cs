@@ -90,7 +90,7 @@ namespace _Config
                     ""name"": """",
                     ""id"": ""b3ea0b68-5ad9-48db-be44-07b05b372a96"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire"",

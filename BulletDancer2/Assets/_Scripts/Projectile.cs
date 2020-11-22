@@ -1,16 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour {
     [SerializeField] Transform myTransform;
     [SerializeField] float speed = 1.0f;
-    private Vector2 dir;
+    [SerializeField] float maxAirTime = 3f;
+
+    public ProjectileData projectileData;
 
     private int defaultLayerMask;
     private int playerLayerMask;
     private int projectileLayerMask;
+    
+    private float airTime = 0f;
+    private Vector2 dir;
+
+    public enum ProjectileType {
+        Standard = 0,
+        Energy
+    }
 
     void Start() {
         defaultLayerMask = LayerMask.NameToLayer("Default");
@@ -18,8 +25,13 @@ public class Projectile : MonoBehaviour {
         projectileLayerMask = LayerMask.NameToLayer("Projectile");
     }
 
-    public void Initialize(Vector2 _dir) {
+    public void Initialize(Vector2 _dir, bool ownedByPlayer, ProjectileType type) {
         dir = _dir;
+
+        projectileData.ownedByPlayer = ownedByPlayer;
+        projectileData.typeMask = (int)type;
+        projectileData.damage = 1;
+        projectileData.speed = speed;
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -30,10 +42,22 @@ public class Projectile : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        airTime += Time.deltaTime;
+        if (airTime >= maxAirTime) {
+            Destroy(gameObject);    
+        }
+        
         var newPos = myTransform.position;
-        newPos.x += Time.deltaTime * dir.x * speed;
-        newPos.z += Time.deltaTime * dir.y * speed;
+        newPos.x += Time.deltaTime * dir.x * projectileData.speed;
+        newPos.z += Time.deltaTime * dir.y * projectileData.speed;
         
         myTransform.position = newPos;
     }
+}
+
+public struct ProjectileData {
+    public bool ownedByPlayer;
+    public int typeMask; // NOTE: for now there are no mixed types
+    public int damage;
+    public float speed;
 }

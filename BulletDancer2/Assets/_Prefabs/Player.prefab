@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3366853834286137087}
   - component: {fileID: 4588475395269006661}
   - component: {fileID: 1950827024739628637}
+  - component: {fileID: 5876669769141105488}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 336532400463290178}
+  - {fileID: 3205783616854027911}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,6 +83,7 @@ MonoBehaviour:
   playerPosition: {fileID: 5780198171366553035}
   playerSpeed: 2
   bulletPrefab: {fileID: 4873777290460590298, guid: 524973b428141ab43a5d8867909692c0, type: 3}
+  player: {fileID: 5876669769141105488}
 --- !u!135 &1950827024739628637
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -94,6 +97,71 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5876669769141105488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2707168826942261112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7489e238fced12448e4d875bc7f0af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 1561285542673174724}
+  Health: 4
+  MaxHealth: 4
+  energy: 3
+  MaxEnergy: 3
+  isImmuneToDamage: 0
+  isAbsorbingEnergy: 0
+--- !u!1 &4064529954256457346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3205783616854027911}
+  - component: {fileID: 1561285542673174724}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3205783616854027911
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064529954256457346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5780198171366553035}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1561285542673174724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064529954256457346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57f58aac6e53b4748a5a4fa105b59027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfSlots: 20
+  inventoryPanel: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &5412553627494220292
 GameObject:
   m_ObjectHideFlags: 0

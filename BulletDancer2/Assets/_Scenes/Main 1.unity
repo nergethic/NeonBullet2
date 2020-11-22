@@ -347,16 +347,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &207666129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 207666131}
+  - component: {fileID: 207666130}
+  m_Layer: 0
+  m_Name: EnemtyTower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &207666130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207666129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e7813f38875124c9e9fec233611dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 4873777290460590298, guid: 524973b428141ab43a5d8867909692c0, type: 3}
+  Health: 80
+  MaxHealth: 100
+--- !u!4 &207666131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207666129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.02, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &431431487 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2707168826942261112, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
   m_PrefabInstance: {fileID: 875583607}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &431431489
+--- !u!114 &431431489 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5876669769141105488, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
+  m_PrefabInstance: {fileID: 875583607}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431431487}
   m_Enabled: 1
@@ -364,9 +409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7489e238fced12448e4d875bc7f0af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 1521806042}
-  Health: 80
-  MaxHealth: 100
 --- !u!54 &431431490
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -538,7 +580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &854036274
 RectTransform:
   m_ObjectHideFlags: 0
@@ -640,6 +682,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1561285542673174724, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 431431489}
+    - target: {fileID: 1561285542673174724, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
+      propertyPath: inventoryPanel
+      value: 
+      objectReference: {fileID: 854036278}
     - target: {fileID: 1950827024739628637, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -660,10 +710,6 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 2024467645}
-    - target: {fileID: 4588475395269006661, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 431431489}
     - target: {fileID: 4588475395269006661, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
       propertyPath: mainCamera
       value: 
@@ -1124,52 +1170,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &1521806040
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1521806041}
-  - component: {fileID: 1521806042}
-  m_Layer: 0
-  m_Name: Inventory
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1521806041
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1521806040}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2019948738}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1521806042
+--- !u!114 &1521806042 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1561285542673174724, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
+  m_PrefabInstance: {fileID: 875583607}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1521806040}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57f58aac6e53b4748a5a4fa105b59027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfSlots: 20
-  inventoryPanel: {fileID: 854036278}
-  player: {fileID: 431431489}
 --- !u!1 &1635444727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,11 +1456,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2019948738 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5780198171366553035, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
-  m_PrefabInstance: {fileID: 875583607}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2024467642
 GameObject:
   m_ObjectHideFlags: 0
