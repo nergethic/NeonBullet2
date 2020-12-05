@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerInventory inventory;
+    public float playerSpeed = 1.0f;
+    public float dashSpeed = 8f;
     public PlayerInventory Inventory => inventory;
     public int Health = 80;
     public int MaxHealth = 100;
@@ -15,8 +17,10 @@ public class Player : MonoBehaviour
 
     public bool isImmuneToDamage = false;
     public bool isAbsorbingEnergy = false;
+    public bool isDashing = false;
 
     private const float IMMUNITY_AFTER_BEING_HIT = 0.5f;
+    private const float DASH_DURATION = 0.2f;
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
         Health -= projectileData.damage;
@@ -28,7 +32,19 @@ public class Player : MonoBehaviour
     }
 
     public void Dash() {
+        StartCoroutine(ToggleDash());
+    }
+    
+    IEnumerator ToggleDash() {
+        isDashing = true;
+        isImmuneToDamage = true;
+        isAbsorbingEnergy = true;
+        yield return new WaitForSeconds(DASH_DURATION);
+        isDashing = false;
+        isImmuneToDamage = false;
+        isAbsorbingEnergy = false;
         
+        yield return null;
     }
 
     IEnumerator ToggleDamageImmunity(float immunityTime) {

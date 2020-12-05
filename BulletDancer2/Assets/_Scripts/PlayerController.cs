@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour {
     [SerializeField] Camera mainCamera;
     [SerializeField] Transform playerPosition;
-    [SerializeField] float playerSpeed = 1.0f;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
     
@@ -56,13 +55,23 @@ public class PlayerController : MonoBehaviour {
         controls.Player.PickUp.Disable();
     }
 
-    // Update is called once per frame
+    Vector2 lastMovementDirection;
     void FixedUpdate() {
         Vector3 newPlayerPos = playerPosition.position;
-        Vector2 moveValue = controls.Player.Move.ReadValue<Vector2>();
+        Vector2 movementValue;
 
-        newPlayerPos.x += Time.fixedDeltaTime * moveValue.x * playerSpeed;
-        newPlayerPos.z += Time.fixedDeltaTime * moveValue.y * playerSpeed;
+        if (player.isDashing) {
+            movementValue = lastMovementDirection * Time.deltaTime * player.dashSpeed;
+
+            newPlayerPos.x += movementValue.x;
+            newPlayerPos.z += movementValue.y;
+        } else {
+            lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
+            movementValue = lastMovementDirection * Time.fixedDeltaTime*player.playerSpeed;
+
+            newPlayerPos.x += movementValue.x;
+            newPlayerPos.z += movementValue.y;
+        }
         
         playerPosition.position = newPlayerPos;
         
@@ -169,7 +178,9 @@ public class PlayerController : MonoBehaviour {
                 var projectileData = projectile.projectileData;
                 if (!projectileData.ownedByPlayer) {
                     if (player.isAbsorbingEnergy && projectileData.typeMask == (int)Projectile.ProjectileType.Energy) {
-                        player.energy += 1;
+                        int newEnergy = player.energy + 1;
+                        if (newEnergy <= player.MaxEnergy)
+                            player.energy = newEnergy;
                     } else if (!player.isImmuneToDamage) {
                         player.PlayerHitByProjectileAction(ref projectileData);
                     }
