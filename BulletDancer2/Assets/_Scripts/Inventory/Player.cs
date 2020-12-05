@@ -7,11 +7,23 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerInventory inventory;
+    public PlayerInventory Inventory => inventory;
+    [SerializeField] HealthBarDisplayer healthBar;
+
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
-    public PlayerInventory Inventory => inventory;
-    public int Health = 80;
-    public int MaxHealth = 100;
+    [SerializeField] int health;
+    public int Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+            healthBar.UpdateHealthStatus(health);
+        }
+    }
+
+    public int MaxHealth = 4;
     public int energy = 3;
     public int MaxEnergy = 3;
 
@@ -21,6 +33,11 @@ public class Player : MonoBehaviour
 
     private const float IMMUNITY_AFTER_BEING_HIT = 0.5f;
     private const float DASH_DURATION = 0.2f;
+
+    private void Start()
+    {
+        healthBar.UpdateHealthStatus(health);
+    }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
         Health -= projectileData.damage;

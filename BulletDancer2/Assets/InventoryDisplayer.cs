@@ -13,7 +13,7 @@ public class InventoryDisplayer : MonoBehaviour
         for (int i = 0; i < numberOfSlots; i++)
         {
             var prefab = Instantiate(inventorySlotPrefab);
-            prefab.transform.parent = gameObject.transform;
+            prefab.transform.SetParent(gameObject.transform, true);
             slots.Add(prefab.GetComponent<ItemSlot>());
         }
         return slots;
