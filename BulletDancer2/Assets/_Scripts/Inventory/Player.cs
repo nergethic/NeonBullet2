@@ -8,24 +8,34 @@ public class Player : MonoBehaviour
 {
     [SerializeField] PlayerInventory inventory;
     public PlayerInventory Inventory => inventory;
-    [SerializeField] HealthBarDisplayer healthBar;
+    [SerializeField] PlayerStatusBar healthBar;
+    [SerializeField] PlayerStatusBar energyBar;
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
     [SerializeField] int health;
+    public int MaxHealth = 4;
     public int Health
     {
         get => health;
         set
         {
             health = value;
-            healthBar.UpdateHealthStatus(health);
+            healthBar.UpdateStatusBar(health);
         }
     }
 
-    public int MaxHealth = 4;
-    public int energy = 3;
+    [SerializeField] int energy;
     public int MaxEnergy = 3;
+    public int Energy
+    {
+        get => energy;
+        set
+        {
+            energy = value;
+            energyBar.UpdateStatusBar(energy);
+        }
+    }
 
     public bool isImmuneToDamage = false;
     public bool isAbsorbingEnergy = false;
@@ -36,7 +46,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        healthBar.UpdateHealthStatus(health);
+        healthBar.UpdateStatusBar(health);
+        energyBar.UpdateStatusBar(Energy);
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
