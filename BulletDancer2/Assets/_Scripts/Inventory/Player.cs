@@ -7,13 +7,35 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerInventory inventory;
+    public PlayerInventory Inventory => inventory;
+    [SerializeField] PlayerStatusBar healthBar;
+    [SerializeField] PlayerStatusBar energyBar;
+
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
-    public PlayerInventory Inventory => inventory;
-    public int Health = 80;
-    public int MaxHealth = 100;
-    public int energy = 3;
+    [SerializeField] int health;
+    public int MaxHealth = 4;
+    public int Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+            healthBar.UpdateStatusBar(health);
+        }
+    }
+
+    [SerializeField] int energy;
     public int MaxEnergy = 3;
+    public int Energy
+    {
+        get => energy;
+        set
+        {
+            energy = value;
+            energyBar.UpdateStatusBar(energy);
+        }
+    }
 
     public bool isImmuneToDamage = false;
     public bool isAbsorbingEnergy = false;
@@ -21,6 +43,12 @@ public class Player : MonoBehaviour
 
     private const float IMMUNITY_AFTER_BEING_HIT = 0.5f;
     private const float DASH_DURATION = 0.2f;
+
+    private void Start()
+    {
+        healthBar.UpdateStatusBar(health);
+        energyBar.UpdateStatusBar(Energy);
+    }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
         Health -= projectileData.damage;

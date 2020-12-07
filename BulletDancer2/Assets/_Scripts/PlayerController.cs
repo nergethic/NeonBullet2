@@ -133,8 +133,8 @@ public class PlayerController : MonoBehaviour {
         if (!context.performed)
             return;
         
-        if (player.energy >= 1) {
-            player.energy -= 1;
+        if (player.Energy >= 1) {
+            player.Energy -= 1;
             var bullet = Instantiate(bulletPrefab).GetComponent<Projectile>();
             bullet.Initialize(GetCentralizedMousePos(), true, Projectile.ProjectileType.Standard);
             bullet.transform.position = playerPosition.position;
@@ -198,9 +198,9 @@ public class PlayerController : MonoBehaviour {
                 var projectileData = projectile.projectileData;
                 if (!projectileData.ownedByPlayer) {
                     if (player.isAbsorbingEnergy && projectileData.typeMask == (int)Projectile.ProjectileType.Energy) {
-                        int newEnergy = player.energy + 1;
+                        int newEnergy = player.Energy + 1;
                         if (newEnergy <= player.MaxEnergy)
-                            player.energy = newEnergy;
+                            player.Energy = newEnergy;
                     } else if (!player.isImmuneToDamage) {
                         player.PlayerHitByProjectileAction(ref projectileData);
                     }
