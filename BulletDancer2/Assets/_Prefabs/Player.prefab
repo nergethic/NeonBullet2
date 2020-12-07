@@ -81,7 +81,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   playerPosition: {fileID: 5780198171366553035}
-  playerSpeed: 2
   bulletPrefab: {fileID: 4873777290460590298, guid: 524973b428141ab43a5d8867909692c0, type: 3}
   player: {fileID: 5876669769141105488}
 --- !u!135 &1950827024739628637
@@ -110,12 +109,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 1561285542673174724}
+  playerSpeed: 40
+  dashSpeed: 3
   Health: 4
   MaxHealth: 4
   energy: 3
   MaxEnergy: 3
   isImmuneToDamage: 0
   isAbsorbingEnergy: 0
+  isDashing: 0
 --- !u!1 &4064529954256457346
 GameObject:
   m_ObjectHideFlags: 0

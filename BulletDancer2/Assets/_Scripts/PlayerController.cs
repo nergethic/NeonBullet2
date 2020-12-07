@@ -54,24 +54,44 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Back.Disable();
         controls.Player.PickUp.Disable();
     }
+    
+    Vector2 dPlayer = Vector2.zero; // velocity
+    Vector2 ddPlayer = Vector2.zero; // acceleration
 
     Vector2 lastMovementDirection;
     void FixedUpdate() {
         Vector3 newPlayerPos = playerPosition.position;
-        Vector2 movementValue;
-
+        
         if (player.isDashing) {
-            movementValue = lastMovementDirection * Time.deltaTime * player.dashSpeed;
-
-            newPlayerPos.x += movementValue.x;
-            newPlayerPos.z += movementValue.y;
+            ddPlayer = lastMovementDirection * player.dashSpeed;
+            
+            ddPlayer = lastMovementDirection * player.playerSpeed;
+            
+            //ddPlayer += -4.5f * dPlayer;
+            
+            newPlayerPos.x += 0.5f * ddPlayer.x * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.x * Time.fixedDeltaTime;
+            newPlayerPos.z += 0.5f * ddPlayer.y * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.y * Time.fixedDeltaTime;
+        
+            dPlayer += 10f*ddPlayer * Time.fixedDeltaTime;
+            dPlayer = Vector2.ClampMagnitude(dPlayer, 3f);
         } else {
             lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
-            movementValue = lastMovementDirection * Time.fixedDeltaTime*player.playerSpeed;
-
-            newPlayerPos.x += movementValue.x;
-            newPlayerPos.z += movementValue.y;
+            ddPlayer = lastMovementDirection * player.playerSpeed;
+            
+            ddPlayer += -4.5f * dPlayer;
+            
+            newPlayerPos.x += 0.5f * ddPlayer.x * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.x * Time.fixedDeltaTime;
+            newPlayerPos.z += 0.5f * ddPlayer.y * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.y * Time.fixedDeltaTime;
+        
+            dPlayer += ddPlayer * Time.fixedDeltaTime;
+            dPlayer = Vector2.ClampMagnitude(dPlayer, 1f);
         }
+        
+        
+        //dPlayer.x -= Time.fixedDeltaTime * 1.5f;
+        //dPlayer.y -= Time.fixedDeltaTime * 1.5f;
+        //if (dPlayer.magnitude < 0f)
+            //dPlayer = Vector2.zero;
         
         playerPosition.position = newPlayerPos;
         
