@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate() {
         Vector3 newPlayerPos = playerPosition.position;
         
+        lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
         if (player.isDashing) {
             ddPlayer = lastMovementDirection * player.dashSpeed;
             
@@ -75,7 +76,6 @@ public class PlayerController : MonoBehaviour {
             dPlayer += 10f*ddPlayer * Time.fixedDeltaTime;
             dPlayer = Vector2.ClampMagnitude(dPlayer, 3f);
         } else {
-            lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
             ddPlayer = lastMovementDirection * player.playerSpeed;
             
             ddPlayer += -4.5f * dPlayer;
