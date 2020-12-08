@@ -31,7 +31,7 @@ public class PlayerStatusBar : MonoBehaviour
         private void AddNewElement()
     {
         var prefab = Instantiate(elementToDisplay);
-        prefab.transform.SetParent(gameObject.transform, true) ;
+        prefab.transform.SetParent(gameObject.transform, true);
         elements.Add(prefab);
     }
 
