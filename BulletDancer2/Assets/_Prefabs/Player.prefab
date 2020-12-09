@@ -646,6 +646,7 @@ GameObject:
   - component: {fileID: 4588475395269006661}
   - component: {fileID: 1950827024739628637}
   - component: {fileID: 5876669769141105488}
+  - component: {fileID: 9198242084387806384}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -724,7 +725,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2707168826942261112}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.1
@@ -756,6 +757,19 @@ MonoBehaviour:
   isImmuneToDamage: 0
   isAbsorbingEnergy: 0
   isDashing: 0
+--- !u!135 &9198242084387806384
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2707168826942261112}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3014582918522229081
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,8 +889,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfSlots: 20
-  inventoryPanel: {fileID: 0}
-  player: {fileID: 0}
+  inventoryPanel: {fileID: 6753606403199830470}
+  player: {fileID: 5876669769141105488}
 --- !u!1 &4215413979809104916
 GameObject:
   m_ObjectHideFlags: 0
