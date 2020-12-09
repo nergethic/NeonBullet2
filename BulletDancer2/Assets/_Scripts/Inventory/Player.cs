@@ -1,4 +1,5 @@
 using _Config;
+using Assets._Scripts.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class Player : MonoBehaviour
     public PlayerInventory Inventory => inventory;
     [SerializeField] PlayerStatusBar healthBar;
     [SerializeField] PlayerStatusBar energyBar;
+    [SerializeField] int ore;
+    [SerializeField] int iron;
+    [SerializeField] int gold;
+    public PlayerResources Resources { get; set; }
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
@@ -46,6 +51,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Resources = new PlayerResources(ore, iron, gold);
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
     }

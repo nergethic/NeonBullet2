@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5780198171366553035}
+  - component: {fileID: 6636766799898951132}
+  - component: {fileID: 2121933637607878335}
   m_Layer: 0
   m_Name: Apple
   m_TagString: Untagged
@@ -24,13 +26,40 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2707168826942261112}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.3629216, y: 0.0015482903, z: 1.0080339}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 336532400463290178}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6636766799898951132
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2707168826942261112}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.43, y: 0.48, z: 0.45}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2121933637607878335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2707168826942261112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436ea0dc6fef1cb4bb912e41a7d8bfb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 99c79e49132733d4c93dbf3444107c08, type: 3}
+  type: 0
 --- !u!1 &5412553627494220292
 GameObject:
   m_ObjectHideFlags: 0
