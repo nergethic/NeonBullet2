@@ -11,20 +11,8 @@ public class CraftingPanel : MonoBehaviour
     [SerializeField] int maxItemsOnPage;
     [SerializeField] Button nextButton;
     private int page = 1;
-    public int Page {
-        get => page;
-        set
-        {
-            if (value > 0 && page * maxItemsOnPage < craftingLabels.Count)
-            {
-                Display(value);
-                page = value;
-            }
-        }
-    }
     void Start()
     {
-        InstantiateCraftingLabels();
         Display(page);
     }
 
@@ -32,22 +20,23 @@ public class CraftingPanel : MonoBehaviour
     {
         var pageIndex = page - 1;
         var startPagePlace = pageIndex * maxItemsOnPage;
-        var endPagePlace = startPagePlace + maxItemsOnPage;
 
         if (activeCraftingLabels.Any())
         {
             ClearSelectedCraftingLabels();
         }
 
-        SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
-
         if (page > 0 && page * maxItemsOnPage < craftingLabels.Count)
         {
+            var endPagePlace = startPagePlace + maxItemsOnPage;
             nextButton.interactable = true;
             nextButton.onClick.AddListener(() => Display(page++));
+            SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
         }
         else
         {
+            var endPagePlace = craftingLabels.Count % maxItemsOnPage;
+            SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
             nextButton.interactable = false;
         }
     }
@@ -57,7 +46,6 @@ public class CraftingPanel : MonoBehaviour
         for (int i = startPagePlace; i < endPagePlace; i++)
         {
             craftingLabels[i].gameObject.SetActive(true);
-
         }
     }
 
@@ -66,15 +54,6 @@ public class CraftingPanel : MonoBehaviour
         foreach (var activeCraftingLabel in activeCraftingLabels)
         {
             activeCraftingLabel.gameObject.SetActive(false);
-        }
-    }
-
-    private void InstantiateCraftingLabels()
-    {
-        foreach (var craftingLabel in craftingLabels)
-        {
-            var prefab = Instantiate(craftingLabel);
-            prefab.transform.SetParent(gameObject.transform, true);
         }
     }
 }

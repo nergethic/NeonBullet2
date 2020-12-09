@@ -21,7 +21,7 @@ namespace Assets._Scripts.Inventory
 
         public bool CanPlayerCraft(int requiredOre, int requiredIron, int requiredGold)
         {
-            if (Ore > requiredOre && Iron > requiredIron && Gold > requiredGold)
+            if (Ore >= requiredOre && Iron >= requiredIron && Gold >= requiredGold)
             {
                 return true;
             }
