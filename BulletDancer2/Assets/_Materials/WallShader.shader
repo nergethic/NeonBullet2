@@ -54,7 +54,7 @@ Shader "Custom/NewUnlitShader"
                 worldVertex.x += mult*dir.x;
                 worldVertex.z += mult*dir.y;
                 
-                float3 newPos = mul(unity_WorldToObject, float4(worldVertex.x, 0.0, worldVertex.z, 1.0)).xyz;
+                float3 newPos = mul(unity_WorldToObject, float4(worldVertex.x, 0.01, worldVertex.z, 1.0)).xyz;
                 
                 float4 clip1 = UnityObjectToClipPos(float4(newPos, 1.0));
                 float4 clip2 = UnityObjectToClipPos(float4(v.vertex.xyz, 1.0));
