@@ -101,9 +101,7 @@ public class PlayerController : MonoBehaviour {
         playerPosition.position = newPlayerPos;
 
         var diff = (lastPosition - newPlayerPos).magnitude;
-        if (diff > 20f)
-        {
-            Debug.LogError("aa");
+        if (diff > 0.3f) {
             lastPosition = newPlayerPos;
             FootstepEvent();
         }
