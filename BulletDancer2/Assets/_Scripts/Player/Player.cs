@@ -1,5 +1,6 @@
 using _Config;
 using Assets._Scripts.Inventory;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] int ore;
     [SerializeField] int iron;
     [SerializeField] int gold;
+    public Action DeathAction;
     public PlayerResources Resources { get; set; }
 
     public float playerSpeed = 1.0f;
@@ -60,8 +62,9 @@ public class Player : MonoBehaviour
         Health -= projectileData.damage;
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0) {
+            DeathAction();
             Debug.LogError("PLAYER IS DEAD");
-            Destroy(gameObject);
+            Destroy(gameObject, 1f);
         }
     }
 

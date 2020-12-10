@@ -1,5 +1,6 @@
 
 using _Config;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +9,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform playerPosition;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
-    
+    public event Action FootstepEvent;
+    public event Action DashEvent;
+
     private Item pickableItem;
     private Controls controls;
 
@@ -16,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     {
         controls.Player.ShowInventory.performed += OnShowInventory;
         controls.Player.ShowInventory.Enable();
+        lastPosition = playerPosition.position;
     }
 
     private void OnEnable() {
@@ -57,6 +61,7 @@ public class PlayerController : MonoBehaviour {
     
     Vector2 dPlayer = Vector2.zero; // velocity
     Vector2 ddPlayer = Vector2.zero; // acceleration
+    Vector3 lastPosition = Vector3.zero;
 
     Vector2 lastMovementDirection;
     void FixedUpdate() {
@@ -94,7 +99,15 @@ public class PlayerController : MonoBehaviour {
             //dPlayer = Vector2.zero;
         
         playerPosition.position = newPlayerPos;
-        
+
+        var diff = (lastPosition - newPlayerPos).magnitude;
+        if (diff > 0.3f)
+        {
+            Debug.LogError("aa");
+            lastPosition = newPlayerPos;
+            FootstepEvent();
+        }
+
         Vector3 newCameraPos = mainCamera.transform.position;
         newCameraPos.x = newPlayerPos.x;
         newCameraPos.z = newPlayerPos.z;
@@ -153,6 +166,7 @@ public class PlayerController : MonoBehaviour {
     private void OnDash(InputAction.CallbackContext context) {
         Debug.Log("Dash");
         player.Dash();
+        DashEvent();
     }
     
     private void OnSelect(InputAction.CallbackContext context) {
