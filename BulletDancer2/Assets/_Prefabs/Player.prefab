@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -318,8 +318,8 @@ MonoBehaviour:
   craftingButton: {fileID: 8906694757185744330}
   itemToCraft: {fileID: 2121933637607878335, guid: a01d6c65de703744b8031796d401a969, type: 3}
   player: {fileID: 5876669769141105488}
-  requiredOre: 0
-  requiredIron: 0
+  requiredOre: 1
+  requiredIron: 1
   requiredGold: 0
 --- !u!1 &1763796118833596141
 GameObject:
@@ -415,7 +415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7713818035349380206
 RectTransform:
   m_ObjectHideFlags: 0
@@ -626,9 +626,9 @@ MonoBehaviour:
     m_Bottom: 30
   m_ChildAlignment: 0
   fitType: 0
-  rows: 0
+  rows: -2147483648
   columns: 0
-  cellSize: {x: 0, y: 0}
+  cellSize: {x: NaN, y: 20}
   spacing: {x: 50, y: 20}
   fitX: 1
   fitY: 1
@@ -750,7 +750,7 @@ MonoBehaviour:
   gold: 0
   playerSpeed: 40
   dashSpeed: 3
-  health: 0
+  health: 4
   MaxHealth: 4
   energy: 3
   MaxEnergy: 3

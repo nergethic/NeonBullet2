@@ -11,10 +11,12 @@ public class CraftingLabel : MonoBehaviour
     [SerializeField] int requiredOre;
     [SerializeField] int requiredIron;
     [SerializeField] int requiredGold;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         craftingButton.image.sprite = itemToCraft.sprite;
+        craftingButton.interactable = false;
+
         craftingButton.onClick.AddListener(() =>
         {
             player.Inventory.AddItem(itemToCraft);

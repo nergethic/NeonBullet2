@@ -20,32 +20,47 @@ public class CraftingPanel : MonoBehaviour
     {
         var pageIndex = page - 1;
         var startPagePlace = pageIndex * maxItemsOnPage;
+        var canDisplayItemOnNextPage = page * maxItemsOnPage < craftingLabels.Count;
+        int endPagePlace;
+        nextButton.onClick.RemoveAllListeners();
 
         if (activeCraftingLabels.Any())
         {
             ClearSelectedCraftingLabels();
         }
 
-        if (page > 0 && page * maxItemsOnPage < craftingLabels.Count)
+        if (page > 0 && canDisplayItemOnNextPage)
         {
-            var endPagePlace = startPagePlace + maxItemsOnPage;
+            endPagePlace = startPagePlace + maxItemsOnPage;
             nextButton.interactable = true;
-            nextButton.onClick.AddListener(() => Display(page++));
-            SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
+            nextButton.onClick.AddListener(() => Display(page + 1));
+
+        }
+        else if (page * maxItemsOnPage == craftingLabels.Count)
+        {
+            endPagePlace = startPagePlace + maxItemsOnPage;
+            nextButton.interactable = false;
         }
         else
         {
-            var endPagePlace = craftingLabels.Count % maxItemsOnPage;
-            SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
+            endPagePlace = craftingLabels.Count % maxItemsOnPage + startPagePlace;
             nextButton.interactable = false;
         }
+
+        SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
     }
 
     private void SetActiveCraftingLabelsOnGivenPage(int startPagePlace, int endPagePlace)
     {
         for (int i = startPagePlace; i < endPagePlace; i++)
         {
-            craftingLabels[i].gameObject.SetActive(true);
+            var craftingLabel = craftingLabels[i];
+            craftingLabel.gameObject.SetActive(true);
+            activeCraftingLabels.Add(craftingLabel);
+            if (craftingLabel.CanPlayerCraftItem())
+            {
+                craftingLabel.SetCraftingButtonActive();
+            }
         }
     }
 
