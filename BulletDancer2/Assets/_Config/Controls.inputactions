@@ -7,8 +7,16 @@
             "actions": [
                 {
                     "name": "Fire",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "f8f84d31-df8c-4e0b-b575-d758c8361fdc",
+                    "expectedControlType": "Digital",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "FireReleased",
+                    "type": "Button",
+                    "id": "a7a93e81-5aff-41ac-816e-3c5b6cbf6136",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -75,7 +83,7 @@
                     "name": "",
                     "id": "b3ea0b68-5ad9-48db-be44-07b05b372a96",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Fire",
@@ -211,6 +219,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ShowInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b588253-5a59-44f0-b8c2-76137db870e2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FireReleased",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

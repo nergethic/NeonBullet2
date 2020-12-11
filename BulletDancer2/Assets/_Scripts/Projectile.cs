@@ -35,12 +35,11 @@ public class Projectile : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log(other.tag);
+        // Debug.Log(other.tag);
         if (other.gameObject.layer != playerLayerMask && other.gameObject.layer != projectileLayerMask && other.gameObject.layer != defaultLayerMask)
             Destroy(gameObject);
     }
-
-    // Update is called once per frame
+    
     void Update() {
         airTime += Time.deltaTime;
         if (airTime >= maxAirTime) {

@@ -22,7 +22,7 @@ public class PlayerAudioController : MonoBehaviour
     private void OnFootstep()
     {
         var rnd = Random.Range(0, footstepsClips.Length);
-        feetSource.PlayOneShot(footstepsClips[rnd]);
+        feetSource.PlayOneShot(footstepsClips[0]);
     }
 
     private void OnDash()

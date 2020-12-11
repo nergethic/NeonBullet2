@@ -22,8 +22,16 @@ namespace _Config
             ""actions"": [
                 {
                     ""name"": ""Fire"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""f8f84d31-df8c-4e0b-b575-d758c8361fdc"",
+                    ""expectedControlType"": ""Digital"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""FireReleased"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7a93e81-5aff-41ac-816e-3c5b6cbf6136"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -90,7 +98,7 @@ namespace _Config
                     ""name"": """",
                     ""id"": ""b3ea0b68-5ad9-48db-be44-07b05b372a96"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire"",
@@ -228,6 +236,17 @@ namespace _Config
                     ""action"": ""ShowInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b588253-5a59-44f0-b8c2-76137db870e2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireReleased"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -264,6 +283,7 @@ namespace _Config
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+            m_Player_FireReleased = m_Player.FindAction("FireReleased", throwIfNotFound: true);
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
             m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
@@ -324,6 +344,7 @@ namespace _Config
         private readonly InputActionMap m_Player;
         private IPlayerActions m_PlayerActionsCallbackInterface;
         private readonly InputAction m_Player_Fire;
+        private readonly InputAction m_Player_FireReleased;
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_Dash;
         private readonly InputAction m_Player_Select;
@@ -336,6 +357,7 @@ namespace _Config
             private @Controls m_Wrapper;
             public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
+            public InputAction @FireReleased => m_Wrapper.m_Player_FireReleased;
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @Dash => m_Wrapper.m_Player_Dash;
             public InputAction @Select => m_Wrapper.m_Player_Select;
@@ -355,6 +377,9 @@ namespace _Config
                     @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                     @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                     @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                    @FireReleased.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireReleased;
+                    @FireReleased.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireReleased;
+                    @FireReleased.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireReleased;
                     @Aim.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
                     @Aim.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
                     @Aim.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
@@ -383,6 +408,9 @@ namespace _Config
                     @Fire.started += instance.OnFire;
                     @Fire.performed += instance.OnFire;
                     @Fire.canceled += instance.OnFire;
+                    @FireReleased.started += instance.OnFireReleased;
+                    @FireReleased.performed += instance.OnFireReleased;
+                    @FireReleased.canceled += instance.OnFireReleased;
                     @Aim.started += instance.OnAim;
                     @Aim.performed += instance.OnAim;
                     @Aim.canceled += instance.OnAim;
@@ -444,6 +472,7 @@ namespace _Config
         public interface IPlayerActions
         {
             void OnFire(InputAction.CallbackContext context);
+            void OnFireReleased(InputAction.CallbackContext context);
             void OnAim(InputAction.CallbackContext context);
             void OnDash(InputAction.CallbackContext context);
             void OnSelect(InputAction.CallbackContext context);

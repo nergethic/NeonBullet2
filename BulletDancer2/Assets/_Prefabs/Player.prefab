@@ -1025,6 +1025,7 @@ MonoBehaviour:
   playerPosition: {fileID: 5780198171366553035}
   bulletPrefab: {fileID: 4873777290460590298, guid: 524973b428141ab43a5d8867909692c0, type: 3}
   player: {fileID: 5876669769141105488}
+  val: 200
 --- !u!135 &1950827024739628637
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1056,8 +1057,8 @@ MonoBehaviour:
   ore: 0
   iron: 0
   gold: 0
-  playerSpeed: 40
-  dashSpeed: 3
+  playerSpeed: 10
+  dashSpeed: 7
   health: 4
   MaxHealth: 4
   energy: 3
