@@ -3,16 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets._Scripts.Inventory
 {
-    public class PlayerResources
+    public class PlayerResources : MonoBehaviour
     {
-        public int Ore { get; private set; }
-        public int Iron { get; private set; }
-        public int Gold { get; private set; }
+        private int ore;
+        private int iron;
+        private int gold;
+        public int Ore
+        {
+            get => ore;
+            private set
+            {
+                ore = value;
+                oreText.text = value.ToString();
+            }
+        }
+        public int Iron
+        {
+            get => iron;
+            private set
+            {
+                iron = value;
+                ironText.text = value.ToString();
+            }
+        }
+        public int Gold {
+            get => gold;
+            private set
+            {
+                gold = value;
+                goldText.text = value.ToString();
+            }
+        }
 
-        public PlayerResources(int ore, int iron, int gold)
+        [SerializeField] Text oreText;
+        [SerializeField] Text ironText;
+        [SerializeField] Text goldText;
+
+
+        public void SetPlayerResources(int ore, int iron, int gold)
         {
             Ore = ore;
             Iron = iron;

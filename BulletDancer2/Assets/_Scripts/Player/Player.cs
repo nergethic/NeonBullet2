@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] int iron;
     [SerializeField] int gold;
     public Action DeathAction;
-    public PlayerResources Resources { get; set; }
+    public PlayerResources Resources;
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
@@ -51,9 +52,12 @@ public class Player : MonoBehaviour
     private const float IMMUNITY_AFTER_BEING_HIT = 0.5f;
     private const float DASH_DURATION = 0.2f;
 
+    private void Awake()
+    {
+        Resources.SetPlayerResources(ore, iron, gold);
+    }
     private void Start()
     {
-        Resources = new PlayerResources(ore, iron, gold);
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
     }

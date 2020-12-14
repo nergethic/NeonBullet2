@@ -76,6 +76,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ShowCrafting",
+                    "type": "Button",
+                    "id": "2e5ff549-2da7-4c9c-9c95-eb30ce65bfc0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -230,6 +238,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "FireReleased",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dff4da2a-da14-4c5c-b747-6a52653efd3d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowCrafting",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

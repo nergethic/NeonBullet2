@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform playerPosition;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
+    [SerializeField] CraftingPanel craftingPanel;
     public event Action FootstepEvent;
     public event Action DashEvent;
 
@@ -20,6 +21,8 @@ public class PlayerController : MonoBehaviour {
     private void Start() {
         controls.Player.ShowInventory.performed += OnShowInventory;
         controls.Player.ShowInventory.Enable();
+        controls.Player.ShowCrafting.performed += OnShowCraftingPanel;
+        controls.Player.ShowCrafting.Enable();
         lastPosition = playerPosition.position;
         currentSpeed = player.playerSpeed;
     }
@@ -230,8 +233,22 @@ public class PlayerController : MonoBehaviour {
             OnDisable();
             player.Inventory.ShowInventory();
         }
-
     }
+
+    void OnShowCraftingPanel(InputAction.CallbackContext context)
+    {
+        if (craftingPanel.isActiveAndEnabled)
+        {
+            OnEnable();
+            craftingPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            OnDisable();
+            craftingPanel.gameObject.SetActive(true);
+        }
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
