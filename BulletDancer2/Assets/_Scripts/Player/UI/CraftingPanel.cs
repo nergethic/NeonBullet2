@@ -10,6 +10,7 @@ public class CraftingPanel : MonoBehaviour
     private List<CraftingLabel> activeCraftingLabels = new List<CraftingLabel>();
     [SerializeField] int maxItemsOnPage;
     [SerializeField] Button nextButton;
+    [SerializeField] Button previousButton;
     private int page = 1;
     void Start()
     {
@@ -29,11 +30,13 @@ public class CraftingPanel : MonoBehaviour
             ClearSelectedCraftingLabels();
         }
 
+        SetPreviousButton(page);
+
         if (page > 0 && canDisplayItemOnNextPage)
         {
             endPagePlace = startPagePlace + maxItemsOnPage;
             nextButton.interactable = true;
-            nextButton.onClick.AddListener(() => Display(page + 1));
+            nextButton.onClick.AddListener(SetNextButton);
 
         }
         else if (page * maxItemsOnPage == craftingLabels.Count)
@@ -50,6 +53,43 @@ public class CraftingPanel : MonoBehaviour
         SetActiveCraftingLabelsOnGivenPage(startPagePlace, endPagePlace);
     }
 
+    private void SetPreviousButton(int page)
+    {
+        if (page == 1)
+        {
+            previousButton.interactable = false;
+        }
+        else
+        {
+            previousButton.interactable = true;
+            previousButton.onClick.RemoveAllListeners();
+            previousButton.onClick.AddListener(SetPreviousButton);
+        }
+    }
+
+    private void SetPreviousButton()
+    {
+        page--;
+        Display(page);
+    }
+
+    public void UpdateCraftingButtonsAfterCraft()
+    {
+        foreach (var activeCraftingLabel in activeCraftingLabels)
+        {
+            if (!activeCraftingLabel.CanPlayerCraftItem())
+            {
+                activeCraftingLabel.SetCraftingButton(false);
+            }
+        }
+    }
+
+    private void SetNextButton()
+    {
+        page++;
+        Display(page);
+    }
+
     private void SetActiveCraftingLabelsOnGivenPage(int startPagePlace, int endPagePlace)
     {
         for (int i = startPagePlace; i < endPagePlace; i++)
@@ -59,7 +99,7 @@ public class CraftingPanel : MonoBehaviour
             activeCraftingLabels.Add(craftingLabel);
             if (craftingLabel.CanPlayerCraftItem())
             {
-                craftingLabel.SetCraftingButtonActive();
+                craftingLabel.SetCraftingButton(true);
             }
         }
     }
@@ -68,6 +108,7 @@ public class CraftingPanel : MonoBehaviour
     {
         foreach (var activeCraftingLabel in activeCraftingLabels)
         {
+            activeCraftingLabel.SetCraftingButton(false);
             activeCraftingLabel.gameObject.SetActive(false);
         }
     }

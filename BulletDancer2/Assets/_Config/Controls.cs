@@ -91,6 +91,22 @@ namespace _Config
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShowCrafting"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e5ff549-2da7-4c9c-9c95-eb30ce65bfc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ItemAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""f609d5ab-a66b-4d27-b8be-f274b19ee003"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -247,6 +263,28 @@ namespace _Config
                     ""action"": ""FireReleased"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dff4da2a-da14-4c5c-b747-6a52653efd3d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowCrafting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8b75c1da-f6d8-4fde-bd1f-fa0ade8b0e97"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -291,6 +329,8 @@ namespace _Config
             m_Player_Back = m_Player.FindAction("Back", throwIfNotFound: true);
             m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
             m_Player_ShowInventory = m_Player.FindAction("ShowInventory", throwIfNotFound: true);
+            m_Player_ShowCrafting = m_Player.FindAction("ShowCrafting", throwIfNotFound: true);
+            m_Player_ItemAction = m_Player.FindAction("ItemAction", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ButtonClick = m_UI.FindAction("ButtonClick", throwIfNotFound: true);
@@ -352,6 +392,8 @@ namespace _Config
         private readonly InputAction m_Player_Back;
         private readonly InputAction m_Player_PickUp;
         private readonly InputAction m_Player_ShowInventory;
+        private readonly InputAction m_Player_ShowCrafting;
+        private readonly InputAction m_Player_ItemAction;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -365,6 +407,8 @@ namespace _Config
             public InputAction @Back => m_Wrapper.m_Player_Back;
             public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
             public InputAction @ShowInventory => m_Wrapper.m_Player_ShowInventory;
+            public InputAction @ShowCrafting => m_Wrapper.m_Player_ShowCrafting;
+            public InputAction @ItemAction => m_Wrapper.m_Player_ItemAction;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -401,6 +445,12 @@ namespace _Config
                     @ShowInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowInventory;
                     @ShowInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowInventory;
                     @ShowInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowInventory;
+                    @ShowCrafting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowCrafting;
+                    @ShowCrafting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowCrafting;
+                    @ShowCrafting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowCrafting;
+                    @ItemAction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemAction;
+                    @ItemAction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemAction;
+                    @ItemAction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemAction;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -432,6 +482,12 @@ namespace _Config
                     @ShowInventory.started += instance.OnShowInventory;
                     @ShowInventory.performed += instance.OnShowInventory;
                     @ShowInventory.canceled += instance.OnShowInventory;
+                    @ShowCrafting.started += instance.OnShowCrafting;
+                    @ShowCrafting.performed += instance.OnShowCrafting;
+                    @ShowCrafting.canceled += instance.OnShowCrafting;
+                    @ItemAction.started += instance.OnItemAction;
+                    @ItemAction.performed += instance.OnItemAction;
+                    @ItemAction.canceled += instance.OnItemAction;
                 }
             }
         }
@@ -480,6 +536,8 @@ namespace _Config
             void OnBack(InputAction.CallbackContext context);
             void OnPickUp(InputAction.CallbackContext context);
             void OnShowInventory(InputAction.CallbackContext context);
+            void OnShowCrafting(InputAction.CallbackContext context);
+            void OnItemAction(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

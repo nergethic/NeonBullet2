@@ -76,6 +76,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ShowCrafting",
+                    "type": "Button",
+                    "id": "2e5ff549-2da7-4c9c-9c95-eb30ce65bfc0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ItemAction",
+                    "type": "Button",
+                    "id": "f609d5ab-a66b-4d27-b8be-f274b19ee003",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -230,6 +246,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "FireReleased",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dff4da2a-da14-4c5c-b747-6a52653efd3d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowCrafting",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b75c1da-f6d8-4fde-bd1f-fa0ade8b0e97",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

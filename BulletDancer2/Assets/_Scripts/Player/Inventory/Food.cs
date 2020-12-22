@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Food : Item
@@ -22,6 +23,13 @@ public class Food : Item
             {
                 Owner.Health = Owner.MaxHealth;
             }
+        }
+
+        ItemSlot.RemoveItemFromSlot();
+
+        if (!PrefabUtility.IsPartOfPrefabAsset(gameObject))
+        {
+            Destroy(gameObject);
         }
     }
 }
