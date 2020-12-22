@@ -18,7 +18,7 @@ public class CraftingLabel : MonoBehaviour
 
     void Awake()
     {
-        craftingButton.image.sprite = itemToCraft.sprite;
+        craftingButton.image.sprite = itemToCraft.Sprite;
         craftingButton.interactable = false;
         SetupTextLabels();
         craftingButton.onClick.AddListener(() =>

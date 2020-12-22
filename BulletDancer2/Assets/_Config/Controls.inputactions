@@ -84,6 +84,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ItemAction",
+                    "type": "Button",
+                    "id": "f609d5ab-a66b-4d27-b8be-f274b19ee003",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -249,6 +257,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ShowCrafting",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b75c1da-f6d8-4fde-bd1f-fa0ade8b0e97",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

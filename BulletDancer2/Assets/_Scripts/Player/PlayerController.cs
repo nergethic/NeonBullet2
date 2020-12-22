@@ -1,5 +1,6 @@
 
 using _Config;
+using Assets._Scripts.Player.Inventory;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] CraftingPanel craftingPanel;
     public event Action FootstepEvent;
     public event Action DashEvent;
-
+    public ThrowableItem ThrowableItem { get; set; }
     private Item pickableItem;
     private Controls controls;
 
@@ -90,6 +91,19 @@ public class PlayerController : MonoBehaviour {
             currentSpeed = player.playerSpeed;
             loadingShot = 0f;
         }
+
+        var keyboard = Keyboard.current;
+        if (keyboard.qKey.isPressed && ThrowableItem != null)
+        {
+            loadingItemAction += 1f * Time.deltaTime;
+            
+        }
+        else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null)
+        {
+            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos(), playerPosition.position);
+            ThrowableItem = null;
+            loadingItemAction = 0f;
+        }
     }
 
     Vector2 dPlayer = Vector2.zero; // velocity
@@ -105,7 +119,7 @@ public class PlayerController : MonoBehaviour {
             ddPlayer = lastMovementDirection * player.dashSpeed;
 
             newPlayerPos.x += 0.5f * ddPlayer.x * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.x * Time.fixedDeltaTime;
-            newPlayerPos.z += 0.5f * ddPlayer.y * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.y * Time.fixedDeltaTime;
+            newPlayerPos.y += 0.5f * ddPlayer.y * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.y * Time.fixedDeltaTime;
         
             dPlayer += 10f*ddPlayer * Time.fixedDeltaTime;
             dPlayer = Vector2.ClampMagnitude(dPlayer, 3f);
@@ -123,7 +137,7 @@ public class PlayerController : MonoBehaviour {
             ddPlayer += -4.5f * dPlayer;
             
             newPlayerPos.x += 0.5f * ddPlayer.x * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.x * Time.fixedDeltaTime;
-            newPlayerPos.z += 0.5f * ddPlayer.y * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.y * Time.fixedDeltaTime;
+            newPlayerPos.y += 0.5f * ddPlayer.y * Time.fixedDeltaTime * Time.fixedDeltaTime + dPlayer.y * Time.fixedDeltaTime;
         
             dPlayer += ddPlayer * Time.fixedDeltaTime;
             dPlayer = Vector2.ClampMagnitude(dPlayer, 1f);
@@ -145,14 +159,14 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 newCameraPos = mainCamera.transform.position;
         newCameraPos.x = newPlayerPos.x;
-        newCameraPos.z = newPlayerPos.z;
+        newCameraPos.y = newPlayerPos.y;
 
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         
         var result = GetCentralizedMousePos();
         
         newCameraPos.x += result.x * 0.4f;
-        newCameraPos.z += result.y * 0.4f;
+        newCameraPos.y += result.y * 0.4f;
         mainCamera.transform.position = newCameraPos;
     }
 
@@ -177,6 +191,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private float loadingShot = 0f;
+    private float loadingItemAction = 0f;
     private void OnFire(InputAction.CallbackContext context) {
         //if (!context.performed)
             //return;
@@ -249,10 +264,16 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    void OnItemAction(InputAction.CallbackContext context)
+    {
 
-    private void OnTriggerEnter(Collider other)
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Item")) {
+            Debug.Log("aa");
             pickableItem = other.GetComponent<Item>();
         } else if (other.CompareTag("Projectile")) {
             var projectile = other.GetComponent<Projectile>();

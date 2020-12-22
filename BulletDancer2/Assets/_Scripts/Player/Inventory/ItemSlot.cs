@@ -20,13 +20,6 @@ public class ItemSlot : MonoBehaviour
     {
         deleteButton.onClick.AddListener(RemoveItemFromSlot);
     }
-
-    public void UseItem()
-    {
-        // item.Use(player);
-        item = null;
-        itemImage.sprite = null;
-    }
     public void RemoveItemFromSlot()
     {
         item = null;
@@ -39,15 +32,32 @@ public class ItemSlot : MonoBehaviour
     private void AddItemToSlot(Item item)
     {
         itemButton.gameObject.SetActive(true);
+        item.ItemSlot = this;
         this.item = item;
-        itemImage.sprite = item.sprite;
+        itemImage.sprite = item.Sprite;
         deleteButton.gameObject.SetActive(true);
         itemButton.onClick.AddListener(OnUse);
     }
 
-    private void OnUse()
+    public void SetButtonStatus(Item item, bool isActive)
     {
-        item.Use();
-        RemoveItemFromSlot();
+        if (isActive)
+        {
+            ColorBlock colors = itemButton.colors;
+            colors.normalColor = Color.green;
+            colors.highlightedColor = Color.green;
+            colors.selectedColor = Color.green;
+            itemButton.colors = colors;
+        }
+        else
+        {
+            ColorBlock colors = itemButton.colors;
+            colors.normalColor = Color.black;
+            colors.highlightedColor = Color.white;
+            colors.selectedColor = Color.black;
+            itemButton.colors = colors;
+        }
     }
+
+    private void OnUse() => item.Use();
 }
