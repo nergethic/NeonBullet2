@@ -48,7 +48,7 @@ Shader "Custom/NewUnlitShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, pixelArt(i.uv, 180));
+                fixed4 col = tex2D(_MainTex, pixelArt(i.uv, 300));
                 return col;
                 //return fixed4(0, 1, 0, 0);
             }
