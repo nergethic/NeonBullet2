@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour {
     }
 
     public void Initialize(Vector2 _dir, bool ownedByPlayer, ProjectileType type) {
-        dir = _dir;
+        dir = _dir.normalized;
 
         projectileData.ownedByPlayer = ownedByPlayer;
         projectileData.typeMask = (int)type;

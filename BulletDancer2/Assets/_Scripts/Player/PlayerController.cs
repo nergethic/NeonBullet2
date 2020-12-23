@@ -284,19 +284,9 @@ public class PlayerController : MonoBehaviour {
             pickableItem = other.GetComponent<Item>();
         } else if (other.CompareTag("Projectile")) {
             var projectile = other.GetComponent<Projectile>();
-            if (projectile != null) {
-                var projectileData = projectile.projectileData;
-                if (!projectileData.ownedByPlayer) {
-                    if (player.isAbsorbingEnergy && projectileData.typeMask == (int)Projectile.ProjectileType.Energy) {
-                        int newEnergy = player.Energy + 1;
-                        if (newEnergy <= player.MaxEnergy)
-                            player.Energy = newEnergy;
-                    } else if (!player.isImmuneToDamage) {
-                        player.PlayerHitByProjectileAction(ref projectileData);
-                    }
-                    Destroy(projectile.gameObject);
-                }
-            }
+            if (projectile != null)
+                if (!projectile.projectileData.ownedByPlayer) 
+                    player.HandleProjectile(projectile);
         }
     }
 

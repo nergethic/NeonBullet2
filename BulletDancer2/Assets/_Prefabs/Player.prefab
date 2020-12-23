@@ -866,6 +866,7 @@ MonoBehaviour:
   iron: 5
   gold: 5
   shield: {fileID: 2014642966329988805}
+  shieldMaterial: {fileID: 2100000, guid: acfbd432dc3d47144acee0ec978373e9, type: 2}
   Resources: {fileID: 8759699351071077285}
   playerSpeed: 10
   dashSpeed: 7
@@ -894,8 +895,8 @@ Rigidbody2D:
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &2678648242390252464
 CircleCollider2D:
