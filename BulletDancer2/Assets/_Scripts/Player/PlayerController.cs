@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour {
         controls = new Controls();
         controls.Player.Fire.performed         += OnFire;
         controls.Player.FireReleased.performed += OnFireReleased;
+        controls.Player.Block.performed        += OnBlock;
         controls.Player.Aim.performed          += OnAim;
         controls.Player.Move.performed         += OnMove;
         controls.Player.Dash.performed         += OnDash;
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour {
         
         controls.Player.Fire.Enable();
         controls.Player.FireReleased.Enable();
+        controls.Player.Block.Enable();
         controls.Player.Aim.Enable();
         controls.Player.Move.Enable();
         controls.Player.Dash.Enable();
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour {
     private void OnDisable() {
         controls.Player.Fire.performed         -= OnFire;
         controls.Player.FireReleased.performed -= OnFireReleased;
+        controls.Player.Block.performed        -= OnBlock;
         controls.Player.Aim.performed          -= OnAim;
         controls.Player.Move.performed         -= OnMove;
         controls.Player.Dash.performed         -= OnDash;
@@ -63,6 +66,7 @@ public class PlayerController : MonoBehaviour {
 
         controls.Player.Fire.Disable();
         controls.Player.FireReleased.Disable();
+        controls.Player.Block.Disable();
         controls.Player.Aim.Disable();
         controls.Player.Move.Disable();
         controls.Player.Dash.Disable();
@@ -73,22 +77,18 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] float val;
     private Vector2 velBooster = Vector2.zero;
-    private void Update()
-    {
+    private void Update() {
         // mouse
 
         SetPlayerRotation();
 
         var mouse = Mouse.current;
-        if (mouse.leftButton.isPressed && player.Energy >= 1)
-        {
+        if (mouse.leftButton.isPressed && player.Energy >= 1) {
             loadingShot += 1f * Time.deltaTime;
             currentSpeed = 2f;
         }
-        else if (mouse.leftButton.wasReleasedThisFrame)
-        {
-            if (loadingShot > 1f && player.Energy >= 1)
-            {
+        else if (mouse.leftButton.wasReleasedThisFrame) {
+            if (loadingShot > 1f && player.Energy >= 1) {
                 player.Energy -= 1;
                 var bullet = Instantiate(bulletPrefab).GetComponent<Projectile>();
                 var bulletDirection = GetCentralizedMousePos();
@@ -103,21 +103,17 @@ public class PlayerController : MonoBehaviour {
         }
 
         var keyboard = Keyboard.current;
-        if (keyboard.qKey.isPressed && ThrowableItem != null)
-        {
+        if (keyboard.qKey.isPressed && ThrowableItem != null) {
             loadingItemAction += 1f * Time.deltaTime;
 
-        }
-        else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null)
-        {
+        } else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null) {
             ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos(), throwableSpawn.position);
             ThrowableItem = null;
             loadingItemAction = 0f;
         }
     }
 
-    private void SetPlayerRotation()
-    {
+    private void SetPlayerRotation() {
         Vector2 mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 playerPos = playerPosition.position;
         Vector2 lookDir = mousePos - playerPos;
@@ -131,8 +127,6 @@ public class PlayerController : MonoBehaviour {
 
     Vector2 lastMovementDirection;
     void FixedUpdate() {
-
-
         Vector3 newPlayerPos = playerPosition.position;
         lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
         if (player.isDashing) {
@@ -162,8 +156,7 @@ public class PlayerController : MonoBehaviour {
             dPlayer += ddPlayer * Time.fixedDeltaTime;
             dPlayer = Vector2.ClampMagnitude(dPlayer, 1f);
         }
-        
-        
+
         //dPlayer.x -= Time.fixedDeltaTime * 1.5f;
         //dPlayer.y -= Time.fixedDeltaTime * 1.5f;
         //if (dPlayer.magnitude < 0f)
@@ -223,6 +216,13 @@ public class PlayerController : MonoBehaviour {
         if (!context.performed)
             return;
     }
+
+    private void OnBlock(InputAction.CallbackContext context) {
+        if (!context.performed)
+            return;
+        
+        player.PerformBlock();
+    }
     
     private void OnAim(InputAction.CallbackContext context) {
         Debug.Log("Aim");
@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour {
     
     private void OnDash(InputAction.CallbackContext context) {
         Debug.Log("Dash");
-        player.Dash();
+        player.PerformDash();
         DashEvent();
     }
     
@@ -246,10 +246,8 @@ public class PlayerController : MonoBehaviour {
     private void OnBack(InputAction.CallbackContext context) {
         Debug.Log("Back");
     }
-    void OnPickUp(InputAction.CallbackContext context)
-    {
-        if (pickableItem != null)
-        {
+    void OnPickUp(InputAction.CallbackContext context) {
+        if (pickableItem != null) {
             player.Inventory.AddItem(pickableItem);
             pickableItem.gameObject.SetActive(false);
             pickableItem = null;
@@ -257,44 +255,32 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    void OnShowInventory(InputAction.CallbackContext context)
-    {
-        if (player.Inventory.IsInventoryActive)
-        {
+    void OnShowInventory(InputAction.CallbackContext context) {
+        if (player.Inventory.IsInventoryActive) {
             OnEnable();
             player.Inventory.HideInventory();
-        }
-        else
-        {
+        } else {
             OnDisable();
             player.Inventory.ShowInventory();
         }
     }
 
-    void OnShowCraftingPanel(InputAction.CallbackContext context)
-    {
-        if (craftingPanel.isActiveAndEnabled)
-        {
+    void OnShowCraftingPanel(InputAction.CallbackContext context) {
+        if (craftingPanel.isActiveAndEnabled) {
             OnEnable();
             craftingPanel.gameObject.SetActive(false);
-        }
-        else
-        {
+        } else {
             OnDisable();
             craftingPanel.gameObject.SetActive(true);
         }
     }
 
-    void OnItemAction(InputAction.CallbackContext context)
-    {
+    void OnItemAction(InputAction.CallbackContext context) {
 
     }
 
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Item")) {
-            Debug.Log("aa");
             pickableItem = other.GetComponent<Item>();
         } else if (other.CompareTag("Projectile")) {
             var projectile = other.GetComponent<Projectile>();
@@ -314,11 +300,8 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Item"))
-        {
+    private void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Item")) {
             pickableItem = null;
         }
     }

@@ -16,18 +16,20 @@ public class Player : MonoBehaviour
     [SerializeField] int ore;
     [SerializeField] int iron;
     [SerializeField] int gold;
+    [SerializeField] Transform shield;
     public Action DeathAction;
     public PlayerResources Resources;
+
+    Coroutine dashCor;
+    Coroutine blockCor;
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
     [SerializeField] int health;
     public int MaxHealth = 4;
-    public int Health
-    {
+    public int Health {
         get => health;
-        set
-        {
+        set {
             health = value;
             healthBar.UpdateStatusBar(health);
         }
@@ -35,11 +37,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] int energy;
     public int MaxEnergy = 3;
-    public int Energy
-    {
+    public int Energy {
         get => energy;
-        set
-        {
+        set {
             energy = value;
             energyBar.UpdateStatusBar(energy);
         }
@@ -52,12 +52,10 @@ public class Player : MonoBehaviour
     private const float IMMUNITY_AFTER_BEING_HIT = 0.5f;
     private const float DASH_DURATION = 0.2f;
 
-    private void Awake()
-    {
+    private void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
     }
-    private void Start()
-    {
+    private void Start() {
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
     }
@@ -72,19 +70,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Dash() {
-        StartCoroutine(ToggleDash());
+    public void PerformDash() {
+        if (dashCor == null)
+            dashCor = StartCoroutine(ToggleDash());
+    }
+
+    public void PerformBlock() {
+        if (blockCor == null)
+            blockCor = StartCoroutine(ToggleEnergyAbsorbtion(0.3f));
     }
     
     IEnumerator ToggleDash() {
         isDashing = true;
-        isImmuneToDamage = true;
-        isAbsorbingEnergy = true;
         yield return new WaitForSeconds(DASH_DURATION);
         isDashing = false;
-        isImmuneToDamage = false;
-        isAbsorbingEnergy = false;
-        
+        dashCor = null;
+
         yield return null;
     }
 
@@ -97,9 +98,14 @@ public class Player : MonoBehaviour
     }
     
     IEnumerator ToggleEnergyAbsorbtion(float absorbtionTime) {
+        shield.gameObject.SetActive(true);
         isAbsorbingEnergy = true;
+        isImmuneToDamage = true;
         yield return new WaitForSeconds(absorbtionTime);
+        isImmuneToDamage = false;
         isAbsorbingEnergy = false;
+        shield.gameObject.SetActive(false);
+        blockCor = null;
         
         yield return null;
     }

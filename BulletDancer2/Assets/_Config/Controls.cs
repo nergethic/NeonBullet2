@@ -107,6 +107,14 @@ namespace _Config
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""b531fb92-6fbd-4047-a9cf-64d0013581eb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -285,6 +293,17 @@ namespace _Config
                     ""action"": ""ItemAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f24f713f-f799-4613-a413-4c8464ef7cf0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -331,6 +350,7 @@ namespace _Config
             m_Player_ShowInventory = m_Player.FindAction("ShowInventory", throwIfNotFound: true);
             m_Player_ShowCrafting = m_Player.FindAction("ShowCrafting", throwIfNotFound: true);
             m_Player_ItemAction = m_Player.FindAction("ItemAction", throwIfNotFound: true);
+            m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ButtonClick = m_UI.FindAction("ButtonClick", throwIfNotFound: true);
@@ -394,6 +414,7 @@ namespace _Config
         private readonly InputAction m_Player_ShowInventory;
         private readonly InputAction m_Player_ShowCrafting;
         private readonly InputAction m_Player_ItemAction;
+        private readonly InputAction m_Player_Block;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -409,6 +430,7 @@ namespace _Config
             public InputAction @ShowInventory => m_Wrapper.m_Player_ShowInventory;
             public InputAction @ShowCrafting => m_Wrapper.m_Player_ShowCrafting;
             public InputAction @ItemAction => m_Wrapper.m_Player_ItemAction;
+            public InputAction @Block => m_Wrapper.m_Player_Block;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -451,6 +473,9 @@ namespace _Config
                     @ItemAction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemAction;
                     @ItemAction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemAction;
                     @ItemAction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemAction;
+                    @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                    @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                    @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -488,6 +513,9 @@ namespace _Config
                     @ItemAction.started += instance.OnItemAction;
                     @ItemAction.performed += instance.OnItemAction;
                     @ItemAction.canceled += instance.OnItemAction;
+                    @Block.started += instance.OnBlock;
+                    @Block.performed += instance.OnBlock;
+                    @Block.canceled += instance.OnBlock;
                 }
             }
         }
@@ -538,6 +566,7 @@ namespace _Config
             void OnShowInventory(InputAction.CallbackContext context);
             void OnShowCrafting(InputAction.CallbackContext context);
             void OnItemAction(InputAction.CallbackContext context);
+            void OnBlock(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
