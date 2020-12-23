@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour {
         
         var newPos = myTransform.position;
         newPos.x += Time.deltaTime * dir.x * projectileData.speed;
-        newPos.z += Time.deltaTime * dir.y * projectileData.speed;
+        newPos.y += Time.deltaTime * dir.y * projectileData.speed;
         
         myTransform.position = newPos;
     }
