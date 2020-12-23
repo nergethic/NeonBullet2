@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Grenade : Item, ThrowableItem
 {
-    [SerializeField] PlayerController playerController;
     [SerializeField] float maxAirTime = 3f;
     [SerializeField] Transform myTransform;
     [SerializeField] GameObject explosionEffect;
