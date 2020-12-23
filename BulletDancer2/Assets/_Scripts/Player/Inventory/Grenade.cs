@@ -9,6 +9,7 @@ public class Grenade : Item, ThrowableItem
     [SerializeField] float maxAirTime = 3f;
     [SerializeField] Transform myTransform;
     [SerializeField] GameObject explosionEffect;
+    [SerializeField] Rigidbody2D rb;
     private Vector2 dir;
 
     public void Throw(float speed, Vector2 itemDirection, Vector2 throwableSpawn)
@@ -53,16 +54,24 @@ public class Grenade : Item, ThrowableItem
         collider.isTrigger = false;
         rb.AddForce(dir * speed, ForceMode2D.Impulse);
         yield return new WaitForSeconds(maxAirTime);
+        DestroyGrenade();
+    }
+
+    private void DestroyGrenade()
+    {
         SpriteRenderer.sprite = null;
         rb.bodyType = RigidbodyType2D.Static;
         var flyingGrenade = Instantiate(explosionEffect, transform);
-        
+
         Destroy(flyingGrenade, 0.5f);
         Destroy(gameObject, 0.5f);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.tag);
+        if (rb.bodyType == RigidbodyType2D.Dynamic && other.tag != "Player")
+        {
+            DestroyGrenade();
+        }
     }
 }

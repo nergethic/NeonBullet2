@@ -102,6 +102,7 @@ MonoBehaviour:
   maxAirTime: 3
   myTransform: {fileID: 5458829828065545760}
   explosionEffect: {fileID: 3489929141657909040, guid: bf9c4e57333673f499e764b6d7d76ff5, type: 3}
+  rb: {fileID: 608186996}
 --- !u!61 &5724752422718634819
 BoxCollider2D:
   m_ObjectHideFlags: 0
