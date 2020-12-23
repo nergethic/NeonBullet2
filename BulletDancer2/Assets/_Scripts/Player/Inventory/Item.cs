@@ -5,14 +5,13 @@ using UnityEngine;
 public abstract class Item : MonoBehaviour
 {
     public Sprite Sprite { get; set; }
-    public SpriteRenderer SpriteRenderer { get; set; }
+    public SpriteRenderer SpriteRenderer;
     public Player Owner { get; set; }
     public ItemSlot ItemSlot { get; set; }
     public abstract void Use();
 
-    private void Start()
+    private void Awake()
     {
-        SpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         Sprite = SpriteRenderer.sprite;
     }
 }

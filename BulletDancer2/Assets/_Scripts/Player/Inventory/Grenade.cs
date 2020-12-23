@@ -11,9 +11,9 @@ public class Grenade : Item, ThrowableItem
     [SerializeField] GameObject explosionEffect;
     private Vector2 dir;
 
-    public void Throw(float speed, Vector2 itemDirection, Vector2 playerPosition)
+    public void Throw(float speed, Vector2 itemDirection, Vector2 throwableSpawn)
     {
-        myTransform.position = playerPosition;
+        myTransform.position = throwableSpawn;
         gameObject.SetActive(true);
         ItemSlot.RemoveItemFromSlot();
         playerController.ThrowableItem = null;
@@ -46,20 +46,19 @@ public class Grenade : Item, ThrowableItem
     IEnumerator Fly(float speed, Vector2 itemDirection)
     {
         dir = itemDirection;
-        var rb = gameObject.AddComponent<Rigidbody2D>();
+        var rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.gravityScale = 0;
         var collider = gameObject.GetComponent<Collider2D>();
         collider.isTrigger = false;
         rb.AddForce(dir * speed, ForceMode2D.Impulse);
-        for (float f = 0; f < maxAirTime; f += Time.deltaTime)
-        {
-            yield return null; 
-        }
+        yield return new WaitForSeconds(maxAirTime);
         SpriteRenderer.sprite = null;
+        rb.bodyType = RigidbodyType2D.Static;
         var flyingGrenade = Instantiate(explosionEffect, transform);
         
         Destroy(flyingGrenade, 0.5f);
-        Destroy(this);
+        Destroy(gameObject, 0.5f);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
     [SerializeField] CraftingPanel craftingPanel;
+    [SerializeField] Rigidbody2D rb;
+    [SerializeField] Transform throwableSpawn;
     public event Action FootstepEvent;
     public event Action DashEvent;
     public ThrowableItem ThrowableItem { get; set; }
@@ -71,14 +73,22 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] float val;
     private Vector2 velBooster = Vector2.zero;
-    private void Update() {
+    private void Update()
+    {
         // mouse
+
+        SetPlayerRotation();
+
         var mouse = Mouse.current;
-        if (mouse.leftButton.isPressed && player.Energy >= 1) {
-            loadingShot += 1f*Time.deltaTime;
+        if (mouse.leftButton.isPressed && player.Energy >= 1)
+        {
+            loadingShot += 1f * Time.deltaTime;
             currentSpeed = 2f;
-        } else if (mouse.leftButton.wasReleasedThisFrame) {
-            if (loadingShot > 1f && player.Energy >= 1) {
+        }
+        else if (mouse.leftButton.wasReleasedThisFrame)
+        {
+            if (loadingShot > 1f && player.Energy >= 1)
+            {
                 player.Energy -= 1;
                 var bullet = Instantiate(bulletPrefab).GetComponent<Projectile>();
                 var bulletDirection = GetCentralizedMousePos();
@@ -96,14 +106,23 @@ public class PlayerController : MonoBehaviour {
         if (keyboard.qKey.isPressed && ThrowableItem != null)
         {
             loadingItemAction += 1f * Time.deltaTime;
-            
+
         }
         else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null)
         {
-            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos(), playerPosition.position);
+            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos(), throwableSpawn.position);
             ThrowableItem = null;
             loadingItemAction = 0f;
         }
+    }
+
+    private void SetPlayerRotation()
+    {
+        Vector2 mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 playerPos = playerPosition.position;
+        Vector2 lookDir = mousePos - playerPos;
+        var angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
+        rb.rotation = angle;
     }
 
     Vector2 dPlayer = Vector2.zero; // velocity
@@ -112,8 +131,9 @@ public class PlayerController : MonoBehaviour {
 
     Vector2 lastMovementDirection;
     void FixedUpdate() {
+
+
         Vector3 newPlayerPos = playerPosition.position;
-        
         lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
         if (player.isDashing) {
             ddPlayer = lastMovementDirection * player.dashSpeed;
@@ -168,6 +188,7 @@ public class PlayerController : MonoBehaviour {
         newCameraPos.x += result.x * 0.4f;
         newCameraPos.y += result.y * 0.4f;
         mainCamera.transform.position = newCameraPos;
+
     }
 
     Vector2 GetCentralizedMousePos() {

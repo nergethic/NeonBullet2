@@ -18,12 +18,14 @@ public class CraftingLabel : MonoBehaviour
 
     void Awake()
     {
-        craftingButton.image.sprite = itemToCraft.Sprite;
+        craftingButton.image.sprite = itemToCraft.SpriteRenderer.sprite;
         craftingButton.interactable = false;
         SetupTextLabels();
         craftingButton.onClick.AddListener(() =>
         {
-            player.Inventory.AddItem(itemToCraft);
+            var instanceOfItem = Instantiate(itemToCraft);
+            instanceOfItem.gameObject.SetActive(false);
+            player.Inventory.AddItem(instanceOfItem);
             player.Resources.UseResources(requiredOre, requiredIron, requiredGold);
             craftingPanel.UpdateCraftingButtonsAfterCraft();
         });

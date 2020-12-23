@@ -22,6 +22,7 @@ public class ItemSlot : MonoBehaviour
     }
     public void RemoveItemFromSlot()
     {
+        SetButtonStatus(Item, false);
         item = null;
         itemImage.sprite = null;
         itemButton.onClick.RemoveAllListeners();

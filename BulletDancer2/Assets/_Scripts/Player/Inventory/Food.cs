@@ -26,10 +26,6 @@ public class Food : Item
         }
 
         ItemSlot.RemoveItemFromSlot();
-
-        if (!PrefabUtility.IsPartOfPrefabAsset(gameObject))
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }
