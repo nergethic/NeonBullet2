@@ -4,6 +4,7 @@ public class Projectile : MonoBehaviour {
     [SerializeField] Transform myTransform;
     [SerializeField] float speed = 1.0f;
     [SerializeField] float maxAirTime = 3f;
+    [SerializeField] ProjectileType type;
 
     public ProjectileData projectileData;
 
@@ -13,11 +14,8 @@ public class Projectile : MonoBehaviour {
     
     private float airTime = 0f;
     private Vector2 dir;
-
-    public enum ProjectileType {
-        Standard = 0,
-        Energy
-    }
+    
+    public ProjectileType GetType() => type;
 
     void Start() {
         defaultLayerMask = LayerMask.NameToLayer("Default");
@@ -25,13 +23,17 @@ public class Projectile : MonoBehaviour {
         projectileLayerMask = LayerMask.NameToLayer("Projectile");
     }
 
-    public void Initialize(Vector2 _dir, bool ownedByPlayer, ProjectileType type) {
-        dir = _dir.normalized;
+    public void Initialize(Vector2 dir, bool ownedByPlayer) {
+        this.dir = dir.normalized;
 
         projectileData.ownedByPlayer = ownedByPlayer;
         projectileData.typeMask = (int)type;
         projectileData.damage = 1;
         projectileData.speed = speed;
+    }
+
+    public void SetDirection(Vector2 dir) {
+        this.dir = dir.normalized;
     }
 
     private void OnTriggerEnter(Collider other) {

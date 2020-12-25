@@ -75,7 +75,8 @@ public class MasterSystem : MonoBehaviour {
 
 public enum SceneManagerType {
     Unknown = 0,
-    Item 
+    Item,
+    Entity
 }
 
 public class SceneManagerData {

@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
 
     public void HandleProjectile(Projectile projectile) {
         var projectileData = projectile.projectileData;
-        if (isAbsorbingEnergy && projectileData.typeMask == (int)Projectile.ProjectileType.Energy) {
+        if (isAbsorbingEnergy && projectileData.typeMask == (int)ProjectileType.Energy) { // TODO
             int newEnergy = Energy + 1;
             if (newEnergy <= MaxEnergy)
                 Energy = newEnergy;

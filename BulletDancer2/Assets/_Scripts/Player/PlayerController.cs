@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] CraftingPanel craftingPanel;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Transform throwableSpawn;
+    [SerializeField] ProjectileManager projectileManager;
     public event Action FootstepEvent;
     public event Action DashEvent;
     public ThrowableItem ThrowableItem { get; set; }
@@ -90,11 +91,10 @@ public class PlayerController : MonoBehaviour {
         else if (mouse.leftButton.wasReleasedThisFrame) {
             if (loadingShot > 1f && player.Energy >= 1) {
                 player.Energy -= 1;
-                var bullet = Instantiate(bulletPrefab).GetComponent<Projectile>();
-                var bulletDirection = GetCentralizedMousePos();
-                bullet.Initialize(bulletDirection, true, Projectile.ProjectileType.Standard);
-                bullet.transform.position = playerPosition.position;
 
+                var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true);
+                var bulletDirection = GetCentralizedMousePos(); // TODO
+                bullet.SetDirection(bulletDirection); 
                 velBooster = -bulletDirection * val;
             }
 
