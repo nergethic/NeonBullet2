@@ -87,8 +87,7 @@ public class PlayerController : MonoBehaviour {
         if (mouse.leftButton.isPressed && player.Energy >= 1) {
             loadingShot += 1f * Time.deltaTime;
             currentSpeed = 2f;
-        }
-        else if (mouse.leftButton.wasReleasedThisFrame) {
+        } else if (mouse.leftButton.wasReleasedThisFrame) {
             if (loadingShot > 1f && player.Energy >= 1) {
                 player.Energy -= 1;
 

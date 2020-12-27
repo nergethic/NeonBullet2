@@ -32,7 +32,7 @@ public class MasterSystem : MonoBehaviour {
             return;
         
         foreach (var manager in managers) 
-            manager.Tick();
+            manager.Tick(Time.deltaTime);
     }
 
     IEnumerator WaitForInitialization() {

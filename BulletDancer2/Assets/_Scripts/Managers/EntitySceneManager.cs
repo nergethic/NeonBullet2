@@ -19,7 +19,10 @@ public class EntitySceneManager : SceneManager {
         initializationState = ManagerInitializationState.INITIALIZED;
     }
 
-    public override void Tick() {
+    public override void Tick(float dt) {
+        foreach (var entity in entites) {
+            entity.Tick(dt);
+        }
     }
 
 #if UNITY_EDITOR

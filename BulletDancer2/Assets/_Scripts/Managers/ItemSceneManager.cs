@@ -18,7 +18,7 @@ public class ItemSceneManager : SceneManager {
         initializationState = ManagerInitializationState.INITIALIZED;
     }
 
-    public override void Tick() {
+    public override void Tick(float dt) {
     }
 
 #if UNITY_EDITOR

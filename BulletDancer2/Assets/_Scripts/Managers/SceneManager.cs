@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SceneManager : MonoBehaviour {
@@ -12,7 +10,7 @@ public abstract class SceneManager : MonoBehaviour {
         initializationState = ManagerInitializationState.INITIALIZING;
     }
     
-    public abstract void Tick();
+    public abstract void Tick(float dt);
 
     public ManagerInitializationState GetInitializationState() {
         return initializationState;
