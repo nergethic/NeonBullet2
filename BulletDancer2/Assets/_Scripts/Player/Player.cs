@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] ParticleSystem particle;
     public event Action DeathEvent;
     public event Action HitEvent;
+    public event Action SpawnEvent;
     public PlayerResources Resources;
 
     Coroutine dashCor;
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
         UpdateShieldColor(false);
+        SpawnEvent();
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {

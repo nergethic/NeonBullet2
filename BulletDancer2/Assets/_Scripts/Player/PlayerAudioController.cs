@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerAudioController : MonoBehaviour
 {
@@ -8,10 +9,13 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] AudioSource feetSource;
     [SerializeField] AudioSource mouthSource;
+    [SerializeField] AudioSource hitSource;
+    [SerializeField] AudioSource spawnSource;
     [SerializeField] AudioClip[] footstepsClips;
     [SerializeField] AudioClip dash;
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip hit;
+    [SerializeField] AudioClip spawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,11 +23,12 @@ public class PlayerAudioController : MonoBehaviour
         playerController.DashEvent += OnDash;
         player.DeathEvent += OnDeath;
         player.HitEvent += OnHit;
+        player.SpawnEvent += OnSpawn;
     }
 
     private void OnHit()
     {
-        mouthSource.PlayOneShot(hit);
+        hitSource.PlayOneShot(hit);
     }
 
     private void OnFootstep()
@@ -40,5 +45,10 @@ public class PlayerAudioController : MonoBehaviour
     private void OnDeath()
     {
         mouthSource.PlayOneShot(death);
+    }
+
+    private void OnSpawn()
+    {
+        spawnSource.PlayOneShot(spawn);
     }
 }
