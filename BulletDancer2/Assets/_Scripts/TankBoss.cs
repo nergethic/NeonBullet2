@@ -26,7 +26,7 @@ public class TankBoss : Entity {
         SetCannonRotation();
 
         var pos = transform.position;
-        const float speed = 0.7f;
+        const float speed = 0.2f;
         float increment = dt * speed;
 
         timer += dt;
@@ -37,7 +37,7 @@ public class TankBoss : Entity {
             timer = 0f;
         }
 
-        baseRotationT += dt*5.0f;
+        baseRotationT += dt*3.0f;
         Mathf.Clamp01(baseRotationT);
         
         switch (currentDirection) {
@@ -93,7 +93,6 @@ public class TankBoss : Entity {
     }
     
     private void SetBaseRotation() {
-        var pos = transform.position;
         Vector2 movementDir = Vector2.zero;
         const float increment = 10f;
         
@@ -117,6 +116,14 @@ public class TankBoss : Entity {
         
         var angles = tankBase.eulerAngles;
         var newAngle = Mathf.Atan2(movementDir.y, movementDir.x) * Mathf.Rad2Deg;
+        
+        if (newAngle <= 0f)
+            newAngle += 360f;
+
+        if (oldZBaseRotation <= 0 || (oldZBaseRotation+180f) < newAngle) {
+            oldZBaseRotation += 360f;
+        }
+        
         newAngle = Mathf.Lerp(oldZBaseRotation, newAngle, baseRotationT);
 
         tankBase.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
