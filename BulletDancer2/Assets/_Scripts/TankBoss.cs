@@ -1,19 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Entity {
+public class TankBoss : Entity {
     [SerializeField] Transform cannon;
     [SerializeField] Transform bulletSpawnPoint;
 
     List<int> projectilesEntered = new List<int>();
     
     int counter;
-    private const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
         
-        InvokeRepeating(SHOOT_BULLET_METHOD_NAME, 1, 2.3f);
+        InvokeRepeating("ShootBullet", 1, 2.3f);
     }
 
     public override void Tick(float dt) {
@@ -26,7 +25,7 @@ public class Enemy : Entity {
         Vector2 playerPos = playerTransform.position;
         Vector2 cannonPos = cannon.position;
         Vector2 lookDir = cannonPos - playerPos;
-        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
+        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
 
         var angles = cannon.eulerAngles;
         cannon.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
@@ -46,7 +45,6 @@ public class Enemy : Entity {
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
             if (Health <= 0) {
-                CancelInvoke(SHOOT_BULLET_METHOD_NAME);
                 Destroy(gameObject);
             }
             
