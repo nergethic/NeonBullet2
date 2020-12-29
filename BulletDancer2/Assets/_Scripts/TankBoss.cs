@@ -2,12 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TankBoss : Entity {
+    [SerializeField] Transform tankBase;
     [SerializeField] Transform cannon;
     [SerializeField] Transform bulletSpawnPoint;
 
     List<int> projectilesEntered = new List<int>();
     
     int counter;
+    float timer;
+    float oldZBaseRotation;
+    float baseRotationT;
+    TankDirection currentDirection = TankDirection.Left;
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
@@ -19,6 +24,62 @@ public class TankBoss : Entity {
         base.Tick(dt);
 
         SetCannonRotation();
+
+        var pos = transform.position;
+        const float speed = 0.7f;
+        float increment = dt * speed;
+
+        timer += dt;
+        if (timer >= 1.0f) {
+            SwitchDirection();
+            baseRotationT = 0f;
+            oldZBaseRotation = tankBase.eulerAngles.z;
+            timer = 0f;
+        }
+
+        baseRotationT += dt*5.0f;
+        Mathf.Clamp01(baseRotationT);
+        
+        switch (currentDirection) {
+            case TankDirection.Up:
+                pos.y += increment;
+                break;
+            
+            case TankDirection.Down:
+                pos.y -= increment;
+                break;
+            
+            case TankDirection.Left:
+                pos.x -= increment;
+                break;
+            
+            case TankDirection.Right:
+                pos.x += increment;
+                break;
+        }
+
+        SetBaseRotation();
+        transform.position = pos;
+    }
+
+    void SwitchDirection() {
+        switch (currentDirection) {
+            case TankDirection.Up:
+                currentDirection = TankDirection.Left;
+                break;
+            
+            case TankDirection.Down:
+                currentDirection = TankDirection.Right;
+                break;
+            
+            case TankDirection.Left:
+                currentDirection = TankDirection.Down;
+                break;
+            
+            case TankDirection.Right:
+                currentDirection = TankDirection.Up;
+                break;
+        }
     }
     
     private void SetCannonRotation() {
@@ -29,6 +90,36 @@ public class TankBoss : Entity {
 
         var angles = cannon.eulerAngles;
         cannon.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
+    }
+    
+    private void SetBaseRotation() {
+        var pos = transform.position;
+        Vector2 nextPos = new Vector2(pos.x, pos.y);
+        const float increment = 10f;
+        
+        switch (currentDirection) {
+            case TankDirection.Up:
+                nextPos.y += increment;
+                break;
+            
+            case TankDirection.Down:
+                nextPos.y -= increment;
+                break;
+            
+            case TankDirection.Left:
+                nextPos.x -= increment;
+                break;
+            
+            case TankDirection.Right:
+                nextPos.x += increment;
+                break;
+        }
+        
+        var angles = tankBase.eulerAngles;
+        var newAngle = Mathf.Atan2(nextPos.y, nextPos.x) * Mathf.Rad2Deg;
+        newAngle = Mathf.Lerp(oldZBaseRotation, newAngle, baseRotationT);
+
+        tankBase.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -64,4 +155,12 @@ public class TankBoss : Entity {
 
         counter++;
     }
+}
+
+public enum TankDirection {
+    NoDirection = 0,
+    Up,
+    Down,
+    Left,
+    Right
 }
