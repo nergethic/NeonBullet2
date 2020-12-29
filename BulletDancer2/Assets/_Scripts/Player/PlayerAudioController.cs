@@ -11,14 +11,21 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioClip[] footstepsClips;
     [SerializeField] AudioClip dash;
     [SerializeField] AudioClip death;
+    [SerializeField] AudioClip hit;
     // Start is called before the first frame update
     void Start()
     {
         playerController.FootstepEvent += OnFootstep;
         playerController.DashEvent += OnDash;
-        player.DeathAction += OnDeath;
+        player.DeathEvent += OnDeath;
+        player.HitEvent += OnHit;
     }
-    
+
+    private void OnHit()
+    {
+        mouthSource.PlayOneShot(hit);
+    }
+
     private void OnFootstep()
     {
         var rnd = Random.Range(0, footstepsClips.Length);

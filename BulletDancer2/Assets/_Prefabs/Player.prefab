@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 51d366ee41e13be469d4452e5df81c61, type: 3}
   dash: {fileID: 8300000, guid: 801d5c2b6d289444abf35846e8a83746, type: 3}
   death: {fileID: 8300000, guid: 5892ec7437331b64682d4d7d0c905dea, type: 3}
+  hit: {fileID: 8300000, guid: a7dc0a029bf674348bf8f436a2626df2, type: 3}
 --- !u!1 &907041678249191733
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,7 +877,7 @@ MonoBehaviour:
   Resources: {fileID: 8759699351071077285}
   playerSpeed: 10
   dashSpeed: 7
-  health: 1
+  health: 3
   MaxHealth: 4
   energy: 3
   MaxEnergy: 3

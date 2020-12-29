@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject deathScreen;
     [SerializeField] PlayerController controller;
     [SerializeField] ParticleSystem particle;
-    public Action DeathAction;
+    public event Action DeathEvent;
+    public event Action HitEvent;
     public PlayerResources Resources;
 
     Coroutine dashCor;
@@ -70,12 +71,17 @@ public class Player : MonoBehaviour
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
-        Health -= projectileData.damage;
-        StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
-        if (Health <= 0 && !isDead) {
-            isDead = true;
-            Debug.LogError("PLAYER IS DEAD");
-            StartCoroutine(HandleDeath());
+        if (!isDead)
+        {
+            Health -= projectileData.damage;
+            HitEvent();
+            StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
+            if (Health <= 0 && !isDead)
+            {
+                isDead = true;
+                Debug.LogError("PLAYER IS DEAD");
+                StartCoroutine(HandleDeath());
+            }
         }
     }
 
@@ -149,7 +155,7 @@ public class Player : MonoBehaviour
 
     IEnumerator HandleDeath()
     {
-        DeathAction();
+        DeathEvent();
         deathScreen.SetActive(true);
         controller.enabled = false;
         particle.startColor = Color.red;
