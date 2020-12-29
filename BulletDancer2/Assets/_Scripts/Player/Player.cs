@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField] Material shieldMaterial;
     [SerializeField] GameObject deathScreen;
     [SerializeField] PlayerController controller;
+    [SerializeField] ParticleSystem particle;
     public Action DeathAction;
     public PlayerResources Resources;
 
@@ -151,6 +152,8 @@ public class Player : MonoBehaviour
         DeathAction();
         deathScreen.SetActive(true);
         controller.enabled = false;
+        particle.startColor = Color.red;
+        particle.Play();
         yield return new WaitForSeconds(3f);
         deathScreen.SetActive(false);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);

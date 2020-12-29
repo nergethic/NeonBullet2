@@ -872,10 +872,11 @@ MonoBehaviour:
   shieldMaterial: {fileID: 2100000, guid: acfbd432dc3d47144acee0ec978373e9, type: 2}
   deathScreen: {fileID: 3882957599199362290}
   controller: {fileID: 4588475395269006661}
+  particle: {fileID: 5431518235158900882}
   Resources: {fileID: 8759699351071077285}
   playerSpeed: 10
   dashSpeed: 7
-  health: 4
+  health: 1
   MaxHealth: 4
   energy: 3
   MaxEnergy: 3
