@@ -8,9 +8,10 @@ public class Entity : MonoBehaviour {
     protected ProjectileManager projectileManager;
     protected Player player;
     protected Transform playerTransform;
-    
+
     public int Health = 4;
     public int MaxHealth = 4;
+    public bool isDead;
 
     public virtual void Initialize(Player player, ProjectileManager projectileManager) {
         SetSprite(sprite);

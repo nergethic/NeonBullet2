@@ -46,6 +46,7 @@ public class Enemy : Entity {
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
             if (Health <= 0) {
+                isDead = true;
                 CancelInvoke(SHOOT_BULLET_METHOD_NAME);
                 Destroy(gameObject);
             }

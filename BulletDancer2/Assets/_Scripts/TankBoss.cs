@@ -12,7 +12,7 @@ public class TankBoss : Entity {
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
         
-        InvokeRepeating("ShootBullet", 1, 2.3f);
+        // InvokeRepeating("ShootBullet", 1, 2.3f);
     }
 
     public override void Tick(float dt) {
@@ -45,6 +45,7 @@ public class TankBoss : Entity {
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
             if (Health <= 0) {
+                isDead = true;
                 Destroy(gameObject);
             }
             

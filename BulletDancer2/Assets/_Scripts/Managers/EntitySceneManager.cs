@@ -21,6 +21,9 @@ public class EntitySceneManager : SceneManager {
 
     public override void Tick(float dt) {
         foreach (var entity in entites) {
+            if (entity.isDead) {
+                continue; // TODO
+            }
             entity.Tick(dt);
         }
     }
