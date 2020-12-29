@@ -94,29 +94,29 @@ public class TankBoss : Entity {
     
     private void SetBaseRotation() {
         var pos = transform.position;
-        Vector2 nextPos = new Vector2(pos.x, pos.y);
+        Vector2 movementDir = Vector2.zero;
         const float increment = 10f;
         
         switch (currentDirection) {
             case TankDirection.Up:
-                nextPos.y += increment;
+                movementDir.y += increment;
                 break;
             
             case TankDirection.Down:
-                nextPos.y -= increment;
+                movementDir.y -= increment;
                 break;
             
             case TankDirection.Left:
-                nextPos.x -= increment;
+                movementDir.x -= increment;
                 break;
             
             case TankDirection.Right:
-                nextPos.x += increment;
+                movementDir.x += increment;
                 break;
         }
         
         var angles = tankBase.eulerAngles;
-        var newAngle = Mathf.Atan2(nextPos.y, nextPos.x) * Mathf.Rad2Deg;
+        var newAngle = Mathf.Atan2(movementDir.y, movementDir.x) * Mathf.Rad2Deg;
         newAngle = Mathf.Lerp(oldZBaseRotation, newAngle, baseRotationT);
 
         tankBase.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
