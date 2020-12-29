@@ -76,6 +76,14 @@ public class PlayerController : MonoBehaviour {
         controls.Player.PickUp.Disable();
     }
 
+    private void OnDestroy()
+    {
+        controls.Player.ShowInventory.performed -= OnShowInventory;
+        controls.Player.ShowInventory.Disable();
+        controls.Player.ShowCrafting.performed -= OnShowCraftingPanel;
+        controls.Player.ShowCrafting.Disable();
+    }
+
     [SerializeField] float val;
     private Vector2 velBooster = Vector2.zero;
     private void Update() {

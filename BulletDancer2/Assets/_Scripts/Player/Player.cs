@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] int gold;
     [SerializeField] Transform shield;
     [SerializeField] Material shieldMaterial;
+    [SerializeField] GameObject deathScreen;
+    [SerializeField] PlayerController controller;
     public Action DeathAction;
     public PlayerResources Resources;
 
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour
     public bool isImmuneToDamage = false;
     public bool isAbsorbingEnergy = false;
     public bool isDashing = false;
+    private bool isDead = false;
 
     private const float IMMUNITY_AFTER_BEING_HIT = 1f;
     private const float DASH_DURATION = 0.2f;
@@ -68,11 +71,10 @@ public class Player : MonoBehaviour
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
         Health -= projectileData.damage;
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
-        if (Health <= 0) {
+        if (Health <= 0 && !isDead) {
+            isDead = true;
             Debug.LogError("PLAYER IS DEAD");
-            //Time.timeScale = 0;
-            DeathAction();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            StartCoroutine(HandleDeath());
         }
     }
 
@@ -142,6 +144,16 @@ public class Player : MonoBehaviour
             shieldMaterial.SetColor("_Color", shieldHitColor);
         else
             shieldMaterial.SetColor("_Color", shieldDefaultColor);
+    }
+
+    IEnumerator HandleDeath()
+    {
+        DeathAction();
+        deathScreen.SetActive(true);
+        controller.enabled = false;
+        yield return new WaitForSeconds(3f);
+        deathScreen.SetActive(false);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
 
