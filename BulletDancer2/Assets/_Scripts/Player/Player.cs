@@ -1,13 +1,10 @@
-using _Config;
 using Assets._Scripts.Inventory;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
+
 
 public class Player : MonoBehaviour
 {
@@ -73,8 +70,9 @@ public class Player : MonoBehaviour
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0) {
             Debug.LogError("PLAYER IS DEAD");
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
             DeathAction();
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 
