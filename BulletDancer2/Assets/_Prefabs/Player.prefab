@@ -846,6 +846,7 @@ MonoBehaviour:
   craftingPanel: {fileID: 8985248893140770201}
   rb: {fileID: 692140117}
   throwableSpawn: {fileID: 2369749028770392893}
+  projectileManager: {fileID: 0}
   val: 200
 --- !u!114 &5876669769141105488
 MonoBehaviour:
@@ -867,6 +868,7 @@ MonoBehaviour:
   gold: 5
   shield: {fileID: 2014642966329988805}
   shieldMaterial: {fileID: 2100000, guid: acfbd432dc3d47144acee0ec978373e9, type: 2}
+  controller: {fileID: 4588475395269006661}
   Resources: {fileID: 8759699351071077285}
   playerSpeed: 10
   dashSpeed: 7

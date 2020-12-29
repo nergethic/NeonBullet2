@@ -72,9 +72,9 @@ public class Player : MonoBehaviour
         Health -= projectileData.damage;
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0) {
-            DeathAction();
             Debug.LogError("PLAYER IS DEAD");
-            gameObject.SetActive(false); // TODO
+            Time.timeScale = 0;
+            DeathAction();
         }
     }
 
