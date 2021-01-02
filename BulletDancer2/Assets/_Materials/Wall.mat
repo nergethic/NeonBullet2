@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Hide: 0
+    - _Hide: 1
     m_Colors:
-    - _CameraWorldPos: {r: 1.9567212, g: -1.1662339, b: -5, a: 0}
+    - _CameraWorldPos: {r: 0.81, g: -0.23, b: -5, a: 0}
   m_BuildTextureStacks: []

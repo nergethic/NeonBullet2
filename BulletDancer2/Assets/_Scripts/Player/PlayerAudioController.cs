@@ -17,7 +17,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioClip hit;
     [SerializeField] AudioClip spawn;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerController.FootstepEvent += OnFootstep;
         playerController.DashEvent += OnDash;
