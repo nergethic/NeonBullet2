@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour {
                 player.Energy -= 1;
 
                 var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true);
-                var bulletDirection = GetCentralizedMousePos(); // TODO
+                var bulletDirection = GetCentralizedMousePos().normalized;
                 bullet.SetDirection(bulletDirection); 
                 velBooster = -bulletDirection * val;
             }
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour {
             loadingItemAction += 1f * Time.deltaTime;
 
         } else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null) {
-            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos(), throwableSpawn.position);
+            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
             ThrowableItem = null;
             loadingItemAction = 0f;
         }
@@ -182,7 +182,6 @@ public class PlayerController : MonoBehaviour {
         newCameraPos.y = newPlayerPos.y;
 
         Vector2 mousePosition = Mouse.current.position.ReadValue();
-        
         var result = GetCentralizedMousePos();
         
         newCameraPos.x += result.x * 0.4f;
@@ -192,23 +191,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     Vector2 GetCentralizedMousePos() {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        var result = mainCamera.ScreenToViewportPoint(mousePosition);
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector3 mouseWorldPoint = mainCamera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, mainCamera.nearClipPlane+Mathf.Epsilon));
+        Vector3 cameraPos = mainCamera.transform.position;
         
-        // TODO: clamp vector
-        if (result.x < 0.0f)
-            result.x = 0.0f;
-        if (result.x > 1.0f)
-            result.x = 1.0f;
-        if (result.y < 0.0f)
-            result.y = 0.0f;
-        if (result.y > 1.0f)
-            result.y = 1.0f;
-        
-        result.x -= 0.5f;
-        result.y -= 0.5f;
-
-        return result;
+        return mouseWorldPoint - cameraPos;
     }
 
     private float loadingShot = 0f;
