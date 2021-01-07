@@ -53,10 +53,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92975636a9bdcd94ea603e9b901762b2, type: 3}
-  m_Name: Pixelize
+  m_Name: FluidAndPixelize
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
     IsEnabled: 1
     WhenToInsert: 1000
-    MaterialToBlit: {fileID: 2100000, guid: aa23ed7b31e6c7846a38eaf8eb68818b, type: 2}
+    FluidMaterialToBlit: {fileID: 2100000, guid: 880b6a4f5ab94494ca849aaf7048d490, type: 2}
+    PixelizeMaterialToBlit: {fileID: 2100000, guid: aa23ed7b31e6c7846a38eaf8eb68818b, type: 2}

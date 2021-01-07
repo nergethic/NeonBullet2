@@ -1,4 +1,4 @@
-Shader "Custom/PixelizePP"
+Shader "Custom/FluidPP"
 {
     Properties
     {
@@ -48,7 +48,8 @@ Shader "Custom/PixelizePP"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, pixelArt(i.uv, 300));
+                fixed4 col = tex2D(_MainTex, i.uv);
+                col.g += 0.003f;
                 return col;
                 //return fixed4(0, 1, 0, 0);
             }
