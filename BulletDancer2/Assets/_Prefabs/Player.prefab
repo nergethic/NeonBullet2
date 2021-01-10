@@ -54,7 +54,10 @@ MonoBehaviour:
   hitSource: {fileID: 303671712719239237}
   spawnSource: {fileID: 4044245308056818155}
   footstepsClips:
-  - {fileID: 8300000, guid: 51d366ee41e13be469d4452e5df81c61, type: 3}
+  - {fileID: 8300000, guid: 8cea3911ad22d98408b34376ed87af79, type: 3}
+  - {fileID: 8300000, guid: 8a1610ca40fa7434b924db8205b04a6a, type: 3}
+  - {fileID: 8300000, guid: 6914f12975b14c644b4c8e1d6e4c88c5, type: 3}
+  - {fileID: 8300000, guid: b4093f8554559b642a6c1ddea0caddc7, type: 3}
   dash: {fileID: 8300000, guid: 801d5c2b6d289444abf35846e8a83746, type: 3}
   death: {fileID: 8300000, guid: 5892ec7437331b64682d4d7d0c905dea, type: 3}
   hit: {fileID: 8300000, guid: a7dc0a029bf674348bf8f436a2626df2, type: 3}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -17,7 +18,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip hit;
     [SerializeField] AudioClip spawn;
-    // Start is called before the first frame update
+
     void Awake()
     {
         playerController.FootstepEvent += OnFootstep;
@@ -34,8 +35,12 @@ public class PlayerAudioController : MonoBehaviour
 
     private void OnFootstep()
     {
-        var rnd = Random.Range(0, footstepsClips.Length);
-        walkSource.PlayOneShot(footstepsClips[0]);
+
+        var rnd = Random.Range(1, footstepsClips.Length);
+        var currentClip = footstepsClips[rnd];
+        walkSource.PlayOneShot(currentClip);
+        footstepsClips[rnd] = footstepsClips[0];
+        footstepsClips[0] = currentClip;
     }
 
     private void OnDash()
