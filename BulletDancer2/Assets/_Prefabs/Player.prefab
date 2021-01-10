@@ -7865,6 +7865,10 @@ PrefabInstance:
       propertyPath: craftingPanel
       value: 
       objectReference: {fileID: 8985248893140770201}
+    - target: {fileID: 8471781504770930788, guid: 1c5fc3308a4c18c4e8cefc5a33b5c425, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 4588475395269006661}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c5fc3308a4c18c4e8cefc5a33b5c425, type: 3}
 --- !u!114 &9044640385180393542 stripped

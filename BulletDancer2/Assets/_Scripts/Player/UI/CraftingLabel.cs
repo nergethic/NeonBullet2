@@ -8,6 +8,7 @@ public class CraftingLabel : MonoBehaviour
     [SerializeField] Button craftingButton;
     [SerializeField] Item itemToCraft;
     [SerializeField] Player player;
+    [SerializeField] PlayerController playerController;
     [SerializeField] CraftingPanel craftingPanel;
     [SerializeField] int requiredOre;
     [SerializeField] int requiredIron;
@@ -25,6 +26,7 @@ public class CraftingLabel : MonoBehaviour
         {
             var instanceOfItem = Instantiate(itemToCraft);
             instanceOfItem.gameObject.SetActive(false);
+            instanceOfItem.Initialize(player, playerController);
             player.Inventory.AddItem(instanceOfItem);
             player.Resources.UseResources(requiredOre, requiredIron, requiredGold);
             craftingPanel.UpdateCraftingButtonsAfterCraft();
