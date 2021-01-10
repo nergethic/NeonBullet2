@@ -7,7 +7,8 @@ public class PlayerAudioController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
     [SerializeField] Player player;
-    [SerializeField] AudioSource feetSource;
+    [SerializeField] AudioSource walkSource;
+    [SerializeField] AudioSource dashSource;
     [SerializeField] AudioSource mouthSource;
     [SerializeField] AudioSource hitSource;
     [SerializeField] AudioSource spawnSource;
@@ -34,12 +35,12 @@ public class PlayerAudioController : MonoBehaviour
     private void OnFootstep()
     {
         var rnd = Random.Range(0, footstepsClips.Length);
-        feetSource.PlayOneShot(footstepsClips[0]);
+        walkSource.PlayOneShot(footstepsClips[0]);
     }
 
     private void OnDash()
     {
-        feetSource.PlayOneShot(dash);
+        dashSource.PlayOneShot(dash);
     }
 
     private void OnDeath()
