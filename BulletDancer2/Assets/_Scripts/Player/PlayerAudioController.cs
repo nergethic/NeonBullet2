@@ -12,12 +12,15 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioSource dashSource;
     [SerializeField] AudioSource mouthSource;
     [SerializeField] AudioSource hitSource;
+    [SerializeField] AudioSource gunSource;
     [SerializeField] AudioSource spawnSource;
     [SerializeField] AudioClip[] footstepsClips;
     [SerializeField] AudioClip dash;
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip hit;
     [SerializeField] AudioClip spawn;
+    [SerializeField] AudioClip chargeUp;
+    [SerializeField] AudioClip shooting;
 
     void Awake()
     {
@@ -25,13 +28,27 @@ public class PlayerAudioController : MonoBehaviour
         playerController.DashEvent += OnDash;
         player.DeathEvent += OnDeath;
         player.HitEvent += OnHit;
+        playerController.ChargeEvent += OnCharge;
+        playerController.StopChargeEvent += OnStopCharge;
+        playerController.ShootingEvent += OnShooting;
         player.SpawnEvent += OnSpawn;
     }
 
-    private void OnHit()
+    private void OnShooting()
     {
-        hitSource.PlayOneShot(hit);
+        gunSource.clip = shooting;
+        gunSource.Play();
     }
+
+    private void OnCharge()
+    {
+        gunSource.clip = chargeUp;
+        gunSource.Play();
+    }
+
+    private void OnStopCharge() => gunSource.Stop();
+
+    private void OnHit() => hitSource.PlayOneShot(hit);
 
     private void OnFootstep()
     {
@@ -43,18 +60,9 @@ public class PlayerAudioController : MonoBehaviour
         footstepsClips[0] = currentClip;
     }
 
-    private void OnDash()
-    {
-        dashSource.PlayOneShot(dash);
-    }
+    private void OnDash() => dashSource.PlayOneShot(dash);
 
-    private void OnDeath()
-    {
-        mouthSource.PlayOneShot(death);
-    }
+    private void OnDeath() => mouthSource.PlayOneShot(death);
 
-    private void OnSpawn()
-    {
-        spawnSource.PlayOneShot(spawn);
-    }
+    private void OnSpawn() => spawnSource.PlayOneShot(spawn);
 }

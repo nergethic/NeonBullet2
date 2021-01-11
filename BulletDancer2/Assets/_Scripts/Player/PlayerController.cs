@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] ProjectileManager projectileManager;
     public event Action FootstepEvent;
     public event Action DashEvent;
+    public event Action ShootingEvent;
+    public event Action ChargeEvent;
+    public event Action StopChargeEvent;
     public ThrowableItem ThrowableItem { get; set; }
     private Item pickableItem;
     private Controls controls;
@@ -93,17 +96,22 @@ public class PlayerController : MonoBehaviour {
 
         var mouse = Mouse.current;
         if (mouse.leftButton.isPressed && player.Energy >= 1) {
+            if (Mathf.Approximately(loadingShot, 0))
+                ChargeEvent();
             loadingShot += 1f * Time.deltaTime;
             currentSpeed = 2f;
         } else if (mouse.leftButton.wasReleasedThisFrame) {
-            if (loadingShot > 1f && player.Energy >= 1) {
+            if (loadingShot > 0.474f && player.Energy >= 1) {
                 player.Energy -= 1;
 
                 var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true);
                 var bulletDirection = GetCentralizedMousePos().normalized;
-                bullet.SetDirection(bulletDirection); 
+                bullet.SetDirection(bulletDirection);
+                ShootingEvent();
                 velBooster = -bulletDirection * val;
             }
+            else
+                StopChargeEvent();
 
             currentSpeed = player.playerSpeed;
             loadingShot = 0f;
