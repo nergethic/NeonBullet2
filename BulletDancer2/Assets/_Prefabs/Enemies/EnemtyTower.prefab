@@ -165,8 +165,10 @@ MonoBehaviour:
   renderer: {fileID: 0}
   Health: 3
   MaxHealth: 3
+  isDead: 0
   cannon: {fileID: 9146937164679488907}
   bulletSpawnPoint: {fileID: 1676554546574250843}
+  shootingDistance: 20
 --- !u!58 &6243688807117069141
 CircleCollider2D:
   m_ObjectHideFlags: 0

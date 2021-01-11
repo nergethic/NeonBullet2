@@ -4,7 +4,7 @@ using UnityEngine;
 public class Enemy : Entity {
     [SerializeField] Transform cannon;
     [SerializeField] Transform bulletSpawnPoint;
-
+    [SerializeField] float shootingDistance = 20f;
     List<int> projectilesEntered = new List<int>();
     
     int counter;
@@ -56,6 +56,9 @@ public class Enemy : Entity {
     }
     
     void ShootBullet() {
+        if (Vector3.SqrMagnitude(player.transform.position - transform.position) > shootingDistance) {
+            return;
+        }
         ProjectileType bulletType = ProjectileType.Standard;
         if (counter % 2 == 0)
             bulletType = ProjectileType.Energy;
