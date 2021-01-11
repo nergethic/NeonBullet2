@@ -2,12 +2,11 @@ using Assets._Scripts.Inventory;
 using System;
 using System.Collections;
 using DG.Tweening;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     [SerializeField] PlayerInventory inventory;
     public PlayerInventory Inventory => inventory;
     [SerializeField] PlayerStatusBar healthBar;
@@ -17,7 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] int gold;
     [SerializeField] Transform shield;
     [SerializeField] Material shieldMaterial;
-    [SerializeField] GameObject deathScreen;
+    [SerializeField] Material screenMaterial;
     [SerializeField] PlayerController controller;
     [SerializeField] ParticleSystem particle;
     public event Action DeathEvent;
@@ -64,6 +63,7 @@ public class Player : MonoBehaviour
 
     private void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
+        screenMaterial.SetFloat("_DimVal", 0f);
     }
     private void Start() {
         healthBar.UpdateStatusBar(health);
@@ -155,15 +155,21 @@ public class Player : MonoBehaviour
             shieldMaterial.SetColor("_Color", shieldDefaultColor);
     }
 
-    IEnumerator HandleDeath()
-    {
+    const float fadeOutDuration = 2f;
+
+    IEnumerator HandleDeath() {
         DeathEvent();
-        deathScreen.SetActive(true);
         controller.enabled = false;
         particle.startColor = Color.red;
         particle.Play();
-        yield return new WaitForSeconds(3f);
-        deathScreen.SetActive(false);
+        
+        float normalizedTime = 0;
+        while (normalizedTime <= 1f) {
+            screenMaterial.SetFloat("_DimVal", normalizedTime);
+            normalizedTime += Time.deltaTime / fadeOutDuration;
+            yield return null;
+        }
+        screenMaterial.SetFloat("_DimVal", 0f);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

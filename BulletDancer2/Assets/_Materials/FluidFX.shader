@@ -3,6 +3,7 @@ Shader "Custom/FluidPP"
     Properties
     {
         [HideInInspector] _MainTex ("Texture", 2D) = "white" {}
+        _DimVal ("Dim Value", Float) = 0.0
     }
     SubShader
     {
@@ -31,6 +32,7 @@ Shader "Custom/FluidPP"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float _DimVal;
             
             float2 pixelArt(float2 uv, const float pixelSample) {
                 half pixel = 1 / pixelSample;
@@ -49,7 +51,8 @@ Shader "Custom/FluidPP"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                col.g += 0.003f;
+                col.rgb -= float3(_DimVal,_DimVal,_DimVal);
+                col = saturate(col);
                 return col;
                 //return fixed4(0, 1, 0, 0);
             }
