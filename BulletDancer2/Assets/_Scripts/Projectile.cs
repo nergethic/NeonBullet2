@@ -36,8 +36,7 @@ public class Projectile : MonoBehaviour {
         this.dir = dir.normalized;
     }
 
-    private void OnTriggerEnter(Collider other) {
-        // Debug.Log(other.tag);
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer != playerLayerMask && other.gameObject.layer != projectileLayerMask && other.gameObject.layer != defaultLayerMask)
             Destroy(gameObject);
     }
