@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
     public event Action StopChargeEvent;
     public ThrowableItem ThrowableItem { get; set; }
     private Item pickableItem;
+    private Resource pickableResource;
     private Controls controls;
 
     private float currentSpeed;
@@ -255,6 +256,12 @@ public class PlayerController : MonoBehaviour {
             pickableItem = null;
         }
 
+        if (pickableResource != null)
+        {
+            pickableResource.AddResource(player.Resources);
+            Destroy(pickableResource.gameObject);
+            pickableResource = null;
+        }
     }
 
     void OnShowInventory(InputAction.CallbackContext context) {
@@ -282,9 +289,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Item")) {
+        if (other.CompareTag("Item"))
             pickableItem = other.GetComponent<Item>();
-        } else if (other.CompareTag("Projectile")) {
+        else if (other.CompareTag("Resource"))
+            pickableResource = other.GetComponent<Resource>();
+        else if (other.CompareTag("Projectile")) {
             var projectile = other.GetComponent<Projectile>();
             if (projectile != null)
                 if (!projectile.projectileData.ownedByPlayer) 
@@ -292,10 +301,11 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Item")) {
+    private void OnTriggerExit2D(Collider2D other) {
+        if (other.CompareTag("Item"))
             pickableItem = null;
-        }
+        if (other.CompareTag("Resource"))
+            pickableResource = null;
     }
 }
 
