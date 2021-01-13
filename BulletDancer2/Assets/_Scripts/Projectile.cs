@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour {
     private int defaultLayerMask;
     private int playerLayerMask;
     private int projectileLayerMask;
+    private int enemyCollisionLayerMask;
     
     private float airTime = 0f;
     private Vector2 dir;
@@ -21,15 +22,16 @@ public class Projectile : MonoBehaviour {
         defaultLayerMask = LayerMask.NameToLayer("Default");
         playerLayerMask = LayerMask.NameToLayer("Player");
         projectileLayerMask = LayerMask.NameToLayer("Projectile");
+        enemyCollisionLayerMask = LayerMask.NameToLayer("EnemyCollision");
     }
 
-    public void Initialize(Vector2 dir, bool ownedByPlayer) {
+    public void Initialize(Vector2 dir, bool ownedByPlayer, float _speed = 1f) {
         this.dir = dir.normalized;
 
         projectileData.ownedByPlayer = ownedByPlayer;
         projectileData.typeMask = (int)type;
         projectileData.damage = 1;
-        projectileData.speed = speed;
+        projectileData.speed = _speed;
     }
 
     public void SetDirection(Vector2 dir) {
@@ -37,7 +39,13 @@ public class Projectile : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer != playerLayerMask && other.gameObject.layer != projectileLayerMask && other.gameObject.layer != defaultLayerMask)
+        if (!projectileData.ownedByPlayer && other.gameObject.layer == enemyCollisionLayerMask)
+            return;
+
+        if (other.gameObject.layer == projectileLayerMask)
+            return;
+        
+        if (other.gameObject.layer != playerLayerMask && other.gameObject.layer != defaultLayerMask)
             Destroy(gameObject);
     }
     

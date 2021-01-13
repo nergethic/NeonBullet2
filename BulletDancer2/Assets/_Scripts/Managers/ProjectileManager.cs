@@ -12,14 +12,14 @@ public class ProjectileManager : MonoBehaviour {
         }
     }
 
-    public (GameObject, Projectile) SpawnProjectile(Vector3 position, ProjectileType type, bool ownedByPlayer) {
+    public (GameObject, Projectile) SpawnProjectile(Vector3 position, ProjectileType type, bool ownedByPlayer, float speed) {
         foreach (var projectileGameObject in projectileGameObjects) {
             var p = projectileGameObject.GetComponent<Projectile>();
             if ((int)p.GetType() == (int)type) { // TODO
                 var bulletGO = Instantiate(projectileGameObject);
                 var bullet = bulletGO.GetComponent<Projectile>();
                 
-                bullet.Initialize(Vector2.zero, ownedByPlayer);
+                bullet.Initialize(Vector2.zero, ownedByPlayer, speed);
                 bullet.transform.position = position;
 
                 return (bulletGO, bullet);

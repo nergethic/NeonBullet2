@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,16 +9,33 @@ public class TankBoss : Entity {
 
     List<int> projectilesEntered = new List<int>();
     
-    int counter;
     float timer;
     float oldZBaseRotation;
     float baseRotationT;
     TankDirection currentDirection = TankDirection.Left;
+    const float speed = 0.8f;
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
-        
-        // InvokeRepeating("ShootBullet", 1, 2.3f);
+        StartCoroutine(StartShooting());
+    }
+
+    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.045f);
+    IEnumerator StartShooting() {
+        float duration = 0.8f;
+        while (true) {
+            float totalTime = 0;
+            while (totalTime <= duration) {
+                totalTime += Time.deltaTime;
+                ShootBullet();
+                yield return WaitSomeTime;
+                totalTime += 0.045f;
+            }
+            ShootQuadrupleBullet();
+            yield return new WaitForSeconds(0.24f);
+        }
+
+        yield return null;
     }
 
     public override void Tick(float dt) {
@@ -26,7 +44,6 @@ public class TankBoss : Entity {
         SetCannonRotation();
 
         var pos = transform.position;
-        const float speed = 0.2f;
         float increment = dt * speed;
 
         timer += dt;
@@ -152,15 +169,27 @@ public class TankBoss : Entity {
     }
     
     void ShootBullet() {
-        ProjectileType bulletType = ProjectileType.Standard;
-        if (counter % 2 == 0)
-            bulletType = ProjectileType.Energy;
-        
-        var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, bulletType, false);
+        var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
         Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
         bullet.SetDirection(direction);
-
-        counter++;
+    }
+    
+    void ShootQuadrupleBullet() {
+        var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bulletGO.transform.localScale *= 2f;
+        bullet.SetDirection(Vector3.left);
+        
+        var (bulletGO2, bullet2) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bulletGO2.transform.localScale *= 2f;
+        bullet2.SetDirection(Vector3.right);
+        
+        var (bulletGO3, bullet3) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bulletGO3.transform.localScale *= 2f;
+        bullet3.SetDirection(Vector3.up);
+        
+        var (bulletGO4, bullet4) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bulletGO4.transform.localScale *= 2f;
+        bullet4.SetDirection(Vector3.down);
     }
 }
 
