@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour {
             if (loadingShot > 0.474f && player.Energy >= 1) {
                 player.Energy -= 1;
 
-                var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 1f);
+                var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 4.2f);
                 var bulletDirection = GetCentralizedMousePos().normalized;
                 bullet.SetDirection(bulletDirection);
                 ShootingEvent();

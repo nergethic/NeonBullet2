@@ -14,6 +14,7 @@ public class TankBoss : Entity {
     float baseRotationT;
     TankDirection currentDirection = TankDirection.Left;
     const float speed = 0.8f;
+    const float SHOOTING_DISTANCE = 40f;
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
@@ -26,6 +27,9 @@ public class TankBoss : Entity {
         while (true) {
             float totalTime = 0;
             while (totalTime <= duration) {
+                if (Vector3.SqrMagnitude(player.transform.position - transform.position) > SHOOTING_DISTANCE) {
+                    yield return null;
+                }
                 totalTime += Time.deltaTime;
                 ShootBullet();
                 yield return WaitSomeTime;
