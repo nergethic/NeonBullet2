@@ -6,6 +6,10 @@ public class Enemy : Entity {
     [SerializeField] Transform bulletSpawnPoint;
     [SerializeField] float shootingDistance = 20f;
     [SerializeField] float bulletSpeed = 3.2f;
+    [SerializeField] ResourceTypeDrop drop;
+    [SerializeField] Ore ore;
+    [SerializeField] Iron iron;
+    [SerializeField] Gold gold;
     List<int> projectilesEntered = new List<int>();
     
     int counter;
@@ -49,13 +53,34 @@ public class Enemy : Entity {
             if (Health <= 0) {
                 isDead = true;
                 CancelInvoke(SHOOT_BULLET_METHOD_NAME);
+                SpawnDrop();
                 Destroy(gameObject);
             }
             
             Destroy(bullet.gameObject);
         }
     }
-    
+
+    private void SpawnDrop()
+    {
+        Resource newResource = null;
+        switch (drop)
+        {
+            case ResourceTypeDrop.Ore:
+                newResource = Instantiate(ore, gameObject.transform);
+                newResource.transform.parent = null;
+                break;
+            case ResourceTypeDrop.Iron:
+                newResource = Instantiate(iron, transform);
+                newResource.transform.parent = null;
+                break;
+            case ResourceTypeDrop.Gold:
+                newResource = Instantiate(gold, transform);
+                newResource.transform.parent = null;
+                break;
+        }
+    }
+
     void ShootBullet() {
         if (Vector3.SqrMagnitude(player.transform.position - transform.position) > shootingDistance) {
             return;

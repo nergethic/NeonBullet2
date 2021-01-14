@@ -19,7 +19,7 @@ namespace Assets._Scripts.Inventory
             set
             {
                 ore = value;
-                oreText.text = value.ToString();
+                oreText.text = 'x' + value.ToString();
             }
         }
         public int Iron
@@ -28,7 +28,7 @@ namespace Assets._Scripts.Inventory
             set
             {
                 iron = value;
-                ironText.text = value.ToString();
+                ironText.text = 'x' + value.ToString();
             }
         }
         public int Gold {
@@ -36,7 +36,7 @@ namespace Assets._Scripts.Inventory
             set
             {
                 gold = value;
-                goldText.text = value.ToString();
+                goldText.text = 'x' + value.ToString();
             }
         }
 

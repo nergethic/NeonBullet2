@@ -1132,9 +1132,9 @@ MonoBehaviour:
   inventory: {fileID: 1561285542673174724}
   healthBar: {fileID: 6332311620604957368}
   energyBar: {fileID: 4590582457492017777}
-  ore: 5
-  iron: 5
-  gold: 5
+  ore: 0
+  iron: 0
+  gold: 0
   shield: {fileID: 2014642966329988805}
   shieldMaterial: {fileID: 2100000, guid: acfbd432dc3d47144acee0ec978373e9, type: 2}
   screenMaterial: {fileID: 2100000, guid: 880b6a4f5ab94494ca849aaf7048d490, type: 2}
@@ -7938,6 +7938,10 @@ PrefabInstance:
       propertyPath: itemToCraft
       value: 
       objectReference: {fileID: 3494659571956619324, guid: 6a6bcdd39154cc64a8cf6a9f09dc52b9, type: 3}
+    - target: {fileID: 8471781504770930788, guid: 1c5fc3308a4c18c4e8cefc5a33b5c425, type: 3}
+      propertyPath: requiredGold
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8471781504770930788, guid: 1c5fc3308a4c18c4e8cefc5a33b5c425, type: 3}
       propertyPath: craftingPanel
       value: 

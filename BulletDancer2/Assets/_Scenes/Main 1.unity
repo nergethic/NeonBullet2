@@ -6230,6 +6230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9146937165377057665, guid: e14ba0317e1162e4db2b016ad90a9785, type: 3}
+      propertyPath: drop
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9146937165377057666, guid: e14ba0317e1162e4db2b016ad90a9785, type: 3}
       propertyPath: m_Name
       value: EnemtyTower (1)
