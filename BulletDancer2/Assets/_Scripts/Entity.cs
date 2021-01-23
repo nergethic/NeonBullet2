@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class Entity : MonoBehaviour {
-    [SerializeField] GameObject bulletPrefab;
     [SerializeField] Sprite sprite;
     [SerializeField] SpriteRenderer renderer;
 

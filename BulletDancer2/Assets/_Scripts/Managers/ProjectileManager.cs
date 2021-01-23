@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ProjectileManager : MonoBehaviour {
     [SerializeField] List<GameObject> projectileGameObjects = new List<GameObject>();
@@ -32,5 +32,8 @@ public class ProjectileManager : MonoBehaviour {
 
 public enum ProjectileType {
     Standard = 0,
-    Energy
+    Energy,
+    Standard2,
+    StandardBlue,
+    StandardOrange
 }
