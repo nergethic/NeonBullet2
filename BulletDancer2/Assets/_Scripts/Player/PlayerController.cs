@@ -224,7 +224,6 @@ public class PlayerController : MonoBehaviour {
     private void OnBlock(InputAction.CallbackContext context) {
         if (!context.performed)
             return;
-        
         player.PerformBlock();
     }
     

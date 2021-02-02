@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
     [SerializeField] Material screenMaterial;
     [SerializeField] PlayerController controller;
     [SerializeField] ParticleSystem particle;
+    public event Action BlockEvent;
     public event Action DeathEvent;
     public event Action HitEvent;
     public event Action SpawnEvent;
@@ -94,7 +95,10 @@ public class Player : MonoBehaviour {
 
     public void PerformBlock() {
         if (blockCor == null)
+        {
+            BlockEvent();
             blockCor = StartCoroutine(ToggleEnergyAbsorbtion(SHIELD_DURATION_TIME));
+        }
     }
 
     public void HandleProjectile(Projectile projectile) {

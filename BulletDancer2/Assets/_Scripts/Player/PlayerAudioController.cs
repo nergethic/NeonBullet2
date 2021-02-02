@@ -15,6 +15,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioSource gunSource;
     [SerializeField] AudioSource spawnSource;
     [SerializeField] AudioSource pickUpSource;
+    [SerializeField] AudioSource blockSource;
     [SerializeField] AudioClip[] footstepsClips;
     [SerializeField] AudioClip dash;
     [SerializeField] AudioClip death;
@@ -23,6 +24,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioClip chargeUp;
     [SerializeField] AudioClip shooting;
     [SerializeField] AudioClip pickUp;
+    [SerializeField] AudioClip block;
 
     void Awake()
     {
@@ -32,10 +34,13 @@ public class PlayerAudioController : MonoBehaviour
         playerController.ChargeEvent += OnCharge;
         playerController.StopChargeEvent += OnStopCharge;
         playerController.ShootingEvent += OnShooting;
+        player.BlockEvent += OnBlock;
         player.SpawnEvent += OnSpawn;
         player.DeathEvent += OnDeath;
         player.HitEvent += OnHit;
     }
+
+    private void OnBlock() => blockSource.PlayOneShot(block);
 
     private void OnPickUp() => pickUpSource.PlayOneShot(pickUp);
 
