@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     public event Action ShootingEvent;
     public event Action ChargeEvent;
     public event Action StopChargeEvent;
+    public event Action PickUpEvent;
     public ThrowableItem ThrowableItem { get; set; }
     private Item pickableItem;
     private Resource pickableResource;
@@ -254,6 +255,7 @@ public class PlayerController : MonoBehaviour {
             player.Inventory.AddItem(pickableItem);
             pickableItem.gameObject.SetActive(false);
             pickableItem = null;
+            PickUpEvent();
         }
 
         if (pickableResource != null)
@@ -261,6 +263,7 @@ public class PlayerController : MonoBehaviour {
             pickableResource.AddResource(player.Resources);
             Destroy(pickableResource.gameObject);
             pickableResource = null;
+            PickUpEvent();
         }
     }
 
