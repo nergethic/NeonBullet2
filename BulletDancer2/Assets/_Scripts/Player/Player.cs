@@ -96,7 +96,6 @@ public class Player : MonoBehaviour {
     public void PerformBlock() {
         if (blockCor == null)
         {
-            BlockEvent();
             blockCor = StartCoroutine(ToggleEnergyAbsorbtion(SHIELD_DURATION_TIME));
         }
     }
@@ -104,6 +103,7 @@ public class Player : MonoBehaviour {
     public void HandleProjectile(Projectile projectile) {
         var projectileData = projectile.projectileData;
         if (isAbsorbingEnergy && projectileData.typeMask == (int)ProjectileType.Energy) { // TODO
+            BlockEvent();
             int newEnergy = Energy + 1;
             if (newEnergy <= MaxEnergy)
                 Energy = newEnergy;
