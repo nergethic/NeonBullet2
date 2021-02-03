@@ -60,6 +60,7 @@ public class Enemy : Entity {
                 isDead = true;
                 CancelInvoke(SHOOT_BULLET_METHOD_NAME);
                 SpawnDrop();
+                ResetSprites();
                 DeathEvent();
                 Destroy(gameObject, 0.15f);
             }
@@ -101,5 +102,12 @@ public class Enemy : Entity {
         bullet.SetDirection(direction);
         AttackEvent();
         counter++;
+    }
+
+    private void ResetSprites()
+    {
+        var renderers = GetComponentsInChildren<SpriteRenderer>();
+        foreach (var renderer in renderers)
+            renderer.sprite = null;
     }
 }
