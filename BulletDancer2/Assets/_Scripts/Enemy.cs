@@ -1,3 +1,4 @@
+using Assets._Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,11 +13,8 @@ public class Enemy : Entity {
     [SerializeField] Ore ore;
     [SerializeField] Iron iron;
     [SerializeField] Gold gold;
-    public event Action DeathEvent;
-    public event Action HitEvent;
-    public event Action AttackEvent;
     List<int> projectilesEntered = new List<int>();
-    
+
     int counter;
     private const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
 
@@ -55,13 +53,13 @@ public class Enemy : Entity {
         
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
-            HitEvent();
+            PlayHitEvent();
             if (Health <= 0) {
                 isDead = true;
                 CancelInvoke(SHOOT_BULLET_METHOD_NAME);
                 SpawnDrop();
                 ResetSprites();
-                DeathEvent();
+                PlayDeathEvent();
                 Destroy(gameObject, 0.15f);
             }
             
@@ -100,7 +98,7 @@ public class Enemy : Entity {
         var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, bulletType, false, bulletSpeed);
         Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
         bullet.SetDirection(direction);
-        AttackEvent();
+        PlayAttackEvent();
         counter++;
     }
 

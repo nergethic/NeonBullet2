@@ -173,6 +173,7 @@ public class TankBoss : Entity {
     }
     
     void ShootBullet() {
+        PlayAttackEvent();
         var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
         Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
         bullet.SetDirection(direction);

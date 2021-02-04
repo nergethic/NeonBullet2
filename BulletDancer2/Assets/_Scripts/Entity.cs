@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Entity : MonoBehaviour {
@@ -12,6 +13,13 @@ public class Entity : MonoBehaviour {
     public int MaxHealth = 4;
     public bool isDead;
 
+    public event Action DeathEvent;
+    public event Action HitEvent;
+    public event Action AttackEvent;
+
+    public void PlayDeathEvent() => DeathEvent();
+    public void PlayHitEvent() => HitEvent();
+    public void PlayAttackEvent() => AttackEvent();
     public virtual void Initialize(Player player, ProjectileManager projectileManager) {
         SetSprite(sprite);
         this.player = player;

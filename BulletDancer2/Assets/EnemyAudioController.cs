@@ -1,3 +1,4 @@
+using Assets._Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,11 +6,12 @@ using UnityEngine;
 
 public class EnemyAudioController : MonoBehaviour
 {
-    [SerializeField] Enemy enemy;
+    [SerializeField] Entity enemy;
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip hit;
     [SerializeField] AudioClip attack;
-    [SerializeField] AudioSource mouth;
+    [SerializeField] AudioSource hitSource;
+    [SerializeField] AudioSource deathSource;
     [SerializeField] AudioSource attackSource;
     void Awake()
     {
@@ -20,8 +22,8 @@ public class EnemyAudioController : MonoBehaviour
 
     private void OnAttack() => attackSource.PlayOneShot(attack);
 
-    private void OnHit() => mouth.PlayOneShot(hit);
+    private void OnHit() => hitSource.PlayOneShot(hit);
 
-    private void OnDeath() => mouth.PlayOneShot(death);
+    private void OnDeath() => deathSource.PlayOneShot(death);
 
 }
