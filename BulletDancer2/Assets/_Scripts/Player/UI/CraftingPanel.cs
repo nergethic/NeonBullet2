@@ -14,10 +14,10 @@ public class CraftingPanel : MonoBehaviour
     private int page = 1;
     void Start()
     {
-        Display(page);
+        Display();
     }
 
-    public void Display(int page)
+    public void Display()
     {
         var pageIndex = page - 1;
         var startPagePlace = pageIndex * maxItemsOnPage;
@@ -70,7 +70,7 @@ public class CraftingPanel : MonoBehaviour
     private void SetPreviousButton()
     {
         page--;
-        Display(page);
+        Display();
     }
 
     public void UpdateCraftingButtonsAfterCraft()
@@ -87,7 +87,7 @@ public class CraftingPanel : MonoBehaviour
     private void SetNextButton()
     {
         page++;
-        Display(page);
+        Display();
     }
 
     private void SetActiveCraftingLabelsOnGivenPage(int startPagePlace, int endPagePlace)

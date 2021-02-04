@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     private Item pickableItem;
     private Resource pickableResource;
     private Controls controls;
+    private bool isPause = false;
 
     private float currentSpeed;
 
@@ -95,38 +96,47 @@ public class PlayerController : MonoBehaviour {
         // mouse
 
         SetPlayerRotation();
-
-        var mouse = Mouse.current;
-        if (mouse.leftButton.isPressed && player.Energy >= 1) {
-            if (Mathf.Approximately(loadingShot, 0))
-                ChargeEvent();
-            loadingShot += 1f * Time.deltaTime;
-            currentSpeed = 2f;
-        } else if (mouse.leftButton.wasReleasedThisFrame) {
-            if (loadingShot > 0.474f && player.Energy >= 1) {
-                player.Energy -= 1;
-
-                var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 4.2f);
-                var bulletDirection = GetCentralizedMousePos().normalized;
-                bullet.SetDirection(bulletDirection);
-                ShootingEvent();
-                velBooster = -bulletDirection * val;
+        if (!isPause)
+        {
+            var mouse = Mouse.current;
+            if (mouse.leftButton.isPressed && player.Energy >= 1)
+            {
+                if (Mathf.Approximately(loadingShot, 0))
+                    ChargeEvent();
+                loadingShot += 1f * Time.deltaTime;
+                currentSpeed = 2f;
             }
-            else
-                StopChargeEvent();
+            else if (mouse.leftButton.wasReleasedThisFrame)
+            {
+                if (loadingShot > 0.474f && player.Energy >= 1)
+                {
+                    player.Energy -= 1;
 
-            currentSpeed = player.playerSpeed;
-            loadingShot = 0f;
-        }
+                    var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 4.2f);
+                    var bulletDirection = GetCentralizedMousePos().normalized;
+                    bullet.SetDirection(bulletDirection);
+                    ShootingEvent();
+                    velBooster = -bulletDirection * val;
+                }
+                else
+                    StopChargeEvent();
 
-        var keyboard = Keyboard.current;
-        if (keyboard.qKey.isPressed && ThrowableItem != null) {
-            loadingItemAction += 1f * Time.deltaTime;
+                currentSpeed = player.playerSpeed;
+                loadingShot = 0f;
+            }
 
-        } else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null) {
-            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
-            ThrowableItem = null;
-            loadingItemAction = 0f;
+            var keyboard = Keyboard.current;
+            if (keyboard.qKey.isPressed && ThrowableItem != null)
+            {
+                loadingItemAction += 1f * Time.deltaTime;
+
+            }
+            else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null)
+            {
+                ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
+                ThrowableItem = null;
+                loadingItemAction = 0f;
+            }
         }
     }
 
@@ -270,9 +280,17 @@ public class PlayerController : MonoBehaviour {
         if (player.Inventory.IsInventoryActive) {
             OnEnable();
             player.Inventory.HideInventory();
+            isPause = false;
         } else {
-            OnDisable();
             player.Inventory.ShowInventory();
+
+            if (craftingPanel.isActiveAndEnabled)
+                craftingPanel.gameObject.SetActive(false);
+            else
+            {
+                isPause = true;
+                OnDisable();
+            }
         }
     }
 
@@ -280,9 +298,17 @@ public class PlayerController : MonoBehaviour {
         if (craftingPanel.isActiveAndEnabled) {
             OnEnable();
             craftingPanel.gameObject.SetActive(false);
+            isPause = false;
         } else {
-            OnDisable();
             craftingPanel.gameObject.SetActive(true);
+            if (player.Inventory.IsInventoryActive)
+                player.Inventory.HideInventory();
+            else
+            {
+                isPause = true;
+                OnDisable();
+                craftingPanel.Display();
+            }
         }
     }
 
