@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,13 @@ public abstract class Item : MonoBehaviour
     public Player Owner { get; set; }
     public PlayerController playerController;
     public ItemSlot ItemSlot { get; set; }
-    public abstract void Use();
+    public event Action UseEvent;
+
+    public virtual void Use()
+    {
+        SpriteRenderer.sprite = null;
+        UseEvent();
+    }
 
     public void Initialize(Player player, PlayerController playerController) {
         this.Owner = player;

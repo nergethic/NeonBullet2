@@ -16,6 +16,7 @@ public class Food : Item
 
     public override void Use()
     {
+        base.Use();
         if (Owner.Health < Owner.MaxHealth)
         {
             Owner.Health += HealthRegen;
@@ -26,6 +27,6 @@ public class Food : Item
         }
 
         ItemSlot.RemoveItemFromSlot();
-        Destroy(gameObject);
+        Destroy(gameObject, 0.2f);
     }
 }

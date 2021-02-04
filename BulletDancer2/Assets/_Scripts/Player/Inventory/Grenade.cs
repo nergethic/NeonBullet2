@@ -24,6 +24,7 @@ public class Grenade : Item, ThrowableItem
     {
         if (playerController.ThrowableItem is null)
         {
+            base.Use();
             playerController.ThrowableItem = this;
             SetButtonStatus(this, true);
         }
@@ -34,6 +35,7 @@ public class Grenade : Item, ThrowableItem
         }
         else
         {
+            base.Use();
             playerController.ThrowableItem.SetButtonStatus(playerController.ThrowableItem, false);
             playerController.ThrowableItem = this;
             SetButtonStatus(this, true);
@@ -45,6 +47,7 @@ public class Grenade : Item, ThrowableItem
 
     IEnumerator Fly(float speed, Vector2 itemDirection)
     {
+        SpriteRenderer.sprite = Sprite;
         dir = itemDirection;
         var rb = gameObject.GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Dynamic;

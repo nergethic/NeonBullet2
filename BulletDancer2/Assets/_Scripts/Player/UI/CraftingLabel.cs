@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class CraftingLabel : MonoBehaviour
     [SerializeField] Text ironText;
     [SerializeField] Text goldText;
 
+    public event Action CraftEvent;
+
     void Awake()
     {
         craftingButton.image.sprite = itemToCraft.SpriteRenderer.sprite;
@@ -24,6 +27,7 @@ public class CraftingLabel : MonoBehaviour
         SetupTextLabels();
         craftingButton.onClick.AddListener(() =>
         {
+            CraftEvent();
             var instanceOfItem = Instantiate(itemToCraft);
             instanceOfItem.gameObject.SetActive(false);
             instanceOfItem.Initialize(player, playerController);
