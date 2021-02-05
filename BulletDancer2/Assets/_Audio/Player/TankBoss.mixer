@@ -64,7 +64,7 @@ AudioMixerController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TankBoss
-  m_OutputGroup: {fileID: 24300002, guid: 681927ca294c2d245b106e901a42bff8, type: 2}
+  m_OutputGroup: {fileID: -381944377511007566, guid: 681927ca294c2d245b106e901a42bff8, type: 2}
   m_MasterGroup: {fileID: 24300002}
   m_Snapshots:
   - {fileID: 24500006}

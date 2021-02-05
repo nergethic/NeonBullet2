@@ -56,11 +56,16 @@ MonoBehaviour:
   spawnSource: {fileID: 4044245308056818155}
   pickUpSource: {fileID: 810237414277261342}
   blockSource: {fileID: 3138468633409017296}
-  footstepsClips:
-  - {fileID: 8300000, guid: 8cea3911ad22d98408b34376ed87af79, type: 3}
-  - {fileID: 8300000, guid: 8a1610ca40fa7434b924db8205b04a6a, type: 3}
-  - {fileID: 8300000, guid: 6914f12975b14c644b4c8e1d6e4c88c5, type: 3}
-  - {fileID: 8300000, guid: b4093f8554559b642a6c1ddea0caddc7, type: 3}
+  gravelFootsteps:
+  - {fileID: 8300000, guid: ff5e1a5fc0711a44f93f0d12162a0124, type: 3}
+  - {fileID: 8300000, guid: 422e6057a660c9a4eafa6c08f70d2dc1, type: 3}
+  - {fileID: 8300000, guid: b3e75611e434cfb479172951d606207c, type: 3}
+  - {fileID: 8300000, guid: 0c30a77fc95bdcd4386048d73bc5b8fd, type: 3}
+  tileFootsteps:
+  - {fileID: 8300000, guid: 15d745cff70d45e4a9fbfaecc7bca330, type: 3}
+  - {fileID: 8300000, guid: b9cd5e4498d7acd4ba6ad5855f4fbf4c, type: 3}
+  - {fileID: 8300000, guid: 27471bdbf487b8b4e8e1997c172546b7, type: 3}
+  - {fileID: 8300000, guid: 4cb3338041c60fe49af91f4f310d61e2, type: 3}
   dash: {fileID: 8300000, guid: 801d5c2b6d289444abf35846e8a83746, type: 3}
   death: {fileID: 8300000, guid: 5892ec7437331b64682d4d7d0c905dea, type: 3}
   hit: {fileID: 8300000, guid: a7dc0a029bf674348bf8f436a2626df2, type: 3}

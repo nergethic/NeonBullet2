@@ -16,7 +16,8 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioSource spawnSource;
     [SerializeField] AudioSource pickUpSource;
     [SerializeField] AudioSource blockSource;
-    [SerializeField] AudioClip[] footstepsClips;
+    [SerializeField] AudioClip[] gravelFootsteps;
+    [SerializeField] AudioClip[] tileFootsteps;
     [SerializeField] AudioClip dash;
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip hit;
@@ -26,8 +27,11 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] AudioClip pickUp;
     [SerializeField] AudioClip block;
 
+    private AudioClip[] currentFootsteps;
+
     void Awake()
     {
+        currentFootsteps = gravelFootsteps;
         playerController.FootstepEvent += OnFootstep;
         playerController.DashEvent += OnDash;
         playerController.PickUpEvent += OnPickUp;
@@ -40,7 +44,11 @@ public class PlayerAudioController : MonoBehaviour
         player.HitEvent += OnHit;
     }
 
-    private void OnBlock() => blockSource.PlayOneShot(block);
+    private void OnBlock()
+    {
+        blockSource.clip = block;
+        blockSource.Play();
+    }
 
     private void OnPickUp() => pickUpSource.PlayOneShot(pickUp);
 
@@ -63,11 +71,11 @@ public class PlayerAudioController : MonoBehaviour
     private void OnFootstep()
     {
 
-        var rnd = Random.Range(1, footstepsClips.Length);
-        var currentClip = footstepsClips[rnd];
+        var rnd = Random.Range(1, currentFootsteps.Length);
+        var currentClip = currentFootsteps[rnd];
         walkSource.PlayOneShot(currentClip);
-        footstepsClips[rnd] = footstepsClips[0];
-        footstepsClips[0] = currentClip;
+        currentFootsteps[rnd] = currentFootsteps[0];
+        currentFootsteps[0] = currentClip;
     }
 
     private void OnDash() => dashSource.PlayOneShot(dash);
@@ -75,4 +83,7 @@ public class PlayerAudioController : MonoBehaviour
     private void OnDeath() => mouthSource.PlayOneShot(death);
 
     private void OnSpawn() => spawnSource.PlayOneShot(spawn);
+
+    public void ChangeFootstepsToGravel() => currentFootsteps = gravelFootsteps;
+    public void ChangeFootstepsToTile() => currentFootsteps = tileFootsteps;
 }
