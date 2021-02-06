@@ -12,7 +12,7 @@ public class TankRoom : MonoBehaviour
         {
             var playerAudio = collision.GetComponentInChildren<PlayerAudioController>();
             playerAudio.ChangeFootstepsToTile();
-            sceneAudioManager.ChangeMusicToTankRoomMusic();
+            StartCoroutine(sceneAudioManager.ChangeRoomMusic(true));
         }
     }
 
@@ -22,7 +22,7 @@ public class TankRoom : MonoBehaviour
         {
             var playerAudio = collision.GetComponentInChildren<PlayerAudioController>();
             playerAudio.ChangeFootstepsToGravel();
-            sceneAudioManager.ChangeMusicToDefault();
+            StartCoroutine(sceneAudioManager.ChangeRoomMusic(false));
         }
     }
 }

@@ -60,7 +60,7 @@ public class Enemy : Entity {
                 SpawnDrop();
                 ResetSprites();
                 PlayDeathEvent();
-                Destroy(gameObject, 0.15f);
+                Destroy(gameObject, 0.742f);
             }
             
             Destroy(bullet.gameObject);

@@ -5,39 +5,22 @@ using UnityEngine.Audio;
 
 public class SceneAudioManager : MonoBehaviour
 {
-    [SerializeField] AudioMixer masterMixer;
     [SerializeField] AudioClip defaultMusic;
     [SerializeField] AudioClip tankRoomMusic;
     [SerializeField] AudioSource musicAudioSource;
+    [SerializeField] AudioMixerSnapshot fadeOutMusic;
+    [SerializeField] AudioMixerSnapshot fadeInMusic;
+    [SerializeField] AudioMixerSnapshot defaultSnapshot;
+    [SerializeField] AudioMixerSnapshot fireSnapshot;
 
-    public void ChangeMusicToDefault()
+    private void Awake()
     {
-        StartCoroutine(ChangeMusicAtTankRoom("Music", 1f, false));
-
+        ChangeFireVolume(true);
     }
-
-    public void ChangeMusicToTankRoomMusic()
+    public IEnumerator ChangeRoomMusic(bool isMusicSetDefault)
     {
-        StartCoroutine(ChangeMusicAtTankRoom("Music", 1f, true));
-    }
-
-    public  IEnumerator ChangeMusicAtTankRoom(string exposedParam, float duration, bool isMusicSetDefault)
-    {
-
-        float currentTime = 0;
-        float currentVol;
-        masterMixer.GetFloat(exposedParam, out currentVol);
-        currentVol = Mathf.Pow(10, currentVol / 20);
-        float targetValue = Mathf.Clamp(0, 0.0001f, 1);
-
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            float newVol = Mathf.Lerp(currentVol, targetValue, currentTime / duration);
-            masterMixer.SetFloat(exposedParam, Mathf.Log10(newVol) * 20);
-            yield return null;
-        }
-
+        fadeOutMusic.TransitionTo(1f);
+        yield return new WaitForSeconds(1f);
         if (isMusicSetDefault)
         {
             musicAudioSource.clip = tankRoomMusic;
@@ -48,18 +31,14 @@ public class SceneAudioManager : MonoBehaviour
             musicAudioSource.clip = defaultMusic;
             musicAudioSource.Play();
         }
-        currentTime = 0;
-        targetValue = currentVol;
-        masterMixer.GetFloat(exposedParam, out currentVol);
-        currentVol = Mathf.Pow(10, currentVol / 20);
+        fadeInMusic.TransitionTo(1f);
+    }
 
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            float newVol = Mathf.Lerp(currentVol, targetValue, currentTime / duration);
-            masterMixer.SetFloat(exposedParam, Mathf.Log10(newVol) * 20);
-            yield return null;
-        }
-        yield break;
+    public void ChangeFireVolume(bool isFirePlaying)
+    {
+        if (isFirePlaying)
+            defaultSnapshot.TransitionTo(0.4f);
+        else
+            fireSnapshot.TransitionTo(0.4f);
     }
 }

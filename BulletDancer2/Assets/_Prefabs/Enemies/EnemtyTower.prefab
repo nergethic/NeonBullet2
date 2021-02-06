@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 9146937165377057665}
-  death: {fileID: 8300000, guid: 908c66c57585ff44fa246e71e6a6ad98, type: 3}
+  death: {fileID: 8300000, guid: b7842da3ba418994ca698513d9203590, type: 3}
   hit: {fileID: 8300000, guid: 908c66c57585ff44fa246e71e6a6ad98, type: 3}
   attack: {fileID: 8300000, guid: a13fd6f68e0b81340adedc65e7819968, type: 3}
   hitSource: {fileID: 8438383248605292192}
