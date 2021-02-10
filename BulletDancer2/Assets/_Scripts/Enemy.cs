@@ -62,8 +62,6 @@ public class Enemy : Entity {
                 PlayDeathEvent();
                 Destroy(gameObject, 0.742f);
             }
-            
-            Destroy(bullet.gameObject);
         }
     }
 

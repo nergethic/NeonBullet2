@@ -6,6 +6,7 @@ public class TankBoss : Entity {
     [SerializeField] Transform tankBase;
     [SerializeField] Transform cannon;
     [SerializeField] Transform bulletSpawnPoint;
+    [SerializeField] GameObject explosion;
 
     List<int> projectilesEntered = new List<int>();
     
@@ -15,10 +16,11 @@ public class TankBoss : Entity {
     TankDirection currentDirection = TankDirection.Left;
     const float speed = 0.8f;
     const float SHOOTING_DISTANCE = 40f;
+    Coroutine cor;
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
-        StartCoroutine(StartShooting());
+        cor = StartCoroutine(StartShooting());
     }
 
     readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.045f);
@@ -162,13 +164,27 @@ public class TankBoss : Entity {
         projectilesEntered.Add(id);
         
         if (bullet.projectileData.ownedByPlayer) {
-            Health -= bullet.projectileData.damage;
-            if (Health <= 0) {
-                isDead = true;
-                Destroy(gameObject);
+            if (!isDead)
+            {
+                Health -= bullet.projectileData.damage;
+                Destroy(bullet.gameObject);
+                PlayHitEvent();
+
+                if (Health <= 0)
+                {
+                    isDead = true;
+                    //PlayDeathEvent();
+                    if(cor != null) {
+                        StopCoroutine(cor);
+                        cor = null;
+                    }
+                    var explosionInstance = Instantiate(explosion, transform);
+                    explosionInstance.transform.localScale = new Vector3(12, 12);
+                    Destroy(gameObject, 1.123f);
+                }
+
             }
             
-            Destroy(bullet.gameObject);
         }
     }
     
