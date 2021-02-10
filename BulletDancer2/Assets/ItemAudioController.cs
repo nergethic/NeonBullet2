@@ -13,7 +13,6 @@ public class ItemAudioController : MonoBehaviour
     {
         item.UseEvent += OnUse;
     }
-
     private void OnUse()
     {
         item.Sprite = null;

@@ -37,8 +37,8 @@ public class SceneAudioManager : MonoBehaviour
     public void ChangeFireVolume(bool isFirePlaying)
     {
         if (isFirePlaying)
-            defaultSnapshot.TransitionTo(0.4f);
+            defaultSnapshot.TransitionTo(1f);
         else
-            fireSnapshot.TransitionTo(0.4f);
+            fireSnapshot.TransitionTo(1f);
     }
 }

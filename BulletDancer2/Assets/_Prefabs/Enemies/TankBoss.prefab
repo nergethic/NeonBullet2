@@ -166,6 +166,7 @@ MonoBehaviour:
   tankBase: {fileID: 8510317142386277941}
   cannon: {fileID: 8510317141874192443}
   bulletSpawnPoint: {fileID: 7107846538603853966}
+  explosion: {fileID: 3489929141657909040, guid: bf9c4e57333673f499e764b6d7d76ff5, type: 3}
 --- !u!1 &8510317141874192442
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,9 +355,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -3393660022224212321, guid: f34e2571e4dc6c84fb91fc6a35fa613c, type: 2}
     - target: {fileID: 5247182431793662875, guid: 48820c58bc60a104680d4d6c9d98f26f, type: 3}
+      propertyPath: hit
+      value: 
+      objectReference: {fileID: 8300000, guid: e3403d621a907734bb5ac5fd571b9107, type: 3}
+    - target: {fileID: 5247182431793662875, guid: 48820c58bc60a104680d4d6c9d98f26f, type: 3}
       propertyPath: death
       value: 
-      objectReference: {fileID: 8300000, guid: a13fd6f68e0b81340adedc65e7819968, type: 3}
+      objectReference: {fileID: 8300000, guid: cf7f505470c8c4d4d9888482e5c4f910, type: 3}
     - target: {fileID: 5247182431793662875, guid: 48820c58bc60a104680d4d6c9d98f26f, type: 3}
       propertyPath: enemy
       value: 

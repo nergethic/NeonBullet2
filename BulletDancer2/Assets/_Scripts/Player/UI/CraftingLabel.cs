@@ -17,6 +17,7 @@ public class CraftingLabel : MonoBehaviour
     [SerializeField] Text oreText;
     [SerializeField] Text ironText;
     [SerializeField] Text goldText;
+    [SerializeField] MasterSystem masterSystem;
 
     public event Action CraftEvent;
 
@@ -30,7 +31,7 @@ public class CraftingLabel : MonoBehaviour
             CraftEvent();
             var instanceOfItem = Instantiate(itemToCraft);
             instanceOfItem.gameObject.SetActive(false);
-            instanceOfItem.Initialize(player, playerController);
+            instanceOfItem.Initialize(player, playerController, masterSystem.GetProjectileManager());
             player.Inventory.AddItem(instanceOfItem);
             player.Resources.UseResources(requiredOre, requiredIron, requiredGold);
             craftingPanel.UpdateCraftingButtonsAfterCraft();

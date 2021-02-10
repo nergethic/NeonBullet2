@@ -1,23 +1,37 @@
 using Assets._Scripts.Player.Inventory;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Grenade : Item, ThrowableItem
 {
-    [SerializeField] float maxAirTime = 3f;
     [SerializeField] Transform myTransform;
     [SerializeField] GameObject explosionEffect;
     [SerializeField] Rigidbody2D rb;
-    private Vector2 dir;
-
+    private Projectile projectile;
     public void Throw(float speed, Vector2 itemDirection, Vector2 throwableSpawn)
     {
-        myTransform.position = throwableSpawn;
+        /*myTransform.position = throwableSpawn;
         gameObject.SetActive(true);
         ItemSlot.RemoveItemFromSlot();
         playerController.ThrowableItem = null;
-        StartCoroutine(Fly(speed, itemDirection));
+        StartCoroutine(Fly(speed, itemDirection));*/
+
+        var (projectileObject, projectileComponent) = projectileManager.SpawnProjectile(playerController.transform.position, ProjectileType.Grenade, true, speed);
+        projectileComponent.SetDirection(itemDirection);
+        projectileComponent.DestroyEvent += OnProjectileDestroy;
+        projectile = projectileComponent;
+    }
+
+    private void OnProjectileDestroy()
+    {
+        ItemSlot.RemoveItemFromSlot();
+        var explosion = Instantiate(explosionEffect);
+        explosion.transform.position = projectile.transform.position;
+        explosion.transform.localScale = new Vector3(1, 1);
+        Destroy(explosion, explosion.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+        Destroy(gameObject);
     }
 
     public override void Use()
@@ -43,37 +57,4 @@ public class Grenade : Item, ThrowableItem
     }
 
     public void SetButtonStatus(ThrowableItem throwableItem, bool isActive) => ItemSlot.SetButtonStatus(this, isActive);
-
-
-    IEnumerator Fly(float speed, Vector2 itemDirection)
-    {
-        SpriteRenderer.sprite = Sprite;
-        dir = itemDirection;
-        var rb = gameObject.GetComponent<Rigidbody2D>();
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.gravityScale = 0;
-        var collider = gameObject.GetComponent<Collider2D>();
-        collider.isTrigger = false;
-        rb.AddForce(dir * speed, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(maxAirTime);
-        DestroyGrenade();
-    }
-
-    private void DestroyGrenade()
-    {
-        SpriteRenderer.sprite = null;
-        rb.bodyType = RigidbodyType2D.Static;
-        var flyingGrenade = Instantiate(explosionEffect, transform);
-
-        Destroy(flyingGrenade, 0.5f);
-        Destroy(gameObject, 0.5f);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (rb.bodyType == RigidbodyType2D.Dynamic && other.tag != "Player")
-        {
-            DestroyGrenade();
-        }
-    }
 }

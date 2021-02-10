@@ -100,7 +100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 1274278547736680348}
   playerController: {fileID: 0}
-  maxAirTime: 3
   myTransform: {fileID: 5458829828065545760}
   explosionEffect: {fileID: 3489929141657909040, guid: bf9c4e57333673f499e764b6d7d76ff5, type: 3}
   rb: {fileID: 608186996}
