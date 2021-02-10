@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MasterSystem : MonoBehaviour {
@@ -34,6 +35,8 @@ public class MasterSystem : MonoBehaviour {
         foreach (var manager in managers) 
             manager.Tick(Time.deltaTime);
     }
+
+    public ProjectileManager GetProjectileManager() => managers.OfType<ProjectileManager>().FirstOrDefault();
 
     IEnumerator WaitForInitialization() {
         Debug.Log("[MasterSystem]: Waiting for manager initialization...");

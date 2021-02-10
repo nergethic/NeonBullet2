@@ -2,9 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class ProjectileManager : MonoBehaviour {
+public class ProjectileManager : SceneManager {
     [SerializeField] List<GameObject> projectileGameObjects = new List<GameObject>();
 
+    public override void Init(MasterSystem masterSystem, SceneManagerData data)
+    {
+         initializationState = ManagerInitializationState.INITIALIZED;
+    }
     private void Awake() {
         foreach (var p in projectileGameObjects) {
             var projectileComponent = p.GetComponent<Projectile>();
@@ -28,6 +32,11 @@ public class ProjectileManager : MonoBehaviour {
 
         return (null, null);
     }
+
+    public override void Tick(float dt)
+    {
+        
+    }
 }
 
 public enum ProjectileType {
@@ -35,5 +44,6 @@ public enum ProjectileType {
     Energy,
     Standard2,
     StandardBlue,
-    StandardOrange
+    StandardOrange,
+    Grenade
 }

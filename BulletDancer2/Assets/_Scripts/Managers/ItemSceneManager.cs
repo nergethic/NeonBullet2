@@ -11,7 +11,7 @@ public class ItemSceneManager : SceneManager {
         
         CollectSceneItems();
         foreach (var item in items) {
-            item.Initialize(data.player, data.playerController);
+            item.Initialize(data.player, data.playerController, masterSystem.GetProjectileManager());
         }
         
         Debug.Log("[ItemSceneSystem]: Item system initialized");

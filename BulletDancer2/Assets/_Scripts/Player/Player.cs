@@ -24,7 +24,6 @@ public class Player : MonoBehaviour {
     public event Action HitEvent;
     public event Action SpawnEvent;
     public PlayerResources Resources;
-
     Coroutine dashCor;
     Coroutine blockCor;
 

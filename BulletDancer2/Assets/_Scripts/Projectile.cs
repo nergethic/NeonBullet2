@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour {
@@ -5,7 +6,9 @@ public class Projectile : MonoBehaviour {
     [SerializeField] float speed = 1.0f;
     [SerializeField] float maxAirTime = 3f;
     [SerializeField] ProjectileType type;
+    [SerializeField] int damage = 1;
 
+    public event Action DestroyEvent;
     public ProjectileData projectileData;
 
     private int defaultLayerMask;
@@ -30,7 +33,7 @@ public class Projectile : MonoBehaviour {
 
         projectileData.ownedByPlayer = ownedByPlayer;
         projectileData.typeMask = (int)type;
-        projectileData.damage = 1;
+        projectileData.damage = damage;
         projectileData.speed = _speed;
     }
 
@@ -46,12 +49,18 @@ public class Projectile : MonoBehaviour {
             return;
         
         if (other.gameObject.layer != playerLayerMask && other.gameObject.layer != defaultLayerMask)
+        {
+            if (DestroyEvent != null)
+                DestroyEvent();
             Destroy(gameObject);
+        }
     }
     
     void Update() {
         airTime += Time.deltaTime;
         if (airTime >= maxAirTime) {
+            if (DestroyEvent != null)
+                DestroyEvent();
             Destroy(gameObject);    
         }
         
