@@ -101,7 +101,7 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 1274278547736680348}
   playerController: {fileID: 0}
   myTransform: {fileID: 5458829828065545760}
-  explosionEffect: {fileID: 3489929141657909040, guid: bf9c4e57333673f499e764b6d7d76ff5, type: 3}
+  explosionEffect: {fileID: 3489929141657909040, guid: fecb5f5b4b3ea7647b722661487e8b39, type: 3}
   rb: {fileID: 608186996}
 --- !u!61 &5724752422718634819
 BoxCollider2D:
@@ -170,16 +170,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730387438981354485, guid: a0c03e4dfce29274fb72ef5c1656621a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730387438981354485, guid: a0c03e4dfce29274fb72ef5c1656621a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730387438981354485, guid: a0c03e4dfce29274fb72ef5c1656621a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.333693
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730387438981354485, guid: a0c03e4dfce29274fb72ef5c1656621a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.1380253
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730387438981354485, guid: a0c03e4dfce29274fb72ef5c1656621a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.309244
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730387438981354485, guid: a0c03e4dfce29274fb72ef5c1656621a, type: 3}
       propertyPath: m_LocalRotation.w

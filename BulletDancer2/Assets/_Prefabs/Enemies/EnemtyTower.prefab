@@ -597,8 +597,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   renderer: {fileID: 0}
-  Health: 3
-  MaxHealth: 3
+  Health: 2
+  MaxHealth: 2
   isDead: 0
   cannon: {fileID: 9146937164679488907}
   bulletSpawnPoint: {fileID: 1676554546574250843}

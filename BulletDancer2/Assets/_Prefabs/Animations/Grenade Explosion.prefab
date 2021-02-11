@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3489929141657909042}
   - component: {fileID: 3489929141657909041}
   m_Layer: 0
-  m_Name: Explosion
+  m_Name: Explosion2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,15 +73,15 @@ SpriteRenderer:
   m_SortingLayerID: -1375414015
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8761117149865828687, guid: a1087dd87c454954488f8cf7101937f4, type: 3}
+  m_Sprite: {fileID: -6470460504253458178, guid: a8557c18fd56437498872145f9c3e646, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.35, y: 0.36}
+  m_Size: {x: 0.32, y: 0.33}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &3489929141657909041
@@ -94,8 +94,8 @@ Animator:
   m_GameObject: {fileID: 3489929141657909040}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ebeb486ee6f909341b2e01b262392e66, type: 2}
-  m_CullingMode: 0
+  m_Controller: {fileID: 9100000, guid: 284a5d2c23f543a4498b5da6ea6064a1, type: 2}
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 3703188104886276116}
   - component: {fileID: 5403130306137360970}
   m_Layer: 0
-  m_Name: ExplosionSource
+  m_Name: EffecSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,7 +144,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -8479167525560636757, guid: 59cb2641bd1912a45b13f14ea1e96d09, type: 2}
-  m_audioClip: {fileID: 8300000, guid: cf7f505470c8c4d4d9888482e5c4f910, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ada04a4b49971da48be32be308bd92e6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

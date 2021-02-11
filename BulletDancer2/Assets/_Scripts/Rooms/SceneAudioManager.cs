@@ -12,10 +12,14 @@ public class SceneAudioManager : MonoBehaviour
     [SerializeField] AudioMixerSnapshot fadeInMusic;
     [SerializeField] AudioMixerSnapshot defaultSnapshot;
     [SerializeField] AudioMixerSnapshot fireSnapshot;
+    [SerializeField] TankRoom tankRoom;
+    [SerializeField] TowersRoom towersRoom;
 
     private void Awake()
     {
         ChangeFireVolume(true);
+        tankRoom.ChangeRoom += ChangeRoomMusic;
+        towersRoom.ChangeFireVolumeEvent += ChangeFireVolume;
     }
     public IEnumerator ChangeRoomMusic(bool isMusicSetDefault)
     {
