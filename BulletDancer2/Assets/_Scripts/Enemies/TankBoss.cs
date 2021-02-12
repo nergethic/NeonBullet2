@@ -15,7 +15,7 @@ public class TankBoss : Entity {
     float baseRotationT;
     TankDirection currentDirection = TankDirection.Left;
     const float speed = 0.8f;
-    const float SHOOTING_DISTANCE = 40f;
+    const float SHOOTING_DISTANCE = 35f;
     Coroutine cor;
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
@@ -23,25 +23,25 @@ public class TankBoss : Entity {
         cor = StartCoroutine(StartShooting());
     }
 
-    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.045f);
+    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.06f);
     IEnumerator StartShooting() {
         float duration = 0.8f;
         while (true) {
-            float totalTime = 0;
-            while (totalTime <= duration) {
-                if (Vector3.SqrMagnitude(player.transform.position - transform.position) > SHOOTING_DISTANCE) {
-                    yield return null;
+            if (Vector3.SqrMagnitude(player.transform.position - transform.position) < SHOOTING_DISTANCE)
+            {
+                float totalTime = 0;
+                while (totalTime <= duration)
+                {
+                    totalTime += Time.deltaTime;
+                    ShootBullet();
+                    yield return WaitSomeTime;
+                    totalTime += 0.045f;
                 }
-                totalTime += Time.deltaTime;
+                ShootQuadrupleBullet();
                 ShootBullet();
-                yield return WaitSomeTime;
-                totalTime += 0.045f;
             }
-            ShootQuadrupleBullet();
-            yield return new WaitForSeconds(0.24f);
+            yield return new WaitForSeconds(1f);
         }
-
-        yield return null;
     }
 
     public override void Tick(float dt) {

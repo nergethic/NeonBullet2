@@ -4168,6 +4168,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5876669769141105488, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
+      propertyPath: health
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876669769141105488, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
+      propertyPath: MaxHealth
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 9044640385180393542, guid: d8cc2cfe410fe524aadc832e89bce079, type: 3}
       propertyPath: masterSystem
       value: 
