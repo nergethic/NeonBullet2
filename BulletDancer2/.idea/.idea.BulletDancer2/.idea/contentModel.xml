@@ -20,7 +20,6 @@
           <e p="WallShaderManager.cs" t="Include" />
         </e>
         <e p="_Scripts" t="Include">
-          <e p="BulletBoss.cs" t="Include" />
           <e p="DOTween" t="Include">
             <e p="Modules" t="Include">
               <e p="DOTweenModuleAudio.cs" t="Include" />
@@ -33,9 +32,18 @@
             </e>
             <e p="readme.txt" t="Include" />
           </e>
-          <e p="Enemy.cs" t="Include" />
-          <e p="Entity.cs" t="Include" />
-          <e p="LaserBoss.cs" t="Include" />
+          <e p="Effects" t="Include">
+            <e p="AnimationEffectsAudioController.cs" t="Include" />
+          </e>
+          <e p="Enemies" t="Include">
+            <e p="BulletBoss.cs" t="Include" />
+            <e p="Enemy.cs" t="Include" />
+            <e p="EnemyAudioController.cs" t="Include" />
+            <e p="Entity.cs" t="Include" />
+            <e p="LaserBoss.cs" t="Include" />
+            <e p="ResourceTypeDrop.cs" t="Include" />
+            <e p="TankBoss.cs" t="Include" />
+          </e>
           <e p="Managers" t="Include">
             <e p="EntitySceneManager.cs" t="Include" />
             <e p="ItemSceneManager.cs" t="Include" />
@@ -55,6 +63,7 @@
               <e p="PlayerResources.cs" t="Include" />
               <e p="ThrowableItem.cs" t="Include" />
             </e>
+            <e p="ItemAudioController.cs" t="Include" />
             <e p="Player.cs" t="Include" />
             <e p="PlayerAudioController.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
@@ -65,18 +74,22 @@
               <e p="InventoryDisplayer.cs" t="Include" />
               <e p="PlayerStatusBar.cs" t="Include" />
             </e>
+            <e p="UIAudioController.cs" t="Include" />
           </e>
           <e p="Projectile.cs" t="Include" />
           <e p="Resources" t="Include">
+            <e p="Gold.cs" t="Include" />
+            <e p="Iron.cs" t="Include" />
             <e p="Ore.cs" t="Include" />
             <e p="Resource.cs" t="Include" />
           </e>
-          <e p="ResourceTypeDrop.cs" t="Include" />
+          <e p="Rooms" t="Include">
+            <e p="SceneAudioManager.cs" t="Include" />
+            <e p="TankRoom.cs" t="Include" />
+            <e p="TowersRoom.cs" t="Include" />
+          </e>
           <e p="SimpleCameraController.cs" t="Include" />
-          <e p="TankBoss.cs" t="Include" />
         </e>
-        <e p="Gold.cs" t="Include" />
-        <e p="Iron.cs" t="Include" />
         <e p="Pixel Art Icon Pack - RPG" t="Include">
           <e p="Shader" t="Include">
             <e p="SH Sprite Icon Outline Color.shader" t="Include" />
