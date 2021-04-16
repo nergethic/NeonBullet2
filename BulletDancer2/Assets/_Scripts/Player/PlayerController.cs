@@ -48,16 +48,8 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Select.performed       += OnSelect;
         controls.Player.Back.performed         += OnBack;
         controls.Player.PickUp.performed       += OnPickUp;
-        
-        controls.Player.Fire.Enable();
-        controls.Player.FireReleased.Enable();
-        controls.Player.Block.Enable();
-        controls.Player.Aim.Enable();
-        controls.Player.Move.Enable();
-        controls.Player.Dash.Enable();
-        controls.Player.Select.Enable();
-        controls.Player.Back.Enable();
-        controls.Player.PickUp.Enable();
+
+        EnableControls();
     }
     
     private void OnDisable() {
@@ -70,6 +62,25 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Select.performed       -= OnSelect;
         controls.Player.Back.performed         -= OnBack;
         controls.Player.PickUp.performed       -= OnPickUp;
+
+        DisableControls();
+    }
+
+    private void EnableControls()
+    {
+        controls.Player.Fire.Enable();
+        controls.Player.FireReleased.Enable();
+        controls.Player.Block.Enable();
+        controls.Player.Aim.Enable();
+        controls.Player.Move.Enable();
+        controls.Player.Dash.Enable();
+        controls.Player.Select.Enable();
+        controls.Player.Back.Enable();
+        controls.Player.PickUp.Enable();
+    }
+
+    private void DisableControls()
+    {
 
         controls.Player.Fire.Disable();
         controls.Player.FireReleased.Disable();
@@ -278,7 +289,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnShowInventory(InputAction.CallbackContext context) {
         if (player.Inventory.IsInventoryActive) {
-            OnEnable();
+            EnableControls();
             player.Inventory.HideInventory();
             isPause = false;
         } else {
@@ -289,14 +300,14 @@ public class PlayerController : MonoBehaviour {
             else
             {
                 isPause = true;
-                OnDisable();
+                DisableControls();
             }
         }
     }
 
     void OnShowCraftingPanel(InputAction.CallbackContext context) {
         if (craftingPanel.isActiveAndEnabled) {
-            OnEnable();
+            EnableControls();
             craftingPanel.gameObject.SetActive(false);
             isPause = false;
         } else {
@@ -306,7 +317,7 @@ public class PlayerController : MonoBehaviour {
             else
             {
                 isPause = true;
-                OnDisable();
+                DisableControls();
                 craftingPanel.Display();
             }
         }
