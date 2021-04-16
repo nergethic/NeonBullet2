@@ -95,7 +95,7 @@ public class LaserBoss : Entity {
     void ShootBullets(ProjectileType projectileType, Vector3 bulletDir) {
         for (int i = 0; i < bulletSpawnPoints.Count; i++) {
             var bulletSpawnPoint = bulletSpawnPoints[i];
-            var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, projectileType, false, 5f);
+            var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, projectileType, false, 5f);
             bullet.SetDirection(bulletDir);
         }
     }

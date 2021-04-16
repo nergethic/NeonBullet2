@@ -66,8 +66,7 @@ public class PlayerController : MonoBehaviour {
         DisableControls();
     }
 
-    private void EnableControls()
-    {
+    private void EnableControls() {
         controls.Player.Fire.Enable();
         controls.Player.FireReleased.Enable();
         controls.Player.Block.Enable();
@@ -79,8 +78,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.PickUp.Enable();
     }
 
-    private void DisableControls()
-    {
+    private void DisableControls() {
 
         controls.Player.Fire.Disable();
         controls.Player.FireReleased.Disable();
@@ -93,8 +91,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.PickUp.Disable();
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         controls.Player.ShowInventory.performed -= OnShowInventory;
         controls.Player.ShowInventory.Disable();
         controls.Player.ShowCrafting.performed -= OnShowCraftingPanel;
@@ -110,20 +107,17 @@ public class PlayerController : MonoBehaviour {
         if (!isPause)
         {
             var mouse = Mouse.current;
-            if (mouse.leftButton.isPressed && player.Energy >= 1)
-            {
+            if (mouse.leftButton.isPressed && player.Energy >= 1) {
                 if (Mathf.Approximately(loadingShot, 0))
                     ChargeEvent();
                 loadingShot += 1f * Time.deltaTime;
                 currentSpeed = 2f;
             }
-            else if (mouse.leftButton.wasReleasedThisFrame)
-            {
-                if (loadingShot > 0.474f && player.Energy >= 1)
-                {
+            else if (mouse.leftButton.wasReleasedThisFrame) {
+                if (loadingShot > 0.474f && player.Energy >= 1) {
                     player.Energy -= 1;
 
-                    var (bulletGO, bullet) = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 4.2f);
+                    var bullet = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 4.2f);
                     var bulletDirection = GetCentralizedMousePos().normalized;
                     bullet.SetDirection(bulletDirection);
                     ShootingEvent();
@@ -136,14 +130,11 @@ public class PlayerController : MonoBehaviour {
                 loadingShot = 0f;
             }
 
-            var keyboard = Keyboard.current;
-            if (keyboard.qKey.isPressed && ThrowableItem != null)
+            var keyboard = Keyboard.current; if (keyboard.qKey.isPressed && ThrowableItem != null)
             {
                 loadingItemAction += 1f * Time.deltaTime;
 
-            }
-            else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null)
-            {
+            } else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null) {
                 ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
                 ThrowableItem = null;
                 loadingItemAction = 0f;

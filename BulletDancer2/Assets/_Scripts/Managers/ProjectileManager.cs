@@ -16,7 +16,7 @@ public class ProjectileManager : SceneManager {
         }
     }
 
-    public (GameObject, Projectile) SpawnProjectile(Vector3 position, ProjectileType type, bool ownedByPlayer, float speed) {
+    public Projectile SpawnProjectile(Vector3 position, ProjectileType type, bool ownedByPlayer, float speed) {
         foreach (var projectileGameObject in projectileGameObjects) {
             var p = projectileGameObject.GetComponent<Projectile>();
             if ((int)p.GetType() == (int)type) { // TODO
@@ -26,11 +26,11 @@ public class ProjectileManager : SceneManager {
                 bullet.Initialize(Vector2.zero, ownedByPlayer, speed);
                 bullet.transform.position = position;
 
-                return (bulletGO, bullet);
+                return bullet;
             }
         }
 
-        return (null, null);
+        return null;
     }
 
     public override void Tick(float dt)

@@ -93,7 +93,7 @@ public class Enemy : Entity {
         if (counter % 2 == 0)
             bulletType = ProjectileType.Energy;
         
-        var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, bulletType, false, bulletSpeed);
+        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, bulletType, false, bulletSpeed);
         Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
         bullet.SetDirection(direction);
         PlayAttackEvent();

@@ -190,26 +190,26 @@ public class TankBoss : Entity {
     
     void ShootBullet() {
         PlayAttackEvent();
-        var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
         Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
         bullet.SetDirection(direction);
     }
     
     void ShootQuadrupleBullet() {
-        var (bulletGO, bullet) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
-        bulletGO.transform.localScale *= 2f;
+        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bullet.gameObject.transform.localScale *= 2f;
         bullet.SetDirection(Vector3.left);
         
-        var (bulletGO2, bullet2) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
-        bulletGO2.transform.localScale *= 2f;
+        var bullet2 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bullet2.gameObject.transform.localScale *= 2f;
         bullet2.SetDirection(Vector3.right);
         
-        var (bulletGO3, bullet3) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
-        bulletGO3.transform.localScale *= 2f;
+        var bullet3 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bullet3.gameObject.transform.localScale *= 2f;
         bullet3.SetDirection(Vector3.up);
         
-        var (bulletGO4, bullet4) = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
-        bulletGO4.transform.localScale *= 2f;
+        var bullet4 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        bullet4.gameObject.transform.localScale *= 2f;
         bullet4.SetDirection(Vector3.down);
     }
 }
