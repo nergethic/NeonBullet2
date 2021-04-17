@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class ItemSceneManager : SceneManager {
@@ -8,14 +7,20 @@ public class ItemSceneManager : SceneManager {
 
     public override void Init(MasterSystem masterSystem, SceneManagerData data) {
         base.Init(masterSystem, data);
+        type = SceneManagerType.Item;
+
+        var projectileManager = masterSystem.TryGetManager(SceneManagerType.Projectile);
+        if (projectileManager == null) {
+            Debug.LogError("[ItemSceneSystem]: tried to get projectileManager but it wasn't initialized");
+            return;
+        }
         
         CollectSceneItems();
         foreach (var item in items) {
-            item.Initialize(data.player, data.playerController, masterSystem.GetProjectileManager());
+            item.Initialize(data.player, data.playerController, projectileManager as ProjectileManager);
         }
         
-        Debug.Log("[ItemSceneSystem]: Item system initialized");
-        initializationState = ManagerInitializationState.INITIALIZED;
+        initializationState = ManagerInitializationState.COMPLETED;
     }
 
     public override void Tick(float dt) {

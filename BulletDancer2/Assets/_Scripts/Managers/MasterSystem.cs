@@ -1,33 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class MasterSystem : MonoBehaviour {
     [SerializeField] List<SceneManager> managers = new List<SceneManager>();
     public Player player;
     public PlayerController playerController;
+    Dictionary<SceneManagerType, SceneManager> initializedSceneManagers;
 
     SceneManagerData data = new SceneManagerData();
     bool isInitialized;
     
     WaitForSeconds WaitForSomeTime = new WaitForSeconds(0.1f);
+    public SceneManager TryGetManager(SceneManagerType managerType) => initializedSceneManagers.ContainsKey(managerType) ? initializedSceneManagers[managerType] : null;
     
     void Awake() {
         data.player = player;
         data.playerController = playerController;
         
+        initializedSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
         CollectManagers();
-        InitializeManagers();
-        StartCoroutine(WaitForInitialization());
+        StartCoroutine(InitializeManagers());
     }
 
-    void InitializeManagers() {
-        foreach (var manager in managers) {
-            manager.Init(this, data);
-        }
-    }
-    
     void Update() {
         if (!isInitialized)
             return;
@@ -36,29 +31,43 @@ public class MasterSystem : MonoBehaviour {
             manager.Tick(Time.deltaTime);
     }
 
-    public ProjectileManager GetProjectileManager() => managers.OfType<ProjectileManager>().FirstOrDefault();
-
-    IEnumerator WaitForInitialization() {
+    IEnumerator InitializeManagers() {
         Debug.Log("[MasterSystem]: Waiting for manager initialization...");
-        while (true) {
-            bool allManagersAreInitialized = true;
-            foreach (var manager in managers) {
-                if (manager.GetInitializationState() != ManagerInitializationState.INITIALIZED) {
-                    allManagersAreInitialized = false;
+        const int MAX_NUMBER_OF_WAIT_INTERVALS = 10;
+        foreach (var manager in managers) {
+            manager.Init(this, data);
+            if (TryToAddInitializedManager(manager))
+                continue;
+
+            bool managerWasInitialized = false;
+            for (int i = 0; i < MAX_NUMBER_OF_WAIT_INTERVALS; i++) {
+                yield return WaitForSomeTime;
+
+                if (TryToAddInitializedManager(manager)) {
+                    managerWasInitialized = true;
                     break;
                 }
             }
 
-            if (allManagersAreInitialized) {
-                isInitialized = true;
-                break;
+            if (!managerWasInitialized) {
+                Debug.Log($"[MasterSystem]: Manager '{manager.name} failed, taking too long to initialize'");
+                yield return null;
             }
-
-            yield return WaitForSomeTime;
         }
-        
+
         Debug.Log("[MasterSystem]: All managers initialized successfully");
+        isInitialized = true;
         yield return null;
+    }
+
+    bool TryToAddInitializedManager(SceneManager manager) {
+        if (manager.GetInitializationState() == ManagerInitializationState.COMPLETED) {
+            Debug.Log($"-- manager '{manager.name}' init completed");
+            initializedSceneManagers.Add(manager.Type, manager);
+            return true;
+        }
+
+        return false;
     }
     
 #if UNITY_EDITOR
@@ -79,7 +88,8 @@ public class MasterSystem : MonoBehaviour {
 public enum SceneManagerType {
     Unknown = 0,
     Item,
-    Entity
+    Entity,
+    Projectile
 }
 
 public class SceneManagerData {

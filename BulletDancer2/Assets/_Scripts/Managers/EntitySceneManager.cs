@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class EntitySceneManager : SceneManager {
@@ -9,14 +8,14 @@ public class EntitySceneManager : SceneManager {
 
     public override void Init(MasterSystem masterSystem, SceneManagerData data) {
         base.Init(masterSystem, data);
+        type = SceneManagerType.Entity;
         
         CollectSceneItems();
         foreach (var entity in entites) {
             entity.Initialize(data.player, projectileManager);
         }
         
-        Debug.Log("[ItemSceneSystem]: Item system initialized");
-        initializationState = ManagerInitializationState.INITIALIZED;
+        initializationState = ManagerInitializationState.COMPLETED;
     }
 
     public override void Tick(float dt) {

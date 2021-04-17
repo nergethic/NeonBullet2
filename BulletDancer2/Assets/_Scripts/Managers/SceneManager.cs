@@ -1,13 +1,15 @@
 using UnityEngine;
 
 public abstract class SceneManager : MonoBehaviour {
-    [SerializeField] SceneManagerType type;
     protected SceneManagerData data;
     protected ManagerInitializationState initializationState = ManagerInitializationState.NOT_INITIALIZED;
     protected bool isInitializing = false;
+    protected SceneManagerType type;
+
+    public SceneManagerType Type => type;
 
     public virtual void Init(MasterSystem masterSystem, SceneManagerData data) {
-        initializationState = ManagerInitializationState.INITIALIZING;
+        initializationState = ManagerInitializationState.IN_PROGRESS;
     }
     
     public abstract void Tick(float dt);
@@ -19,6 +21,7 @@ public abstract class SceneManager : MonoBehaviour {
 
 public enum ManagerInitializationState {
     NOT_INITIALIZED = 0,
-    INITIALIZING,
-    INITIALIZED
+    IN_PROGRESS,
+    COMPLETED,
+    FAILED
 }

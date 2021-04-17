@@ -26,12 +26,18 @@ public class CraftingLabel : MonoBehaviour
         craftingButton.image.sprite = itemToCraft.SpriteRenderer.sprite;
         craftingButton.interactable = false;
         SetupTextLabels();
+        var projectileManager = masterSystem.TryGetManager(SceneManagerType.Projectile);
+        if (projectileManager == null) {
+            Debug.LogError("[CroftingLabel]: tried to get projectileManager but it wasn't initialized");
+            return;
+        }
+        
         craftingButton.onClick.AddListener(() =>
         {
             CraftEvent();
             var instanceOfItem = Instantiate(itemToCraft);
             instanceOfItem.gameObject.SetActive(false);
-            instanceOfItem.Initialize(player, playerController, masterSystem.GetProjectileManager());
+            instanceOfItem.Initialize(player, playerController, projectileManager as ProjectileManager);
             player.Inventory.AddItem(instanceOfItem);
             player.Resources.UseResources(requiredOre, requiredIron, requiredGold);
             craftingPanel.UpdateCraftingButtonsAfterCraft();
