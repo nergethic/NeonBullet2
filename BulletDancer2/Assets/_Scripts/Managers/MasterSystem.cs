@@ -41,24 +41,37 @@ public class MasterSystem : MonoBehaviour {
         Debug.Log("[MasterSystem]: Waiting for manager initialization...");
         const int MAX_NUMBER_OF_WAIT_INTERVALS = 10;
         foreach (var manager in managers) {
+            ManagerInitializationState currentManagerState;
             manager.Init(this, data);
-            if (TryToAddInitializedManager(manager))
-                continue;
-
-            bool managerWasInitialized = false;
+            
             for (int i = 0; i < MAX_NUMBER_OF_WAIT_INTERVALS; i++) {
-                yield return WaitForSomeTime;
-
-                if (TryToAddInitializedManager(manager)) {
-                    managerWasInitialized = true;
+                currentManagerState = manager.GetInitializationState();
+                
+                if (currentManagerState == ManagerInitializationState.COMPLETED) {
+                    Debug.Log($"-- manager '{manager.name}' init completed");
+                    initializedSceneManagers.Add(manager.Type, manager);
                     break;
                 }
+                
+                if (currentManagerState == ManagerInitializationState.FAILED) {
+                    Debug.LogError($"-- manager '{manager.name}' init failed");
+                    break;
+                }
+                
+                yield return WaitForSomeTime;
             }
 
-            if (!managerWasInitialized) {
-                Debug.Log($"[MasterSystem]: Manager '{manager.name} failed, taking too long to initialize'");
-                yield return null;
+            currentManagerState = manager.GetInitializationState();
+            switch (currentManagerState) {
+                case ManagerInitializationState.IN_PROGRESS:
+                    Debug.Log($"[MasterSystem]: Manager '{manager.name} failed, taking too long to initialize'");
+                    break;
+                case ManagerInitializationState.NOT_INITIALIZED:
+                    Debug.Log($"[MasterSystem]: Manager '{manager.name} state is NOT_INITIALIZED, should be at least IN_PROGRESS");
+                    break;
             }
+
+            yield return null;
         }
 
         Debug.Log("[MasterSystem]: All managers initialized successfully");
