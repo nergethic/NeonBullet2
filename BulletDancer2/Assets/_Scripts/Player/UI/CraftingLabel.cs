@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,8 +20,7 @@ public class CraftingLabel : MonoBehaviour
 
     public event Action CraftEvent;
 
-    void Awake()
-    {
+    void Awake() {
         craftingButton.image.sprite = itemToCraft.SpriteRenderer.sprite;
         craftingButton.interactable = false;
         SetupTextLabels();
@@ -44,12 +42,18 @@ public class CraftingLabel : MonoBehaviour
         });
     }
 
-    private void SetupTextLabels()
-    {
-        var symbolOfQuantity = "x";
-        oreText.text = symbolOfQuantity + " " + requiredOre.ToString();
-        ironText.text = symbolOfQuantity + " " + requiredIron.ToString();
-        goldText.text = symbolOfQuantity + " " + requiredGold.ToString();
+    private void SetupTextLabels() {
+        oreText.text = GetLabelText(requiredOre);
+        ironText.text = GetLabelText(requiredIron);
+        goldText.text = GetLabelText(requiredGold);
+    }
+
+    string GetLabelText(int resourceQuantity) {
+        const string SYMBOL_OF_QUANTITY = "x ";
+        StringBuilder sb = new StringBuilder();
+        sb.Append(SYMBOL_OF_QUANTITY);
+        sb.Append(resourceQuantity);
+        return sb.ToString();
     }
 
     public void SetCraftingButton(bool state) => craftingButton.interactable = state;
