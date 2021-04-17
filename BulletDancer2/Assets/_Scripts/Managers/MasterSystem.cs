@@ -22,9 +22,6 @@ public class MasterSystem : MonoBehaviour {
         initializedSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
         CollectManagers();
         StartCoroutine(InitializeManagers());
-        
-        if (allManagersAreInitialized)
-            isInitialized = true;
     }
 
     void Update() {
@@ -76,6 +73,7 @@ public class MasterSystem : MonoBehaviour {
 
         Debug.Log("[MasterSystem]: All managers initialized successfully");
         allManagersAreInitialized = true;
+        isInitialized = true;
         yield return null;
     }
 
