@@ -24,6 +24,10 @@ public class EnemyAudioController : MonoBehaviour
 
     private void OnHit() => hitSource.PlayOneShot(hit);
 
-    private void OnDeath() => deathSource.PlayOneShot(death);
-
+    private void OnDeath()
+    {
+        gameObject.transform.parent = null;
+        deathSource.PlayOneShot(death);
+        Destroy(gameObject, death.length);
+    }
 }
