@@ -8,5 +8,6 @@ public class AnimationEffectsAudioController : MonoBehaviour
     private void Awake()
     {
         explosionSource.Play();
+        Destroy(gameObject.transform.parent.gameObject, explosionSource.clip.length);
     }
 }
