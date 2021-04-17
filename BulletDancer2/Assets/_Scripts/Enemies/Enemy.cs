@@ -36,7 +36,7 @@ public class Enemy : Entity {
                 SpawnDrop();
                 ResetSprites();
                 PlayDeathEvent();
-                Destroy(gameObject, 0.742f);
+                Destroy(gameObject);
             }
         }
     }

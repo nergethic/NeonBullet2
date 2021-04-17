@@ -180,7 +180,8 @@ public class TankBoss : Entity {
                     }
                     var explosionInstance = Instantiate(explosion, transform);
                     explosionInstance.transform.localScale = new Vector3(12, 12);
-                    Destroy(gameObject, 1.123f);
+                    explosionInstance.transform.parent = null;
+                    Destroy(gameObject);
                 }
 
             }
