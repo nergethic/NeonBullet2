@@ -45,7 +45,7 @@ public class MasterSystem : MonoBehaviour {
             manager.Init(this, data);
             
             for (int i = 0; i < MAX_NUMBER_OF_WAIT_INTERVALS; i++) {
-                currentManagerState = manager.GetInitializationState();
+                currentManagerState = manager.InitializationState;
                 
                 if (currentManagerState == ManagerInitializationState.COMPLETED) {
                     Debug.Log($"-- manager '{manager.name}' init completed");
@@ -61,7 +61,7 @@ public class MasterSystem : MonoBehaviour {
                 yield return WaitForSomeTime;
             }
 
-            currentManagerState = manager.GetInitializationState();
+            currentManagerState = manager.InitializationState;
             switch (currentManagerState) {
                 case ManagerInitializationState.IN_PROGRESS:
                     Debug.Log($"[MasterSystem]: Manager '{manager.name}' failed, taking too long to initialize, previous manager could failed initialization");
@@ -80,7 +80,7 @@ public class MasterSystem : MonoBehaviour {
     }
 
     bool TryToAddInitializedManager(SceneManager manager) {
-        if (manager.GetInitializationState() == ManagerInitializationState.COMPLETED) {
+        if (manager.InitializationState == ManagerInitializationState.COMPLETED) {
             Debug.Log($"-- manager '{manager.name}' init completed");
             initializedSceneManagers.Add(manager.Type, manager);
             return true;

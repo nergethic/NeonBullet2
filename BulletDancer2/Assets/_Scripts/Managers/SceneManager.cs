@@ -7,16 +7,13 @@ public abstract class SceneManager : MonoBehaviour {
     protected SceneManagerType type;
 
     public SceneManagerType Type => type;
+    public ManagerInitializationState InitializationState => initializationState;
 
     public virtual void Init(MasterSystem masterSystem, SceneManagerData data) {
         initializationState = ManagerInitializationState.IN_PROGRESS;
     }
     
     public abstract void Tick(float dt);
-
-    public ManagerInitializationState GetInitializationState() {
-        return initializationState;
-    }
 }
 
 public enum ManagerInitializationState {
