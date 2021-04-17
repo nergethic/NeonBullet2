@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MasterSystem : MonoBehaviour {
-    [SerializeField] List<SceneManager> managers = new List<SceneManager>();
-    public Player player;
-    public PlayerController playerController;
+    [SerializeField] SceneManager[] managers;
+    [SerializeField] Player player;
+    [SerializeField] PlayerController playerController;
     Dictionary<SceneManagerType, SceneManager> initializedSceneManagers;
 
     SceneManagerData data = new SceneManagerData();
+    bool allManagersAreInitialized;
     bool isInitialized;
     
     WaitForSeconds WaitForSomeTime = new WaitForSeconds(0.1f);
@@ -21,14 +22,19 @@ public class MasterSystem : MonoBehaviour {
         initializedSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
         CollectManagers();
         StartCoroutine(InitializeManagers());
+        
+        if (allManagersAreInitialized)
+            isInitialized = true;
     }
 
     void Update() {
         if (!isInitialized)
             return;
-        
-        foreach (var manager in managers) 
+
+        for (int i = 0; i < managers.Length; i++) {
+            var manager = managers[i];
             manager.Tick(Time.deltaTime);
+        }
     }
 
     IEnumerator InitializeManagers() {
@@ -56,7 +62,7 @@ public class MasterSystem : MonoBehaviour {
         }
 
         Debug.Log("[MasterSystem]: All managers initialized successfully");
-        isInitialized = true;
+        allManagersAreInitialized = true;
         yield return null;
     }
 
@@ -73,14 +79,9 @@ public class MasterSystem : MonoBehaviour {
 #if UNITY_EDITOR
     [ContextMenu("Collect Managers")]
     public void CollectManagers() {
+        managers = gameObject.GetComponentsInChildren<SceneManager>();
         if (managers == null)
-            managers = new List<SceneManager>();
-        managers.Clear();
-        
-        var childrenManagers = gameObject.GetComponentsInChildren<SceneManager>();
-        foreach (var m in childrenManagers) {
-            managers.Add(m);
-        }
+            Debug.LogError("[MasterSystem]: managers are null");
     }
 #endif
 }
@@ -93,7 +94,6 @@ public enum SceneManagerType {
 }
 
 public class SceneManagerData {
-    public List<SceneManagerType> previousManagers = new List<SceneManagerType>();
     public Player player;
     public PlayerController playerController;
 }
