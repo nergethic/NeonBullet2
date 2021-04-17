@@ -10,6 +10,14 @@
           <e p="Controls.cs" t="Include" />
           <e p="InputActions.cs" t="Include" />
         </e>
+        <e p="_GraphicsAssets" t="Include">
+          <e p="Pixel Art Icon Pack - RPG" t="Include">
+            <e p="Shader" t="Include">
+              <e p="SH Sprite Icon Outline Color.shader" t="Include" />
+              <e p="SH UI Icon Outline Color.shader" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="_Materials" t="Include">
           <e p="BlitRenderFeature.cs" t="Include" />
           <e p="FluidFX.shader" t="Include" />
@@ -89,6 +97,12 @@
             <e p="TowersRoom.cs" t="Include" />
           </e>
           <e p="SimpleCameraController.cs" t="Include" />
+        </e>
+        <e p="Free UI build package" t="Include">
+          <e p="Script" t="Include">
+            <e p="Slide.cs" t="Include" />
+            <e p="Togglescript.cs" t="Include" />
+          </e>
         </e>
         <e p="Pixel Art Icon Pack - RPG" t="Include">
           <e p="Shader" t="Include">

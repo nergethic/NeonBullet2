@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour {
     
     private void OnMove(InputAction.CallbackContext context) {
         Vector2 value = context.ReadValue<Vector2>();
-        Debug.Log(value);
+        // Debug.Log(value);
     }
     
     private void OnDash(InputAction.CallbackContext context) {
