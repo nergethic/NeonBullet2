@@ -250,8 +250,8 @@ public class PlayerController : MonoBehaviour {
     
     private void OnDash(InputAction.CallbackContext context) {
         Debug.Log("Dash");
-        player.PerformDash();
-        DashEvent();
+        if (player.PerformDash())
+            DashEvent();
     }
     
     private void OnSelect(InputAction.CallbackContext context) {

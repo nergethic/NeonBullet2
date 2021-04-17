@@ -5,7 +5,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-
 public class Player : MonoBehaviour {
     [SerializeField] PlayerInventory inventory;
     public PlayerInventory Inventory => inventory;
@@ -52,19 +51,20 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public bool isImmuneToDamage = false;
-    public bool isAbsorbingEnergy = false;
-    public bool isDashing = false;
-    private bool isDead = false;
+    public bool isImmuneToDamage;
+    public bool isAbsorbingEnergy;
+    public bool isDashing;
+    private bool isDead;
 
     private const float IMMUNITY_AFTER_BEING_HIT = 1f;
-    private const float DASH_DURATION = 0.2f;
+    private const float DASH_DURATION = 0.3f;
     private const float SHIELD_DURATION_TIME = 0.45f;
 
     private void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
         screenMaterial.SetFloat("_DimVal", 0f);
     }
+    
     private void Start() {
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
@@ -73,29 +73,34 @@ public class Player : MonoBehaviour {
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
-        if (!isDead)
-        {
-            Health -= projectileData.damage;
-            HitEvent();
-            StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
-            if (Health <= 0 && !isDead)
-            {
-                isDead = true;
-                Debug.LogError("PLAYER IS DEAD");
-                StartCoroutine(HandleDeath());
-            }
+        if (isDead)
+            return;
+        
+        Health -= projectileData.damage;
+        HitEvent();
+        StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
+        if (Health <= 0 && !isDead) {
+            isDead = true;
+            StartCoroutine(HandleDeath());
         }
     }
 
-    public void PerformDash() {
-        if (dashCor == null)
-            dashCor = StartCoroutine(ToggleDash());
+    public bool PerformDash() {
+        if (dashCor != null)
+            return false;
+
+        int newEnergy = Energy - 1;
+        if (newEnergy < 0)
+            return false;
+            
+        Energy = newEnergy;
+        dashCor = StartCoroutine(ToggleDash());
+        return true;
     }
 
     public void PerformBlock() {
-        if (blockCor == null)
-        {
-            blockCor = StartCoroutine(ToggleEnergyAbsorbtion(SHIELD_DURATION_TIME));
+        if (blockCor == null) {
+            blockCor = StartCoroutine(ToggleEnergyAbsorption(SHIELD_DURATION_TIME));
         }
     }
 
@@ -130,7 +135,7 @@ public class Player : MonoBehaviour {
         yield return null;
     }
     
-    IEnumerator ToggleEnergyAbsorbtion(float absorbtionTime) {
+    IEnumerator ToggleEnergyAbsorption(float absorbtionTime) {
         Assert.IsTrue(absorbtionTime > 0.1f);
         shield.gameObject.SetActive(true);
         shield.localScale = Vector3.zero;
