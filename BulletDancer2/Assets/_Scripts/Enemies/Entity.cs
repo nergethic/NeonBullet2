@@ -20,6 +20,7 @@ public class Entity : MonoBehaviour {
     public void PlayDeathEvent() => DeathEvent();
     public void PlayHitEvent() => HitEvent();
     public void PlayAttackEvent() => AttackEvent();
+    
     public virtual void Initialize(Player player, ProjectileManager projectileManager) {
         SetSprite(sprite);
         this.player = player;

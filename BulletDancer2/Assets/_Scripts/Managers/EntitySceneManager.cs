@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class EntitySceneManager : SceneManager {
@@ -10,7 +11,7 @@ public class EntitySceneManager : SceneManager {
         base.Init(masterSystem, data);
         type = SceneManagerType.Entity;
         
-        CollectSceneItems();
+        CollectSceneEntities();
         foreach (var entity in entites) {
             entity.Initialize(data.player, projectileManager);
         }
@@ -29,11 +30,11 @@ public class EntitySceneManager : SceneManager {
 
 #if UNITY_EDITOR
     [ContextMenu("Collect Scene Items")]
-    public void CollectSceneItems() {
-        // Undo.RecordObject(items, "[ItemSceneManager]: Collecting Items");
-        var foundSceneItems = FindObjectsOfType<Entity>();
-        if (foundSceneItems != null && foundSceneItems.Length > 0)
-            entites = foundSceneItems.ToList();
+    public void CollectSceneEntities() {
+        Undo.RecordObject(this, "[EntitySceneManager]: Collecting entities");
+        var foundSceneEntities = FindObjectsOfType<Entity>();
+        if (foundSceneEntities != null && foundSceneEntities.Length > 0)
+            entites = foundSceneEntities.ToList();
     }
 #endif
 }

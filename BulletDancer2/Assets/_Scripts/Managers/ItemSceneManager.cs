@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class ItemSceneManager : SceneManager {
@@ -29,7 +30,7 @@ public class ItemSceneManager : SceneManager {
 #if UNITY_EDITOR
     [ContextMenu("Collect Scene Items")]
     public void CollectSceneItems() {
-        // Undo.RecordObject(items, "[ItemSceneManager]: Collecting Items");
+        Undo.RecordObject(this, "[ItemSceneManager]: Collecting Items");
         var foundSceneItems = FindObjectsOfType<Item>();
         if (foundSceneItems != null && foundSceneItems.Length > 0)
             items = foundSceneItems.ToList();

@@ -51,6 +51,7 @@
             <e p="LaserBoss.cs" t="Include" />
             <e p="ResourceTypeDrop.cs" t="Include" />
             <e p="TankBoss.cs" t="Include" />
+            <e p="Turret.cs" t="Include" />
           </e>
           <e p="Managers" t="Include">
             <e p="EntitySceneManager.cs" t="Include" />

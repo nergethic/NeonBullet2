@@ -1,43 +1,20 @@
-using Assets._Scripts;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Entity {
-    [SerializeField] Transform cannon;
-    [SerializeField] Transform bulletSpawnPoint;
-    [SerializeField] float shootingDistance = 20f;
-    [SerializeField] float bulletSpeed = 3.2f;
     [SerializeField] ResourceTypeDrop drop;
     [SerializeField] Ore ore;
     [SerializeField] Iron iron;
     [SerializeField] Gold gold;
+    
     List<int> projectilesEntered = new List<int>();
-
-    int counter;
-    private const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
-        
-        InvokeRepeating(SHOOT_BULLET_METHOD_NAME, 1, 2.3f);
     }
 
     public override void Tick(float dt) {
         base.Tick(dt);
-
-        SetCannonRotation();
-    }
-    
-    private void SetCannonRotation() {
-        Vector2 playerPos = playerTransform.position;
-        Vector2 cannonPos = cannon.position;
-        Vector2 lookDir = cannonPos - playerPos;
-        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
-
-        var angles = cannon.eulerAngles;
-        cannon.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -56,7 +33,6 @@ public class Enemy : Entity {
             PlayHitEvent();
             if (Health <= 0) {
                 isDead = true;
-                CancelInvoke(SHOOT_BULLET_METHOD_NAME);
                 SpawnDrop();
                 ResetSprites();
                 PlayDeathEvent();
@@ -65,11 +41,9 @@ public class Enemy : Entity {
         }
     }
 
-    private void SpawnDrop()
-    {
+    private void SpawnDrop() {
         Resource newResource = null;
-        switch (drop)
-        {
+        switch (drop) {
             case ResourceTypeDrop.Ore:
                 newResource = Instantiate(ore, gameObject.transform);
                 newResource.transform.parent = null;
@@ -85,23 +59,7 @@ public class Enemy : Entity {
         }
     }
 
-    void ShootBullet() {
-        if (Vector3.SqrMagnitude(player.transform.position - transform.position) > shootingDistance) {
-            return;
-        }
-        ProjectileType bulletType = ProjectileType.Standard;
-        if (counter % 2 == 0)
-            bulletType = ProjectileType.Energy;
-        
-        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, bulletType, false, bulletSpeed);
-        Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
-        bullet.SetDirection(direction);
-        PlayAttackEvent();
-        counter++;
-    }
-
-    private void ResetSprites()
-    {
+    private void ResetSprites() {
         var renderers = GetComponentsInChildren<SpriteRenderer>();
         foreach (var renderer in renderers)
             renderer.sprite = null;

@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a879f4745d0c3824ca0d520ca6929122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 9146937165377057665}
+  enemy: {fileID: 6035741086760662853}
   death: {fileID: 8300000, guid: b7842da3ba418994ca698513d9203590, type: 3}
   hit: {fileID: 8300000, guid: 908c66c57585ff44fa246e71e6a6ad98, type: 3}
   attack: {fileID: 8300000, guid: a13fd6f68e0b81340adedc65e7819968, type: 3}
@@ -556,7 +556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9146937165377057664}
-  - component: {fileID: 9146937165377057665}
+  - component: {fileID: 6035741086760662853}
   - component: {fileID: 6243688807117069141}
   - component: {fileID: 7017414464096730209}
   m_Layer: 9
@@ -583,7 +583,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9146937165377057665
+--- !u!114 &6035741086760662853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9146937165377057666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1e7813f38875124c9e9fec233611dff, type: 3}
+  m_Script: {fileID: 11500000, guid: d2a2f156d4cbb514f99bc1a6db73f2ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
@@ -600,14 +600,14 @@ MonoBehaviour:
   Health: 2
   MaxHealth: 2
   isDead: 0
-  cannon: {fileID: 9146937164679488907}
-  bulletSpawnPoint: {fileID: 1676554546574250843}
-  shootingDistance: 20
-  bulletSpeed: 5.5
   drop: 0
   ore: {fileID: 7627868740655351245, guid: f1991287177006247a42f9bea87ef848, type: 3}
   iron: {fileID: 1907949189741254128, guid: 6784f6b8867abd541963b5e9c56f1f36, type: 3}
   gold: {fileID: 6703953452721692402, guid: 01953e2631a0a98439f01bf65fbdfa0c, type: 3}
+  cannon: {fileID: 9146937164679488907}
+  bulletSpawnPoint: {fileID: 1676554546574250843}
+  shootingDistance: 20
+  bulletSpeed: 3.2
 --- !u!58 &6243688807117069141
 CircleCollider2D:
   m_ObjectHideFlags: 0
