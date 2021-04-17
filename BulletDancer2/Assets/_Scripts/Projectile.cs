@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour {
     private float airTime = 0f;
     private Vector2 dir;
     
-    public ProjectileType GetType() => type;
+    public ProjectileType Type() => type;
 
     void Start() {
         defaultLayerMask = LayerMask.NameToLayer("Default");

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class ProjectileManager : SceneManager {
     [SerializeField] GameObject[] projectileGameObjects;
@@ -10,19 +10,31 @@ public class ProjectileManager : SceneManager {
         base.Init(masterSystem, data);
         type = SceneManagerType.Projectile;
 
-        if (!AssertDistinctProjectile()) {
-            Debug.LogError("[]");
-            initializationState = ManagerInitializationState.FAILED;
-            return;
-        }
-        
         projectiles = new Dictionary<ProjectileType, GameObject>();
-        foreach (var p in projectileGameObjects) {
+        for (int i = 0; i < projectileGameObjects.Length; i++) {
+            var p = projectileGameObjects[i];
             var projectileComponent = p.GetComponent<Projectile>();
-            Assert.IsTrue(projectileComponent != null);
+            if (projectileComponent == null) {
+                Debug.LogError("[ProjectileManager]: projectile component not found in game object");
+                initializationState = ManagerInitializationState.FAILED;
+                return;
+            }
 
-            ProjectileType type = projectileComponent.GetType();
-            projectiles.Add(type, p);
+            for (int j = 0; j < projectileGameObjects.Length; j++) {
+                if (i == j)
+                    continue;
+
+                var otherProjectileComponent = projectileGameObjects[j].GetComponent<Projectile>();
+                if (otherProjectileComponent == null)
+                    continue;
+                
+                if (projectileComponent.Type() == otherProjectileComponent.Type()) {
+                    Debug.LogError($"[ProjectileManager]: two projectiles with same projectile type found '{projectileComponent.Type().ToString()}' - this should not happen");
+                    initializationState = ManagerInitializationState.FAILED;
+                    return;
+                }
+            }
+            projectiles.Add(projectileComponent.Type(), p);
         }
         
         initializationState = ManagerInitializationState.COMPLETED;
@@ -46,14 +58,7 @@ public class ProjectileManager : SceneManager {
         return projectile;
     }
 
-    public override void Tick(float dt)
-    {
-        
-    }
-
-    bool AssertDistinctProjectile() {
-        return true;
-    }
+    public override void Tick(float dt) {}
 }
 
 public enum ProjectileType {

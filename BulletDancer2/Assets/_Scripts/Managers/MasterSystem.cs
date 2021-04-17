@@ -64,7 +64,7 @@ public class MasterSystem : MonoBehaviour {
             currentManagerState = manager.GetInitializationState();
             switch (currentManagerState) {
                 case ManagerInitializationState.IN_PROGRESS:
-                    Debug.Log($"[MasterSystem]: Manager '{manager.name} failed, taking too long to initialize'");
+                    Debug.Log($"[MasterSystem]: Manager '{manager.name}' failed, taking too long to initialize, previous manager could failed initialization");
                     break;
                 case ManagerInitializationState.NOT_INITIALIZED:
                     Debug.Log($"[MasterSystem]: Manager '{manager.name} state is NOT_INITIALIZED, should be at least IN_PROGRESS");
