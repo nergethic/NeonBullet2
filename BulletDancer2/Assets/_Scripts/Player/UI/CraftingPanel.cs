@@ -12,7 +12,7 @@ public class CraftingPanel : MonoBehaviour
     [SerializeField] Button nextButton;
     [SerializeField] Button previousButton;
     private int page = 1;
-    void Start()
+    void Awake()
     {
         craftingLabels = GetComponentsInChildren<CraftingLabel>(true);
         Display();
