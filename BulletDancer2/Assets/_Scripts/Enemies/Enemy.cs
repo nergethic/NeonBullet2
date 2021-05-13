@@ -2,16 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Entity {
-    [SerializeField] ResourceTypeDrop drop;
-    [SerializeField] Ore ore;
-    [SerializeField] Iron iron;
-    [SerializeField] Gold gold;
+    public ResourceTypeDrop drop;
+    private Resource _resource;
     
     List<int> projectilesEntered = new List<int>();
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
     }
+
+    public void InitializeResource(Resource resource) => _resource = resource;
+
 
     public override void Tick(float dt) {
         base.Tick(dt);
@@ -43,20 +44,8 @@ public class Enemy : Entity {
 
     private void SpawnDrop() {
         Resource newResource = null;
-        switch (drop) {
-            case ResourceTypeDrop.Ore:
-                newResource = Instantiate(ore, gameObject.transform);
-                newResource.transform.parent = null;
-                break;
-            case ResourceTypeDrop.Iron:
-                newResource = Instantiate(iron, transform);
-                newResource.transform.parent = null;
-                break;
-            case ResourceTypeDrop.Gold:
-                newResource = Instantiate(gold, transform);
-                newResource.transform.parent = null;
-                break;
-        }
+        newResource = Instantiate(_resource, gameObject.transform);
+        newResource.transform.parent = null;
     }
 
     private void ResetSprites() {
