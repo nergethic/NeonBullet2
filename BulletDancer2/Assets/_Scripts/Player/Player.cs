@@ -106,12 +106,22 @@ public class Player : MonoBehaviour {
 
     public void HandleProjectile(Projectile projectile) {
         var projectileData = projectile.projectileData;
-        if (isAbsorbingEnergy && projectileData.typeMask == (int)ProjectileType.Energy) { // TODO
-            BlockEvent();
-            int newEnergy = Energy + 1;
-            if (newEnergy <= MaxEnergy)
-                Energy = newEnergy;
-            UpdateShieldColor(true);
+        if (isAbsorbingEnergy) {
+            if (projectileData.typeMask == (int)ProjectileType.Energy) {
+                BlockEvent();
+                int newEnergy = Energy + 1;
+                if (newEnergy <= MaxEnergy)
+                    Energy = newEnergy;
+                UpdateShieldColor(true);
+            } else {
+                int newEnergy = Energy - 1;
+                if (newEnergy >= 0) {
+                    Energy = newEnergy;
+                    UpdateShieldColor(true);
+                } else
+                    PlayerHitByProjectileAction(ref projectileData);
+            }
+            
         } else if (!isImmuneToDamage)
             PlayerHitByProjectileAction(ref projectileData);
         
