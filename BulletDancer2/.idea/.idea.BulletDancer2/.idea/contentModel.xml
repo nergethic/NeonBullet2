@@ -93,6 +93,11 @@
             <e p="Resource.cs" t="Include" />
           </e>
           <e p="Rooms" t="Include">
+            <e p="Corridor.cs" t="Include" />
+            <e p="EnemySpawner.cs" t="Include" />
+            <e p="LevelGenerator.cs" t="Include" />
+            <e p="Room.cs" t="Include" />
+            <e p="RoomType.cs" t="Include" />
             <e p="SceneAudioManager.cs" t="Include" />
             <e p="TankRoom.cs" t="Include" />
             <e p="TowersRoom.cs" t="Include" />
