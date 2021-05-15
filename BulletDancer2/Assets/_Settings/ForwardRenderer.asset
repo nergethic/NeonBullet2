@@ -60,4 +60,5 @@ MonoBehaviour:
     IsEnabled: 1
     WhenToInsert: 1000
     FluidMaterialToBlit: {fileID: 2100000, guid: 880b6a4f5ab94494ca849aaf7048d490, type: 2}
+    DistortionMaterialToBlit: {fileID: 2100000, guid: 31cb7f70588cad54b909994626b5f748, type: 2}
     PixelizeMaterialToBlit: {fileID: 2100000, guid: aa23ed7b31e6c7846a38eaf8eb68818b, type: 2}

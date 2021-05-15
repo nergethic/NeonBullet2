@@ -20,6 +20,8 @@
         </e>
         <e p="_Materials" t="Include">
           <e p="BlitRenderFeature.cs" t="Include" />
+          <e p="DistortionFX.shader" t="Include" />
+          <e p="DistortionPass.cs" t="Include" />
           <e p="FluidFX.shader" t="Include" />
           <e p="FluidPass.cs" t="Include" />
           <e p="PixelizeFX.shader" t="Include" />

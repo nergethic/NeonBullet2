@@ -7,23 +7,32 @@ public class BlitRenderFeature : ScriptableRendererFeature {
         public bool IsEnabled = true;
         public RenderPassEvent WhenToInsert = RenderPassEvent.AfterRendering;
         public Material FluidMaterialToBlit;
+        public Material DistortionMaterialToBlit;
         public Material PixelizeMaterialToBlit;
     }
     public MyFeatureSettings settings = new MyFeatureSettings();
     
-    PixelizePass pixelizePass;
     FluidPass fluidPass;
+    DistortionPass distortionPass;
+    PixelizePass pixelizePass;
+
     public override void Create() {
-        pixelizePass = new PixelizePass(
-            "Pixelize custom pass",
-            settings.WhenToInsert,
-            settings.PixelizeMaterialToBlit
-        );
-        
         fluidPass = new FluidPass(
             "Fluid custom pass",
             settings.WhenToInsert,
             settings.FluidMaterialToBlit
+        );
+        
+        distortionPass = new DistortionPass(
+            "Distortion custom pass",
+            settings.WhenToInsert,
+            settings.DistortionMaterialToBlit
+        );
+        
+        pixelizePass = new PixelizePass(
+            "Pixelize custom pass",
+            settings.WhenToInsert,
+            settings.PixelizeMaterialToBlit
         );
     }
 
@@ -31,6 +40,7 @@ public class BlitRenderFeature : ScriptableRendererFeature {
         //var cameraColorTargetIdent = renderer.cameraColorTarget;
         //pixelizePass.Setup(renderer, cameraColorTargetIdent);
         renderer.EnqueuePass(fluidPass);
+        renderer.EnqueuePass(distortionPass);
         renderer.EnqueuePass(pixelizePass);
     }
 }
