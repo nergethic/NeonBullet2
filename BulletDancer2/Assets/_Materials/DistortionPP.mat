@@ -39,6 +39,7 @@ Material:
         m_Texture: {fileID: 2800000, guid: fbce560a7bcc9b348afcfae5645ebff0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _DistortionPower: 2.14
     - _LengthMult: 2.09
