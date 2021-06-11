@@ -51,12 +51,12 @@ public class LevelGenerator : MonoBehaviour {
 
             if (isCorridorTurn)
             {
-                randomIndex = Random.Range(0, corridors.Count - 1);
+                randomIndex = Random.Range(0, corridors.Count);
                 roomToCreate = corridors[randomIndex];
             }
             else
             {
-                randomIndex = Random.Range(0, rooms.Count - 1);
+                randomIndex = Random.Range(0, rooms.Count);
                 roomToCreate = rooms[randomIndex];
             }
 

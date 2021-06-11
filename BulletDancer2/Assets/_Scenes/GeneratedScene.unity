@@ -155,9 +155,12 @@ MonoBehaviour:
   mainRoom: {fileID: 5258066947909809073, guid: 2f53cf2c3ac0549408dd12e386dc24e6, type: 3}
   rooms:
   - {fileID: 5258066947909809073, guid: bbfebe3b2f4233a4ea6962cab781cd85, type: 3}
+  - {fileID: 5258066947909809073, guid: a1d50d92cb7fb8349ac9a37d00c675e6, type: 3}
+  - {fileID: 5258066947909809073, guid: 20920185c4a4d73469ab932754f39e90, type: 3}
   corridors:
   - {fileID: 1561976432640144186, guid: eeab99967f0f4f2469f0379fc0658564, type: 3}
   - {fileID: 1561976432640144186, guid: 5c42994a39d1d9a42bb4a07d86a1160f, type: 3}
+  - {fileID: 1561976432640144186, guid: 470b42b570eb0bb45bc74413a6f4fd19, type: 3}
   numberOfRooms: 4
 --- !u!4 &992823125
 Transform:
