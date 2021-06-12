@@ -2,15 +2,60 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour {
-    [SerializeField] private List<Enemy> enemies;
-    [SerializeField] private List<Transform> enemiesSpawns;
+    [SerializeField] List<Enemy> enemies;
+    [SerializeField] List<Transform> enemiesSpawnPoints;
+    [SerializeField] List<EnemySpawnArea> enemySpawnAreas;
+    
+    // TODO: get EntitySceneManager at the beginning and init spawned entities
+    EntitySceneManager entityManager;
+    List<Enemy> spawnedEnemies;
 
     void Awake() {
-        for (int i = 0; i < enemiesSpawns.Count; i++) {
-            int randIndex = Random.Range(0, enemies.Count - 1);
+        spawnedEnemies = new List<Enemy>();
+        SpawnEnemiesFromSpawnPoints();
+        SpawnEnemiesFromSpawnAreas();
+        InitializeSpawnedEnemies();
+    }
+
+    void SpawnEnemiesFromSpawnPoints() {
+        for (int i = 0; i < enemiesSpawnPoints.Count; i++) {
+            int randIndex = Random.Range(0, enemies.Count);
             var randomEnemy = enemies[randIndex];
-            var createdEnemy = Instantiate(randomEnemy);
-            createdEnemy.transform.position = enemiesSpawns[i].position;
+            SpawnEnemy(randomEnemy, enemiesSpawnPoints[i].position);
         }
+    }
+
+    void SpawnEnemiesFromSpawnAreas() {
+        for (int i = 0; i < enemySpawnAreas.Count; i++) {
+            var area = enemySpawnAreas[i];
+            SpawnEnemy(area.GetAssignedEnemy(), area.GetRandomPointWithinArea());
+        }
+    }
+
+    void SpawnEnemy(Enemy enemy, Vector3 position) {
+        var createdEnemy = Instantiate(enemy);
+        createdEnemy.transform.position = position;
+        spawnedEnemies.Add(createdEnemy);
+    }
+
+    void InitializeSpawnedEnemies() {
+        var masterSystem = GetComponent<MasterSystem>();
+        if (masterSystem != null) {
+            entityManager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
+            if (entityManager == null) {
+                Debug.LogError("Couldn't get entity manager");
+            } else {
+                if (entityManager.IsInitialized)
+                    HandleEntityManagerOnOnInitializationCompleted();
+                else
+                    entityManager.OnInitializationCompleted += HandleEntityManagerOnOnInitializationCompleted;
+            }
+        }
+    }
+    
+    void HandleEntityManagerOnOnInitializationCompleted() {
+        entityManager.OnInitializationCompleted -= HandleEntityManagerOnOnInitializationCompleted;
+        foreach (var enemy in spawnedEnemies)
+            entityManager.AddEntity(enemy);
     }
 }
