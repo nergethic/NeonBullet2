@@ -3,8 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftingLabel : MonoBehaviour
-{
+public class CraftingLabel : MonoBehaviour {
     [SerializeField] Button craftingButton;
     [SerializeField] Item itemToCraft;
     [SerializeField] Player player;
@@ -24,18 +23,17 @@ public class CraftingLabel : MonoBehaviour
         craftingButton.image.sprite = itemToCraft.SpriteRenderer.sprite;
         craftingButton.interactable = false;
         SetupTextLabels();
-        var projectileManager = masterSystem.TryGetManager(SceneManagerType.Projectile);
+        var projectileManager = masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
         if (projectileManager == null) {
             Debug.LogError("[CroftingLabel]: tried to get projectileManager but it wasn't initialized");
             return;
         }
         
-        craftingButton.onClick.AddListener(() =>
-        {
-            CraftEvent();
+        craftingButton.onClick.AddListener(() => {
+            CraftEvent?.Invoke();
             var instanceOfItem = Instantiate(itemToCraft);
             instanceOfItem.gameObject.SetActive(false);
-            instanceOfItem.Initialize(player, playerController, projectileManager as ProjectileManager);
+            instanceOfItem.Initialize(player, playerController, projectileManager);
             player.Inventory.AddItem(instanceOfItem);
             player.Resources.UseResources(requiredOre, requiredIron, requiredGold);
             craftingPanel.UpdateCraftingButtonsAfterCraft();
