@@ -1,28 +1,37 @@
+using System.Collections;
 using Assets._Scripts;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour {
+    const float ROOM_SCALE_MULTIPLIER = 0.7f;
+    
     [SerializeField] Room mainRoom;
     [SerializeField] List<Room> rooms;
     [SerializeField] List<Room> corridors;
+    [SerializeField] GameObject testRoom;
+    [SerializeField] BoxCollider testRoomCollider;
     [SerializeField] int numberOfRooms;
+    
+    [SerializeField] bool DEBUG_SlowDownGeneration;
     
     RoomType nextRoomType;
     Room currentRoom;
     Vector2 roomSize;
+    
+    List<Room> availableRooms = new List<Room>();
+    List<Room> availableCorridors = new List<Room>();
     List<Room> alreadyGeneratedRooms = new List<Room>();
-    List<Room> wrongChosenRooms = new List<Room>();
-    List<Corridor> wrongChosenCorridors = new List<Corridor>();
+    List<Room> selectedRoomList;
+
     bool isCorridorTurn = true;
     
     void Awake() {
         foreach (var cor in corridors)
             Assert.IsTrue(cor is Corridor);
-        
+
         Instantiate(mainRoom);
         roomSize = mainRoom.GetSize();
         alreadyGeneratedRooms.Add(mainRoom);
@@ -31,53 +40,53 @@ public class LevelGenerator : MonoBehaviour {
         GenerateLevel();
     }
 
+    Coroutine debugCor;
     void GenerateLevel() {
-        for (int i = 0; i < numberOfRooms; i++) {
-            var currentDoorDirection = currentRoom.doorsData[1].direction;
-            PlaceRoom(currentDoorDirection);
-            
-            if (isCorridorTurn) {
-                corridors.AddRange(wrongChosenCorridors);
-                wrongChosenCorridors.Clear();
-            } else {
-                rooms.AddRange(wrongChosenRooms);
-                wrongChosenRooms.Clear();
+        if (DEBUG_SlowDownGeneration) {
+            if (debugCor != null) {
+                StopCoroutine(debugCor);
+                debugCor = null;
             }
-            isCorridorTurn = !isCorridorTurn;
+            debugCor = StartCoroutine(GenerateLevelSlowly());
+            return;
+        }
+        
+        for (int i = 0; i < numberOfRooms; i++) {
+            var currentDoorDirection = currentRoom.DoorsData[1].direction;
+            PlaceRoom(currentDoorDirection);
+            if (Random.Range(0f, 1f) < 0.5f)
+                isCorridorTurn = !isCorridorTurn;
         }
     }
 
     void PlaceRoom(DoorDirection direction) {
-        var isCorrectRoomFound = false;
         Vector2 currentRoomPos = new Vector2(currentRoom.transform.position.x, currentRoom.transform.position.y);
-        var nextDirection = GetNextDirection(direction, currentRoomPos.x, currentRoomPos.y);
+        var nextSpawnLocation = GetNextSpawnLocation(direction, currentRoomPos.x, currentRoomPos.y);
 
-        var selectedRoomList = isCorridorTurn ? corridors : rooms;
-        for (int triesCount = 0; triesCount < 10 && !isCorrectRoomFound; triesCount++) {
-            if (rooms.Count == 0)
-                Debug.LogError("Wants to generate more rooms but all available were spawned!");
-
+        availableRooms = new List<Room>(rooms);
+        availableCorridors = new List<Room>(corridors);
+        selectedRoomList = isCorridorTurn ? availableCorridors : availableRooms;
+        
+        for (int triesCount = 0; triesCount < 200; triesCount++) {
             if (selectedRoomList.Count == 0)
                 return;
             
-            var randomIndex = Random.Range(0, selectedRoomList.Count-1);
-            var roomToCreate = selectedRoomList[randomIndex];
+            var randomIndex = Random.Range(0, selectedRoomList.Count);
+            var potentialRoomToSpawn = selectedRoomList[randomIndex];
 
-            var doorDir = roomToCreate.doorsData[0].direction;
+            var doorDir = potentialRoomToSpawn.DoorsData[0].direction; // TODO: why u check only the first entry, not like this
             if (doorDir != direction.GetOppositeDirection()) {
-                isCorrectRoomFound = HandleWrongRoom(roomToCreate);
+                HandleWrongRoom(potentialRoomToSpawn);
                 continue;
             }
 
-            if (CheckIfCollidesWithOtherRoom(roomToCreate.doorsData[1].direction, nextDirection, roomToCreate)) {
-                isCorrectRoomFound = HandleWrongRoom(roomToCreate);
+            if (WouldCollideWithSomeRoom(potentialRoomToSpawn, nextSpawnLocation)) {
+                HandleWrongRoom(potentialRoomToSpawn);
                 continue;
             }
             
-            isCorrectRoomFound = true;
-            SpawnRoom(roomToCreate, nextDirection);
-            if (!isCorridorTurn)
-                rooms.RemoveAt(randomIndex);
+            SpawnRoom(potentialRoomToSpawn, nextSpawnLocation);
+            return;
         }
     }
 
@@ -88,49 +97,60 @@ public class LevelGenerator : MonoBehaviour {
         alreadyGeneratedRooms.Add(newRoom);
     }
 
-    bool HandleWrongRoom(Room roomToCreate) {
-        if (isCorridorTurn) {
-            corridors.AddRange(wrongChosenCorridors);
-            corridors.Remove(roomToCreate);
-        } else {
-            wrongChosenRooms.Add(roomToCreate);
-            rooms.Remove(roomToCreate);
-        }
-
-        bool correctRoomFound = rooms.Count == 0 && !isCorridorTurn || corridors.Count == 0 && isCorridorTurn;
-        return correctRoomFound;
+    void HandleWrongRoom(Room roomToCreate) {
+        selectedRoomList.Remove(roomToCreate);
     }
-
-    Vector2 GetNextDirection(DoorDirection direction, float currentX, float currentY) {
+    
+    Vector2 GetNextSpawnLocation(DoorDirection direction, float currentX, float currentY) {
+        Vector2 scaledRoomSize = roomSize * ROOM_SCALE_MULTIPLIER;
         switch (direction) {
             case DoorDirection.Top:
-                return new Vector2(currentX, currentY + (roomSize.y * 0.7f));
+                return new Vector2(currentX, currentY + scaledRoomSize.y);
             case DoorDirection.Down:
-                return new Vector2(currentX, currentY - (roomSize.y * 0.7f));
+                return new Vector2(currentX, currentY - scaledRoomSize.y);
             case DoorDirection.Left:
-                return new Vector2(currentX - (roomSize.x * 0.7f), currentY);
+                return new Vector2(currentX - scaledRoomSize.x, currentY);
             case DoorDirection.Right:
-                return new Vector2(currentX + (roomSize.x * 0.7f), currentY);
+                return new Vector2(currentX + scaledRoomSize.x, currentY);
             default:
                 return new Vector2(currentX, currentY);
         }
     }
+    
+    bool WouldCollideWithSomeRoom(Room room, Vector3 spawnPosition) {
+        PrepareTestRoomCollider(room, spawnPosition);
+        Bounds roomBounds = testRoomCollider.bounds;
+        bool foundCollision = false;
+        
+        // check potential spawn location
+        foreach (var generatedRoom in alreadyGeneratedRooms) {
+            var bounds = generatedRoom.GetBounds();
+            if (bounds.Intersects(roomBounds)) {
+                foundCollision = true;
+                break;
+            }
+        }
+        
+        // TODO: check location of even next room going from potential room
+        return foundCollision;
+    }
 
-    bool CheckIfCollidesWithOtherRoom(DoorDirection direction, Vector2 nextDirection, Room room) {
-        switch (direction) {
-            case DoorDirection.Top:
-            case DoorDirection.Down:
-            case DoorDirection.Right:
-                return false;
-
-            case DoorDirection.Left:
-                var vectorToCheck = new Vector2(nextDirection.x - 0.7f * roomSize.x, nextDirection.y);
-                var collidingRoom = alreadyGeneratedRooms.FirstOrDefault(r => (Vector2)r.transform.position == vectorToCheck);
-                return collidingRoom != null;
-            
-            default:
-                Debug.LogError("Unhandled switch case");
-                return false;
+    void PrepareTestRoomCollider(Room room, Vector3 spawnPosition) {
+        testRoom.transform.position = spawnPosition;
+        testRoomCollider.size = new Vector3(0, 0);
+        testRoomCollider.center = new Vector3(0, 0);
+        testRoomCollider.bounds.Encapsulate(room.GetBounds());
+        testRoomCollider.bounds.Encapsulate(new Vector3(spawnPosition.x, spawnPosition.y, spawnPosition.z - 100f));
+        testRoomCollider.bounds.Encapsulate(new Vector3(spawnPosition.x, spawnPosition.y, spawnPosition.z + 100f));
+    }
+    
+    IEnumerator GenerateLevelSlowly() {
+        for (int i = 0; i < numberOfRooms; i++) {
+            var currentDoorDirection = currentRoom.DoorsData[1].direction;
+            PlaceRoom(currentDoorDirection);
+            if (Random.Range(0f, 1f) < 0.5f)
+                isCorridorTurn = !isCorridorTurn;
+            yield return new WaitForSeconds(3f);
         }
     }
 }
