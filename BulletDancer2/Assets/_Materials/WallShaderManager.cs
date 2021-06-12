@@ -4,7 +4,8 @@ using UnityEngine;
 public class WallShaderManager : MonoBehaviour {
     [SerializeField] Material wallMat;
     [SerializeField] Material distortionMat;
-    [SerializeField] private Transform mainCamera;
+    [SerializeField] Transform mainCamera;
+    [SerializeField] bool hideWalls;
 
     readonly int cameraWorldPosID = Shader.PropertyToID("_CameraWorldPos");
 
@@ -24,7 +25,7 @@ public class WallShaderManager : MonoBehaviour {
         distortionMat.SetVector(cameraWorldPosID, cameraWorldPos);
         
         if (Application.isPlaying) {
-            wallMat.SetFloat("_Hide", 0f);
+            wallMat.SetFloat("_Hide", hideWalls ? 1f : 0f);
         } else {
             wallMat.SetFloat("_Hide", 1f);
         }
