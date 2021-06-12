@@ -16,21 +16,25 @@ public class EntitySceneManager : SceneManager {
         
         CollectSceneEntities();
         foreach (var entity in entites) {
+            if (entity == null) {
+                Debug.LogError("[EntitySceneManager]: one of the entities is null");
+                return;
+            }
             entity.Initialize(data.player, projectileManager);
 
             if (entity is Enemy enemy)
-            {
                 HandleDrop(enemy);
-            }
         }
         
-        initializationState = ManagerInitializationState.COMPLETED;
+        ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
-    private void HandleDrop(Enemy enemy)
-    {
-        switch (enemy.drop)
-        {
+    public void AddEntity(Entity entity) {
+        entity.Initialize(data.player, projectileManager);
+    }
+
+    void HandleDrop(Enemy enemy) {
+        switch (enemy.drop) {
             case ResourceTypeDrop.Ore:
                 enemy.InitializeResource(ore);
                 break;
@@ -56,7 +60,7 @@ public class EntitySceneManager : SceneManager {
     [ContextMenu("Collect Scene Items")]
     public void CollectSceneEntities() {
         Undo.RecordObject(this, "[EntitySceneManager]: Collecting entities");
-        var foundSceneEntities = FindObjectsOfType<Entity>();
+        var foundSceneEntities = FindObjectsOfType<Entity>(false);
         if (foundSceneEntities != null && foundSceneEntities.Length > 0)
             entites = foundSceneEntities.ToList();
     }

@@ -10,7 +10,7 @@ public class ItemSceneManager : SceneManager {
         base.Init(masterSystem, data);
         type = SceneManagerType.Item;
 
-        var projectileManager = masterSystem.TryGetManager(SceneManagerType.Projectile);
+        var projectileManager = masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
         if (projectileManager == null) {
             Debug.LogError("[ItemSceneSystem]: tried to get projectileManager but it wasn't initialized");
             return;
@@ -21,7 +21,7 @@ public class ItemSceneManager : SceneManager {
             item.Initialize(data.player, data.playerController, projectileManager as ProjectileManager);
         }
         
-        initializationState = ManagerInitializationState.COMPLETED;
+        ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
     public override void Tick(float dt) {

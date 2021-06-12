@@ -16,7 +16,7 @@ public class ProjectileManager : SceneManager {
             var projectileComponent = p.GetComponent<Projectile>();
             if (projectileComponent == null) {
                 Debug.LogError("[ProjectileManager]: projectile component not found in game object");
-                initializationState = ManagerInitializationState.FAILED;
+                ChangeInitializationState(ManagerInitializationState.FAILED);
                 return;
             }
 
@@ -30,14 +30,14 @@ public class ProjectileManager : SceneManager {
                 
                 if (projectileComponent.Type() == otherProjectileComponent.Type()) {
                     Debug.LogError($"[ProjectileManager]: two projectiles with same projectile type found '{projectileComponent.Type().ToString()}' - this should not happen");
-                    initializationState = ManagerInitializationState.FAILED;
+                    ChangeInitializationState(ManagerInitializationState.FAILED);
                     return;
                 }
             }
             projectiles.Add(projectileComponent.Type(), p);
         }
         
-        initializationState = ManagerInitializationState.COMPLETED;
+        ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
     public Projectile SpawnProjectile(Vector3 position, ProjectileType type, bool ownedByPlayer, float speed) {
@@ -48,7 +48,7 @@ public class ProjectileManager : SceneManager {
         var spawnedProjectileGameObject = Instantiate(projectileGameObject);
         var projectile = spawnedProjectileGameObject.GetComponent<Projectile>();
         if (projectile == null) {
-            Debug.LogError("[]");
+            Debug.LogError("[ProjectileManager]: projectile is null");
             return null;
         }
         

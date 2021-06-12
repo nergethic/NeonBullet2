@@ -13,7 +13,7 @@ public class MasterSystem : MonoBehaviour {
     bool isInitialized;
     
     WaitForSeconds WaitForSomeTime = new WaitForSeconds(0.1f);
-    public SceneManager TryGetManager(SceneManagerType managerType) => initializedSceneManagers.ContainsKey(managerType) ? initializedSceneManagers[managerType] : null;
+    public T TryGetManager<T>(SceneManagerType managerType) where T:SceneManager => initializedSceneManagers.ContainsKey(managerType) ? (T)initializedSceneManagers[managerType] : null;
     
     void Awake() {
         data.player = player;
