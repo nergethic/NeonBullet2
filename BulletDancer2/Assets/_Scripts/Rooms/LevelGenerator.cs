@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Assets._Scripts;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ public class LevelGenerator : MonoBehaviour {
         nextRoomType = RoomType.MainRoom;
         GenerateLevel();
     }
-    
+
     void GenerateLevel() {
         if (DEBUG_SlowDownGeneration) {
             SlowSpawnRooms();
@@ -102,7 +103,7 @@ public class LevelGenerator : MonoBehaviour {
                 continue;
             }
 
-            if (CouldBePlaced(newRoomData)) {
+            if (!CouldBePlaced(newRoomData)) {
                 HandleWrongRoom(potentialRoomToSpawn);
                 continue;
             }
@@ -127,7 +128,7 @@ public class LevelGenerator : MonoBehaviour {
 
     bool CouldBePlaced(RoomData roomData) {
         Vector3 spawnPos = roomData.spawnPosition;
-        if (!WouldCollideWithSomeRoom(roomData.room, spawnPos))
+        if (WouldCollideWithSomeRoom(roomData.room, spawnPos))
             return false;
 
         // NOTE: room could be placed but let's check if its doors aren't blocked
