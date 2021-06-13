@@ -37,7 +37,7 @@ public class LevelGenerator : MonoBehaviour {
         roomSize = mainRoom.GetSize();
         alreadyGeneratedRooms.Add(mainRoom);
         currentRoom = mainRoom;
-        currentRoomData.connectingDoors = mainRoom.DoorsData[0];
+        currentRoomData.entryDoors = mainRoom.DoorsData[0];
         nextRoomType = RoomType.MainRoom;
         GenerateLevel();
     }
@@ -63,13 +63,16 @@ public class LevelGenerator : MonoBehaviour {
         bool spawnCorridor = true;
         for (int i = 0; i < numberOfRooms; i++) {
             foreach (var doorEntry in currentRoom.DoorsData) {
-                if (doorEntry.direction == currentRoomData.connectingDoors.direction)
+                if (doorEntry.direction == currentRoomData.entryDoors.direction)
                     continue;
                 
-                // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
-                if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData))
+                if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
                     SpawnRoom(roomData);
+                    // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
+                    break;
+                }
+                    
             }
             
             if (Random.Range(0f, 1f) < 0.5f)
@@ -97,7 +100,7 @@ public class LevelGenerator : MonoBehaviour {
             newRoomData.room = potentialRoomToSpawn;
 
             var (doorsFound, doorData) = potentialRoomToSpawn.FindDoorsWithDir(nextDoorsDirection);
-            newRoomData.connectingDoors = doorData;
+            newRoomData.entryDoors = doorData;
             if (!doorsFound) {
                 HandleWrongRoom(potentialRoomToSpawn);
                 continue;
@@ -139,7 +142,7 @@ public class LevelGenerator : MonoBehaviour {
         int correctExitDoorsCount = 0;
         for (int i = 0; i < doors.Count; i++) {
             var door = doors[i];
-            if (door.direction == roomData.connectingDoors.direction)
+            if (door.direction == roomData.entryDoors.direction)
                 continue;
 
             Vector3 nextSpawnLocation = GetNextSpawnLocation(door.direction, spawnPos.x, spawnPos.y);
@@ -194,7 +197,7 @@ public class LevelGenerator : MonoBehaviour {
             yield return new WaitForSeconds(delay);
             
             foreach (var doorEntry in currentRoom.DoorsData) {
-                if (doorEntry.direction == currentRoomData.connectingDoors.direction)
+                if (doorEntry.direction == currentRoomData.entryDoors.direction)
                     continue;
                 
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
@@ -210,7 +213,7 @@ public class LevelGenerator : MonoBehaviour {
 
 struct RoomData {
     public Room room;
-    public DoorData connectingDoors;
+    public DoorData entryDoors;
     public Vector3 spawnPosition;
     public bool isCorridor;
 }
