@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class LevelGenerator : MonoBehaviour {
     const float ROOM_SCALE_MULTIPLIER = 0.7f;
     
-    [SerializeField] Room mainRoom;
+    [SerializeField] Room mainRoomBlueprint;
     [SerializeField] List<Room> rooms;
     [SerializeField] List<Room> corridors;
     [SerializeField] GameObject testRoom;
@@ -32,7 +32,7 @@ public class LevelGenerator : MonoBehaviour {
         foreach (var cor in corridors)
             Assert.IsTrue(cor is Corridor);
 
-        Instantiate(mainRoom);
+        Room mainRoom = Instantiate(mainRoomBlueprint);
         roomSize = mainRoom.GetSize();
         alreadyGeneratedRooms.Add(mainRoom);
         currentRoom = mainRoom;
@@ -55,7 +55,7 @@ public class LevelGenerator : MonoBehaviour {
             StopCoroutine(debugCor);
             debugCor = null;
         }
-        debugCor = StartCoroutine(GenerateLevelSlowly(2f));
+        debugCor = StartCoroutine(GenerateLevelSlowly(10f));
     }
 
     void SpawnRooms() {
@@ -167,11 +167,7 @@ public class LevelGenerator : MonoBehaviour {
 
     void PrepareTestRoomCollider(Room room, Vector3 spawnPosition) {
         testRoom.transform.position = spawnPosition;
-        testRoomCollider.size = Vector3.zero;
         testRoomCollider.center = Vector3.zero;
-        testRoomCollider.bounds.Encapsulate(room.GetBounds());
-        testRoomCollider.bounds.Encapsulate(new Vector3(spawnPosition.x, spawnPosition.y, spawnPosition.z - 100f));
-        testRoomCollider.bounds.Encapsulate(new Vector3(spawnPosition.x, spawnPosition.y, spawnPosition.z + 100f));
     }
     
     Vector2 GetNextSpawnLocation(DoorDirection direction, float currentX, float currentY) {
