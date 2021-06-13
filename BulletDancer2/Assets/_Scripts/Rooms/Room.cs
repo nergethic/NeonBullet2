@@ -10,6 +10,14 @@ public class Room : MonoBehaviour {
     public Vector2 GetSize() => collider.size;
     public Bounds GetBounds() => collider.bounds;
     public IList<DoorData> DoorsData => doorsData;
+    
+    public (bool, DoorData) FindDoorsWithDir(DoorDirection dir) {
+        foreach (var doorEntry in doorsData)
+            if (doorEntry.direction == dir)
+                return (true, doorEntry);
+        
+        return (false, default);
+    }
 }
 
 [Serializable]
