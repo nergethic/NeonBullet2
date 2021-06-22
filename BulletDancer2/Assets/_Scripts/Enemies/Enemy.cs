@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Entity {
-    public ResourceTypeDrop drop;
+    public ResourceTypeDrop drop { get; set; }
     private Resource _resource;
     
     List<int> projectilesEntered = new List<int>();
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
+        drop = (ResourceTypeDrop)Random.Range(0, System.Enum.GetValues(typeof(ResourceTypeDrop)).Length);
         base.Initialize(player, projectileManager);
     }
 
