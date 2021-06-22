@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class ItemSceneManager : SceneManager {
     [SerializeField] List<Item> items;
+    private ProjectileManager projectileManager;
 
     public override void Init(MasterSystem masterSystem, SceneManagerData data) {
         base.Init(masterSystem, data);
         type = SceneManagerType.Item;
 
-        var projectileManager = masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
+        projectileManager = masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
         if (projectileManager == null) {
             Debug.LogError("[ItemSceneSystem]: tried to get projectileManager but it wasn't initialized");
             return;
@@ -22,6 +23,11 @@ public class ItemSceneManager : SceneManager {
         }
         
         ChangeInitializationState(ManagerInitializationState.COMPLETED);
+    }
+
+    public void AddItem(Item item)
+    {
+        item.Initialize(data.player, data.playerController, projectileManager);
     }
 
     public override void Tick(float dt) {
