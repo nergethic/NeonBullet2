@@ -105,7 +105,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemies:
   - {fileID: 6035741086760662853, guid: e14ba0317e1162e4db2b016ad90a9785, type: 3}
-  enemiesSpawnPoints: []
+  - {fileID: 6035741086760662853, guid: bb1335904c636a040977cd913410bddc, type: 3}
+  enemiesSpawnPoints:
+  - {fileID: 3247070351663617175}
+  - {fileID: 3625798312588444198}
   enemySpawnAreas: []
 --- !u!1 &1128365896426551394
 GameObject:

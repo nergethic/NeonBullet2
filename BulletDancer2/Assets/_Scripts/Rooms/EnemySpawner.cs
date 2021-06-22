@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour {
     EntitySceneManager entityManager;
     List<Enemy> spawnedEnemies;
 
-    void Awake() {
+    void Start() {
         spawnedEnemies = new List<Enemy>();
         SpawnEnemiesFromSpawnPoints();
         SpawnEnemiesFromSpawnAreas();
