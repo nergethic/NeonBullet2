@@ -18,7 +18,7 @@ public class ItemSceneManager : SceneManager {
         
         CollectSceneItems();
         foreach (var item in items) {
-            item.Initialize(data.player, data.playerController, projectileManager as ProjectileManager);
+            item.Initialize(data.player, data.playerController, projectileManager);
         }
         
         ChangeInitializationState(ManagerInitializationState.COMPLETED);
