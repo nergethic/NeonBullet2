@@ -6,5 +6,6 @@ public enum FoodType
 {
     apple,
     turkey,
-    banana
+    banana,
+    medkit
 }

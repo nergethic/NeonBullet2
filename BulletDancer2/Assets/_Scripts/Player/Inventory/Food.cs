@@ -8,9 +8,10 @@ public class Food : Item
     [SerializeField] FoodType type;
 	private int HealthRegen => type switch
 	{
-		FoodType.apple => 10,
-		FoodType.banana => 20,
-		FoodType.turkey => 30,
+		FoodType.apple => 1,
+		FoodType.banana => 2,
+		FoodType.turkey => 3,
+        FoodType.medkit => 4,
 		_ => 0
 	};
 

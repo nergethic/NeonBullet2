@@ -465,6 +465,7 @@ MonoBehaviour:
   items:
   - {fileID: 5928702411982748087, guid: be32aea7a033fc24c82f23fbb64dc64a, type: 3}
   - {fileID: 3494659571956619324, guid: 6a6bcdd39154cc64a8cf6a9f09dc52b9, type: 3}
+  - {fileID: 5928702411982748087, guid: c21787b53583e9c46bbdb669fe643adf, type: 3}
   itemsSpawnPoints:
   - {fileID: 1792589619248317453}
 --- !u!1001 &2310626168324761691
