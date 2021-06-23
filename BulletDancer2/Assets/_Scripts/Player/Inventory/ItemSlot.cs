@@ -23,11 +23,21 @@ public class ItemSlot : MonoBehaviour
     public void RemoveItemFromSlot()
     {
         SetButtonStatus(Item, false);
+        HandleEquipableItems();
+
         item = null;
         itemImage.sprite = null;
         itemButton.onClick.RemoveAllListeners();
         itemButton.gameObject.SetActive(false);
         deleteButton.gameObject.SetActive(false);
+    }
+
+    private void HandleEquipableItems()
+    {
+        if (item is Weapon weapon)
+            weapon.RemoveActiveWeapon();
+        else if (item is Grenade grenade)
+            grenade.RemoveActiveGrenade();
     }
 
     private void AddItemToSlot(Item item)
