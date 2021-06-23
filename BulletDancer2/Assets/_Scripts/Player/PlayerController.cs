@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Transform throwableSpawn;
     [SerializeField] ProjectileManager projectileManager;
+    public SpriteRenderer weapon;
     public event Action FootstepEvent;
     public event Action DashEvent;
     public event Action ShootingEvent;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     public event Action StopChargeEvent;
     public event Action PickUpEvent;
     public ThrowableItem ThrowableItem { get; set; }
+    public Weapon activeWeapon;
     private Item pickableItem;
     private Resource pickableResource;
     private Controls controls;
@@ -35,6 +37,13 @@ public class PlayerController : MonoBehaviour {
         controls.Player.ShowCrafting.Enable();
         lastPosition = playerPosition.position;
         currentSpeed = player.playerSpeed;
+
+        // check why item system didn't init item
+        activeWeapon.Initialize(player, this, projectileManager);
+        player.Inventory.AddItem(activeWeapon);
+        weapon.sprite = activeWeapon.topView;
+        activeWeapon.SetButtonStatus(activeWeapon, true);
+        activeWeapon.SpriteRenderer.sprite = null;
     }
 
     private void OnEnable() {
@@ -107,7 +116,7 @@ public class PlayerController : MonoBehaviour {
         if (!isPause)
         {
             var mouse = Mouse.current;
-            if (mouse.leftButton.isPressed && player.Energy >= 1) {
+            if (mouse.leftButton.isPressed && player.Energy >= 1 && activeWeapon != null) {
                 if (Mathf.Approximately(loadingShot, 0))
                     ChargeEvent();
                 loadingShot += 1f * Time.deltaTime;
@@ -116,12 +125,13 @@ public class PlayerController : MonoBehaviour {
             else if (mouse.leftButton.wasReleasedThisFrame) {
                 if (loadingShot > 0.474f && player.Energy >= 1) {
                     player.Energy -= 1;
-
-                    var bullet = projectileManager.SpawnProjectile(playerPosition.position, ProjectileType.Standard, true, 4.2f);
-                    var bulletDirection = GetCentralizedMousePos().normalized;
-                    bullet.SetDirection(bulletDirection);
-                    ShootingEvent();
-                    velBooster = -bulletDirection * val;
+                    {
+                        var bullet = projectileManager.SpawnProjectile(playerPosition.position, activeWeapon.projectileType, true, 4.2f);
+                        var bulletDirection = GetCentralizedMousePos().normalized;
+                        bullet.SetDirection(bulletDirection);
+                        ShootingEvent();
+                        velBooster = -bulletDirection * val;
+                    }
                 }
                 else
                     StopChargeEvent();
