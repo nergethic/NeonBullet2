@@ -15,7 +15,6 @@ public class CraftingLabel : MonoBehaviour {
     [SerializeField] Text oreText;
     [SerializeField] Text ironText;
     [SerializeField] Text goldText;
-    [SerializeField] MasterSystem masterSystem;
 
     public event Action CraftEvent;
 
@@ -23,7 +22,7 @@ public class CraftingLabel : MonoBehaviour {
         craftingButton.image.sprite = itemToCraft.SpriteRenderer.sprite;
         craftingButton.interactable = false;
         SetupTextLabels();
-        var projectileManager = masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
+        var projectileManager = craftingPanel.masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
         if (projectileManager == null) {
             Debug.LogError("[CroftingLabel]: tried to get projectileManager but it wasn't initialized");
             return;

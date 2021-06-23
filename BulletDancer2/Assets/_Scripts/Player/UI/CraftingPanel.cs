@@ -11,6 +11,8 @@ public class CraftingPanel : MonoBehaviour
     [SerializeField] int maxItemsOnPage;
     [SerializeField] Button nextButton;
     [SerializeField] Button previousButton;
+    public MasterSystem masterSystem;
+
     private int page = 1;
     void Awake()
     {
