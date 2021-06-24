@@ -35,6 +35,7 @@ public class EnemySpawner : MonoBehaviour {
     void SpawnEnemy(Enemy enemy, Vector3 position) {
         var createdEnemy = Instantiate(enemy);
         createdEnemy.transform.position = position;
+        createdEnemy.transform.SetParent(gameObject.transform);
         spawnedEnemies.Add(createdEnemy);
     }
 
