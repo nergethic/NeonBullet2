@@ -58,8 +58,11 @@ public class Grenade : Item, ThrowableItem
 
     public void RemoveActiveGrenade()
     {
-        playerController.ThrowableItem = null;
-        SetButtonStatus(this, false);
+        if (playerController.ThrowableItem == this)
+        {
+            playerController.ThrowableItem = null;
+            SetButtonStatus(this, false);
+        }
     }
 
     public void SetButtonStatus(ThrowableItem throwableItem, bool isActive) => ItemSlot.SetButtonStatus(this, isActive);

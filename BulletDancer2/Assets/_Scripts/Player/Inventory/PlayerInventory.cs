@@ -10,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
     public bool IsInventoryActive => inventoryPanel.isActiveAndEnabled;
 
 
-    private void Start()
+    private void Awake()
     {
         slots = inventoryPanel.PrepareItemSlots(numberOfSlots);
     }

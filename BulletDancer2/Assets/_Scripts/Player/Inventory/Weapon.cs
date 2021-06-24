@@ -33,9 +33,12 @@ public class Weapon : Item
 
     public void RemoveActiveWeapon()
     {
-        playerController.activeWeapon = null;
-        playerController.weapon.sprite = null;
-        SetButtonStatus(this, false);
+        if (playerController.activeWeapon == this)
+        {
+            playerController.activeWeapon = null;
+            playerController.weapon.sprite = null;
+            SetButtonStatus(this, false);
+        }
     }
 
     public void SetButtonStatus(Weapon weapon, bool isActive) => ItemSlot.SetButtonStatus(this, isActive);
