@@ -66,6 +66,7 @@ public class LevelGenerator : MonoBehaviour {
 
         mainRoom = Instantiate(mainRoomBlueprint);
         ResetState();
+        Generate();
     }
 
     void GenerateLevel() {
@@ -234,7 +235,6 @@ public class LevelGenerator : MonoBehaviour {
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
                 if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
                     SpawnRoom(roomData);
-                    Debug.LogError("Spawn room slow");
                     // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
                     break;
                 }
