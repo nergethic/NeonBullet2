@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void InitializeSpawnedEnemies() {
-        var masterSystem = GetComponent<MasterSystem>();
+        var masterSystem = FindObjectOfType<MasterSystem>();
         if (masterSystem != null) {
             entityManager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
             if (entityManager == null) {
@@ -51,7 +51,8 @@ public class EnemySpawner : MonoBehaviour {
                 else
                     entityManager.OnInitializationCompleted += HandleEntityManagerOnOnInitializationCompleted;
             }
-        }
+        } else
+            Debug.LogError("Couldn't get master system");
     }
     
     void HandleEntityManagerOnOnInitializationCompleted() {
