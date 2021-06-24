@@ -45,6 +45,6 @@ Material:
     - _LengthMult: 2.09
     - _Offset: 1
     m_Colors:
-    - _CameraWorldPos: {r: 2.713863, g: 1.6164813, b: -5, a: 0}
+    - _CameraWorldPos: {r: 0.81, g: -0.23, b: -5, a: 0}
     - _Offset: {r: 0.45, g: 0.44, b: 0, a: 0}
   m_BuildTextureStacks: []
