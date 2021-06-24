@@ -8,8 +8,9 @@ public class Room : MonoBehaviour {
     [SerializeField] BoxCollider collider;
 
     public Vector3 GetSize() => collider.size;
+    public BoxCollider BoxCollider => collider;
     public Bounds GetBounds() => collider.bounds;
-    public IList<DoorData> DoorsData => doorsData;
+    public DoorData[] DoorsData => doorsData;
 
     public (bool, DoorData) FindDoorsWithDir(DoorDirection dir) {
         foreach (var doorEntry in doorsData)

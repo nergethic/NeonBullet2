@@ -1,83 +1,80 @@
-using System;
 using System.Collections;
 using Assets._Scripts;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour {
     const float ROOM_SCALE_MULTIPLIER = 0.7f;
+    const float SLOW_ROOM_GENERATE_DELAY = 1f;
+    readonly WaitForSeconds waitDelay = new WaitForSeconds(SLOW_ROOM_GENERATE_DELAY);
     
+    [SerializeField] Transform roomsParent;
     [SerializeField] Room mainRoomBlueprint;
     [SerializeField] List<Room> rooms;
     [SerializeField] List<Room> corridors;
     [SerializeField] GameObject testRoom;
     [SerializeField] BoxCollider testRoomCollider;
     [SerializeField] int numberOfRooms;
-    
+    [SerializeField] List<Room> nextRoomsBlueprints;
+
     [SerializeField] bool DEBUG_SlowDownGeneration;
     
     RoomType nextRoomType;
     Room currentRoom;
     RoomData currentRoomData;
+    Room mainRoom;
     Vector2 roomSize;
-    
+
     List<Room> availableRooms = new List<Room>();
     List<Room> availableCorridors = new List<Room>();
     List<Room> alreadyGeneratedRooms = new List<Room>();
     List<Room> selectedRoomList;
-    Coroutine debugCor;
+    List<Room> nextRoomsBlueprintsCopy;
+    Coroutine generateRoomsCor;
+
+    [ContextMenu("Generate")]
+    public void Generate() {
+        RemoveRooms();
+        GenerateLevel();
+    }
+
+    private void Update() {
+        var keyboard = Keyboard.current;
+        if (keyboard.gKey.wasPressedThisFrame)
+            Generate();
+    }
+
+    void RemoveRooms() {
+        if (generateRoomsCor != null) {
+            StopCoroutine(generateRoomsCor);
+            generateRoomsCor = null;
+        }
+        
+        for (int i = roomsParent.childCount - 1; i >= 0; i--)
+            Destroy(roomsParent.GetChild(i).gameObject);
+
+        ResetState();
+    }
 
     void Awake() {
         foreach (var cor in corridors)
             Assert.IsTrue(cor is Corridor);
 
-        Room mainRoom = Instantiate(mainRoomBlueprint);
-        roomSize = mainRoom.GetSize();
-        alreadyGeneratedRooms.Add(mainRoom);
-        currentRoom = mainRoom;
-        currentRoomData.entryDoors = mainRoom.DoorsData[0];
-        nextRoomType = RoomType.MainRoom;
-        GenerateLevel();
+        mainRoom = Instantiate(mainRoomBlueprint);
+        ResetState();
     }
 
     void GenerateLevel() {
-        if (DEBUG_SlowDownGeneration) {
-            SlowSpawnRooms();
-            return;
+        nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
+        if (generateRoomsCor != null) {
+            StopCoroutine(generateRoomsCor);
+            generateRoomsCor = null;
         }
-        
-        SpawnRooms();
-    }
-
-    void SlowSpawnRooms() {
-        if (debugCor != null) {
-            StopCoroutine(debugCor);
-            debugCor = null;
-        }
-        debugCor = StartCoroutine(GenerateLevelSlowly(10f));
-    }
-
-    void SpawnRooms() {
-        bool spawnCorridor = true;
-        for (int i = 0; i < numberOfRooms; i++) {
-            foreach (var doorEntry in currentRoom.DoorsData) {
-                if (doorEntry.direction == currentRoomData.entryDoors.direction)
-                    continue;
-                
-                var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
-                if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
-                    SpawnRoom(roomData);
-                    // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
-                    break;
-                }
-                    
-            }
-            
-            if (Random.Range(0f, 1f) < 0.5f)
-                spawnCorridor = !spawnCorridor;
-        }
+        generateRoomsCor = StartCoroutine(GenerateLevelSlowly());
     }
 
     bool TryFindNextRoom(DoorDirection nextDoorsDirection, bool spawnCorridor, out RoomData newRoomData) {
@@ -86,6 +83,20 @@ public class LevelGenerator : MonoBehaviour {
             spawnPosition = GetNextSpawnLocation(nextDoorsDirection.GetOppositeDirection(), currentRoomPos.x, currentRoomPos.y),
             isCorridor = spawnCorridor
         };
+        
+        if (nextRoomsBlueprintsCopy.Count != 0) { // NOTE: code for debug purposes
+            var roomBlueprint = nextRoomsBlueprintsCopy[0];
+            nextRoomsBlueprintsCopy.RemoveAt(0);
+            newRoomData.room = roomBlueprint;
+            var (doorsFound, doorData) = roomBlueprint.FindDoorsWithDir(nextDoorsDirection);
+            if (!doorsFound) {
+                Debug.LogError("DOORS NOT FOUND");
+                return false;
+            }
+            newRoomData.entryDoors = doorData;
+            
+            return true;
+        }
 
         availableRooms = new List<Room>(rooms);
         availableCorridors = new List<Room>(corridors);
@@ -114,12 +125,14 @@ public class LevelGenerator : MonoBehaviour {
             return true;
         }
 
+        newRoomData.room = null;
         return false;
     }
 
     void SpawnRoom(RoomData roomData) {
         Room newRoom = Instantiate(roomData.room);
         newRoom.transform.position = roomData.spawnPosition;
+        newRoom.transform.SetParent(roomsParent);
         alreadyGeneratedRooms.Add(newRoom);
         currentRoom = newRoom;
         currentRoomData = roomData;
@@ -136,11 +149,11 @@ public class LevelGenerator : MonoBehaviour {
 
         // NOTE: room could be placed but let's check if its doors aren't blocked
         var doors = roomData.room.DoorsData;
-        if (doors.Count == 1)
+        if (doors.Length == 1)
             return true;
         
         int correctExitDoorsCount = 0;
-        for (int i = 0; i < doors.Count; i++) {
+        for (int i = 0; i < doors.Length; i++) {
             var door = doors[i];
             if (door.direction == roomData.entryDoors.direction)
                 continue;
@@ -157,6 +170,9 @@ public class LevelGenerator : MonoBehaviour {
         bool foundCollision = false;
         PrepareTestRoomCollider(room, roomPosition);
         Bounds roomBounds = testRoomCollider.bounds;
+        
+        //var room.GetBounds()
+        //Physics.OverlapBox()
         
         foreach (var generatedRoom in alreadyGeneratedRooms) {
             var bounds = generatedRoom.GetBounds();
@@ -191,18 +207,37 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
     
-    IEnumerator GenerateLevelSlowly(float delay) {
+    void ResetState() {
+        availableRooms.Clear();
+        availableCorridors.Clear();
+        alreadyGeneratedRooms.Clear();
+        alreadyGeneratedRooms.Add(mainRoom);
+        
+        roomSize = mainRoom.GetSize();
+        currentRoom = mainRoom;
+        currentRoomData.entryDoors = mainRoom.DoorsData[0];
+        nextRoomType = RoomType.MainRoom;
+    }
+    
+    IEnumerator GenerateLevelSlowly() {
         bool spawnCorridor = true;
         for (int i = 0; i < numberOfRooms; i++) {
-            yield return new WaitForSeconds(delay);
+            if (DEBUG_SlowDownGeneration)
+                yield return waitDelay;
+            else
+                yield return null;
             
             foreach (var doorEntry in currentRoom.DoorsData) {
                 if (doorEntry.direction == currentRoomData.entryDoors.direction)
                     continue;
                 
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
-                if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData))
+                if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
                     SpawnRoom(roomData);
+                    Debug.LogError("Spawn room slow");
+                    // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
+                    break;
+                }
             }
             
             if (Random.Range(0f, 1f) < 0.5f)
