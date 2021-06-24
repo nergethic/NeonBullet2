@@ -5,7 +5,7 @@ public class RoomStructureSpawner : MonoBehaviour {
     [SerializeField] Transform spawnLocation;
     [SerializeField] List<RoomStructure> possibleRoomStructures;
     
-    void Awake() {
+    void Start() {
         if (possibleRoomStructures?.Count == 0)
             return;
 
