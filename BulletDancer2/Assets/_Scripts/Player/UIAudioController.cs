@@ -7,11 +7,10 @@ public class UIAudioController : MonoBehaviour
 {
     [SerializeField] AudioClip craft;
     [SerializeField] AudioSource craftSource;
-    [SerializeField] List<CraftingLabel> craftingLabels;
-
-    private void Awake()
+    [SerializeField] CraftingPanel craftingPanel;
+    private void Start()
     {
-        foreach (var craftingLabel in craftingLabels)
+        foreach (var craftingLabel in craftingPanel.craftingLabels)
         {
             craftingLabel.CraftEvent += OnCraft;
         }

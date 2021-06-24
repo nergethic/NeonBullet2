@@ -27,5 +27,5 @@ Material:
     m_Floats:
     - _Hide: 1
     m_Colors:
-    - _CameraWorldPos: {r: 2.713863, g: 1.6164813, b: -5, a: 0}
+    - _CameraWorldPos: {r: 0.81, g: -0.23, b: -5, a: 0}
   m_BuildTextureStacks: []

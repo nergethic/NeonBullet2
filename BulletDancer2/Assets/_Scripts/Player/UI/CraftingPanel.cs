@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CraftingPanel : MonoBehaviour
 {
-    private CraftingLabel[] craftingLabels;
+    public List<CraftingLabel> craftingLabels;
     private List<CraftingLabel> activeCraftingLabels = new List<CraftingLabel>();
     [SerializeField] int maxItemsOnPage;
     [SerializeField] Button nextButton;
@@ -16,7 +16,6 @@ public class CraftingPanel : MonoBehaviour
     private int page = 1;
     void Awake()
     {
-        craftingLabels = GetComponentsInChildren<CraftingLabel>(true);
         Display();
     }
 
@@ -24,7 +23,7 @@ public class CraftingPanel : MonoBehaviour
     {
         var pageIndex = page - 1;
         var startPagePlace = pageIndex * maxItemsOnPage;
-        var canDisplayItemOnNextPage = page * maxItemsOnPage < craftingLabels.Length;
+        var canDisplayItemOnNextPage = page * maxItemsOnPage < craftingLabels.Count;
         int endPagePlace;
         nextButton.onClick.RemoveAllListeners();
 
@@ -42,14 +41,14 @@ public class CraftingPanel : MonoBehaviour
             nextButton.onClick.AddListener(SetNextButton);
 
         }
-        else if (page * maxItemsOnPage == craftingLabels.Length)
+        else if (page * maxItemsOnPage == craftingLabels.Count)
         {
             endPagePlace = startPagePlace + maxItemsOnPage;
             nextButton.interactable = false;
         }
         else
         {
-            endPagePlace = craftingLabels.Length % maxItemsOnPage + startPagePlace;
+            endPagePlace = craftingLabels.Count % maxItemsOnPage + startPagePlace;
             nextButton.interactable = false;
         }
 
