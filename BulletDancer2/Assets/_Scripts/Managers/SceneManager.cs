@@ -3,10 +3,12 @@ using UnityEngine;
 
 public abstract class SceneManager : MonoBehaviour {
     public event Action OnInitializationCompleted;
+    public event Action OnInitializationFailed;
+    
+    [SerializeField] SceneManagerType type;
     
     protected SceneManagerData data;
     protected bool isInitializing = false;
-    protected SceneManagerType type;
     private ManagerInitializationState initializationState = ManagerInitializationState.NOT_INITIALIZED;
 
     public SceneManagerType Type => type;
@@ -15,6 +17,11 @@ public abstract class SceneManager : MonoBehaviour {
 
     public virtual void Init(MasterSystem masterSystem, SceneManagerData data) {
         initializationState = ManagerInitializationState.IN_PROGRESS;
+        this.data = data;
+    }
+
+    public void InformAboutInitializationFailed() {
+        OnInitializationFailed?.Invoke();
     }
 
     protected void ChangeInitializationState(ManagerInitializationState newState) {

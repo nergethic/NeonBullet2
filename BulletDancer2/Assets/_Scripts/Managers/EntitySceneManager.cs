@@ -12,8 +12,7 @@ public class EntitySceneManager : SceneManager {
 
     public override void Init(MasterSystem masterSystem, SceneManagerData data) {
         base.Init(masterSystem, data);
-        type = SceneManagerType.Entity;
-        
+
         CollectSceneEntities();
         foreach (var entity in entites) {
             if (entity == null) {
@@ -31,6 +30,7 @@ public class EntitySceneManager : SceneManager {
 
     public void AddEntity(Entity entity) {
         entity.Initialize(data.player, projectileManager);
+        entites.Add(entity);
     }
 
     void HandleDrop(Enemy enemy) {

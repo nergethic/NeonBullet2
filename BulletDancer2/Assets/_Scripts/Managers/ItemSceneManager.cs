@@ -9,7 +9,6 @@ public class ItemSceneManager : SceneManager {
 
     public override void Init(MasterSystem masterSystem, SceneManagerData data) {
         base.Init(masterSystem, data);
-        type = SceneManagerType.Item;
 
         projectileManager = masterSystem.TryGetManager<ProjectileManager>(SceneManagerType.Projectile);
         if (projectileManager == null) {

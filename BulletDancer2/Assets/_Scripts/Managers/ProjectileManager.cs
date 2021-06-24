@@ -8,7 +8,6 @@ public class ProjectileManager : SceneManager {
 
     public override void Init(MasterSystem masterSystem, SceneManagerData data) {
         base.Init(masterSystem, data);
-        type = SceneManagerType.Projectile;
 
         projectiles = new Dictionary<ProjectileType, GameObject>();
         for (int i = 0; i < projectileGameObjects.Length; i++) {
