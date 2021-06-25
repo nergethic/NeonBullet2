@@ -27,7 +27,6 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] bool DEBUG_SlowDownGeneration;
 
     MasterSystem masterSystem;
-    RoomType nextRoomType;
     Room currentRoom;
     RoomData currentRoomData;
     Room mainRoom;
@@ -64,11 +63,6 @@ public class LevelGenerator : MonoBehaviour {
     }
 
     void RemoveRooms() {
-        if (generateRoomsCor != null) {
-            StopCoroutine(generateRoomsCor);
-            generateRoomsCor = null;
-        }
-
         var entityManager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
         entityManager.Reset();
         
@@ -223,24 +217,43 @@ public class LevelGenerator : MonoBehaviour {
         roomSize = mainRoom.GetSize();
     }
     
+    bool generateFromRoomWasSuccessful;
     IEnumerator GenerateLevelSlowly(Room firstRoom) {
         var firstRoomDoorsData = firstRoom.DoorsData;
         int generateBossRoomIndex = Random.Range(0f, 1f) < 0.5f ? 0 : 1;
+        
         for (int i = 0; i < firstRoomDoorsData.Length; i++) {
             var doors = firstRoomDoorsData[i];
-            nextRoomType = RoomType.MainRoom;
+            
+            generateFromRoomWasSuccessful = false;
             yield return GenerateFromRoom(firstRoom, doors, generateBossRoomIndex == i);
+
+            if (!generateFromRoomWasSuccessful) {
+                RemoveRooms();
+                yield return null;
+                nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
+                i = -1;
+            }
         }
         
         OnLevelGenerated?.Invoke();
+        yield return null;
     }
 
     IEnumerator GenerateFromRoom(Room firstRoom, DoorData firstDoorData, bool generateBossRoom) {
         currentRoom = firstRoom;
         currentRoomData.entryDoors = firstDoorData;
+        int roomsToGenerate = numberOfRooms * 2; // rooms+corridors
         
         bool spawnCorridor = true;
-        for (int i = 0; i < numberOfRooms; i++) {
+        int numberOfGeneratedRooms = 0;
+        int tryCount = 0;
+        int maxTryCount = roomsToGenerate * 3;
+        while (numberOfGeneratedRooms != roomsToGenerate) {
+            tryCount++;
+            if (tryCount > maxTryCount)
+                break;
+
             if (DEBUG_SlowDownGeneration)
                 yield return waitDelay;
             else
@@ -252,9 +265,10 @@ public class LevelGenerator : MonoBehaviour {
                 
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
                 bool roomWasGenerated = false;
-                for (int j = 0; j < 10; j++) {
+                for (int j = 0; j < 5; j++) {
                     if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
                         SpawnRoom(roomData);
+                        numberOfGeneratedRooms++;
                         roomWasGenerated = true;
                         // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
                         break;
@@ -262,14 +276,14 @@ public class LevelGenerator : MonoBehaviour {
                 }
 
                 if (roomWasGenerated) {
+                    spawnCorridor = !spawnCorridor;
                     break;
-                } else {
-                    Debug.LogError("Generator error");   
                 }
             }
-            
-            spawnCorridor = !spawnCorridor;
         }
+        
+        generateFromRoomWasSuccessful = numberOfGeneratedRooms == roomsToGenerate;
+        yield return null;
     }
 }
 
