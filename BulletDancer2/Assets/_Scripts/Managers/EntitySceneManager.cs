@@ -34,6 +34,12 @@ public class EntitySceneManager : SceneManager {
         InitEntity(entity);
         entites.Add(entity);
     }
+
+    public void Reset() {
+        foreach (var entity in entites)
+            entity.isDead = true;
+        entites.Clear();
+    }
     
     void InitEntity(Entity entity) {
         entity.Initialize(data.player, projectileManager);
