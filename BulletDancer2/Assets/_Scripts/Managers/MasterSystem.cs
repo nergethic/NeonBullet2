@@ -9,6 +9,7 @@ public class MasterSystem : MonoBehaviour {
     const int MAX_NUMBER_OF_WAIT_INTERVALS = 10;
     
     [SerializeField] SceneManager[] managers;
+    [SerializeField] ScreenOverlayController screenOverlayController;
     [SerializeField] Player player;
     [SerializeField] PlayerController playerController;
     Dictionary<SceneManagerType, SceneManager> activeSceneManagers;
@@ -19,6 +20,7 @@ public class MasterSystem : MonoBehaviour {
     
     WaitForSeconds WaitForSomeTime = new WaitForSeconds(0.1f);
     public T TryGetManager<T>(SceneManagerType managerType) where T:SceneManager => activeSceneManagers.ContainsKey(managerType) ? (T)activeSceneManagers[managerType] : null;
+    public ScreenOverlayController ScreenOverlayController => screenOverlayController;
     
     void Awake() {
         data.player = player;
