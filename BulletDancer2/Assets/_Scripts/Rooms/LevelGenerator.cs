@@ -17,6 +17,7 @@ public class LevelGenerator : MonoBehaviour {
     
     [SerializeField] Transform roomsParent;
     [SerializeField] Room mainRoomBlueprint;
+    [SerializeField] Room bossRoomBlueprint;
     [SerializeField] List<Room> rooms;
     [SerializeField] List<Room> corridors;
     [SerializeField] GameObject testRoom;
@@ -56,12 +57,6 @@ public class LevelGenerator : MonoBehaviour {
         GenerateLevel(mainRoom);
     }
 
-    private void Update() {
-        var keyboard = Keyboard.current;
-        if (keyboard.gKey.wasPressedThisFrame)
-            GenerateLevel();
-    }
-
     void RemoveRooms() {
         var entityManager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
         entityManager.Reset();
@@ -81,7 +76,7 @@ public class LevelGenerator : MonoBehaviour {
         generateRoomsCor = StartCoroutine(GenerateLevelSlowly(firstRoom));
     }
 
-    bool TryFindNextRoom(DoorDirection nextDoorsDirection, bool spawnCorridor, out RoomData newRoomData) {
+    bool TryFindNextRoom(DoorDirection nextDoorsDirection, bool spawnCorridor, out RoomData newRoomData, bool spawnBossRoom) {
         var currentRoomPos = currentRoom.transform.position;
         newRoomData = new RoomData {
             spawnPosition = GetNextSpawnLocation(nextDoorsDirection.GetOppositeDirection(), currentRoomPos.x, currentRoomPos.y),
@@ -109,10 +104,15 @@ public class LevelGenerator : MonoBehaviour {
         for (int triesCount = 0; triesCount < 200; triesCount++) {
             if (selectedRoomList.Count == 0)
                 return false;
-            
+
             var randomIndex = Random.Range(0, selectedRoomList.Count);
-            var potentialRoomToSpawn = selectedRoomList[randomIndex];
+            Room potentialRoomToSpawn = selectedRoomList[randomIndex];
             newRoomData.room = potentialRoomToSpawn;
+            
+            if (spawnBossRoom) {
+                potentialRoomToSpawn = bossRoomBlueprint;
+                newRoomData.room = potentialRoomToSpawn;
+            }
 
             var (doorsFound, doorData) = potentialRoomToSpawn.FindDoorsWithDir(nextDoorsDirection);
             newRoomData.entryDoors = doorData;
@@ -231,9 +231,9 @@ public class LevelGenerator : MonoBehaviour {
             if (!generateFromRoomWasSuccessful) {
                 RemoveRooms();
                 yield return null;
-                nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
                 i = -1;
             }
+            nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
         }
         
         OnLevelGenerated?.Invoke();
@@ -266,7 +266,7 @@ public class LevelGenerator : MonoBehaviour {
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
                 bool roomWasGenerated = false;
                 for (int j = 0; j < 5; j++) {
-                    if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
+                    if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData, generateBossRoom && numberOfGeneratedRooms == roomsToGenerate-1)) {
                         SpawnRoom(roomData);
                         numberOfGeneratedRooms++;
                         roomWasGenerated = true;
