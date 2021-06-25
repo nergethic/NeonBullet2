@@ -23,7 +23,10 @@ public class Turret : Enemy {
     }
     
     private void SetCannonRotation() {
-        Vector2 playerPos = playerTransform.position;
+        if (player.IsDead)
+            return;
+        
+        Vector2 playerPos = player.transform.position;
         Vector2 cannonPos = cannon.position;
         Vector2 lookDir = cannonPos - playerPos;
         var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
@@ -33,6 +36,9 @@ public class Turret : Enemy {
     }
     
     void ShootBullet() {
+        if (player.IsDead)
+            return;
+        
         if (Vector3.SqrMagnitude(player.transform.position - transform.position) > shootingDistance)
             return;
 
@@ -40,7 +46,8 @@ public class Turret : Enemy {
         if (counter % 2 == 0)
             bulletType = ProjectileType.Energy;
 
-        Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
+        var playerPos= player.transform.position;
+        Vector2 direction = new Vector2(playerPos.x - transform.position.x, playerPos.y - transform.position.y);
         var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, bulletType, false, bulletSpeed);
         PlayAttackEvent();
         counter++;

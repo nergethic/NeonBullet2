@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
     
     public PlayerResources Resources;
     public PlayerInventory Inventory => inventory;
+    public bool IsDead => health <= 0;
     
     Coroutine dashCor;
     Coroutine blockCor;

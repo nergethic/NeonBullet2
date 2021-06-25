@@ -7,7 +7,6 @@ public class Entity : MonoBehaviour {
 
     protected ProjectileManager projectileManager;
     protected Player player;
-    protected Transform playerTransform;
 
     public int Health = 4;
     public int MaxHealth = 4;
@@ -24,7 +23,6 @@ public class Entity : MonoBehaviour {
     public virtual void Initialize(Player player, ProjectileManager projectileManager) {
         SetSprite(sprite);
         this.player = player;
-        playerTransform = player.transform;
         this.projectileManager = projectileManager;
     }
 

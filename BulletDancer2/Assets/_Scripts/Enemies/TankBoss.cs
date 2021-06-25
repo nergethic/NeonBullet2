@@ -27,11 +27,12 @@ public class TankBoss : Entity {
     IEnumerator StartShooting() {
         float duration = 0.8f;
         while (true) {
-            if (Vector3.SqrMagnitude(player.transform.position - transform.position) < SHOOTING_DISTANCE)
-            {
+            if (player.IsDead)
+                yield break;
+            
+            if (Vector3.SqrMagnitude(player.transform.position - transform.position) < SHOOTING_DISTANCE) {
                 float totalTime = 0;
-                while (totalTime <= duration)
-                {
+                while (totalTime <= duration) {
                     totalTime += Time.deltaTime;
                     ShootBullet();
                     yield return WaitSomeTime;
@@ -106,7 +107,10 @@ public class TankBoss : Entity {
     }
     
     private void SetCannonRotation() {
-        Vector2 playerPos = playerTransform.position;
+        if (player.IsDead)
+            return;
+        
+        Vector2 playerPos = player.transform.position;
         Vector2 cannonPos = cannon.position;
         Vector2 lookDir = cannonPos - playerPos;
         var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
@@ -191,7 +195,8 @@ public class TankBoss : Entity {
     
     void ShootBullet() {
         PlayAttackEvent();
-        Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
+        var playerPos = player.transform.position;
+        Vector2 direction = new Vector2(playerPos.x - transform.position.x, playerPos.y - transform.position.y);
         var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, ProjectileType.Energy, false, 5f);
     }
     
