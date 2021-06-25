@@ -17,6 +17,7 @@ public class MasterSystem : MonoBehaviour {
     Dictionary<SceneManagerType, SceneManager> activeSceneManagers;
 
     SceneManagerData data = new SceneManagerData();
+    Coroutine fadeInScreenAndFinishInitCor;
     bool allManagersAreInitialized;
     bool isInitialized;
     
@@ -36,6 +37,12 @@ public class MasterSystem : MonoBehaviour {
             return;
         }
         levelGenerator.Initialize(this);
+        levelGenerator.OnLevelGenerated += () => {
+            if (fadeInScreenAndFinishInitCor != null)
+                StopCoroutine(fadeInScreenAndFinishInitCor);
+            fadeInScreenAndFinishInitCor = StartCoroutine(FadeInScreenAndFinishInit());
+        };
+        
         CollectManagers();
         StartCoroutine(InitializeManagers());
     }
@@ -91,7 +98,7 @@ public class MasterSystem : MonoBehaviour {
         }
 
         Debug.Log("[MasterSystem]: All managers initialized successfully");
-        yield return FadeInScreenAndFinishInit();
+        OnSceneManagersInitialized?.Invoke();
     }
 
     IEnumerator WaitForManagerInitialization(SceneManager manager) {
@@ -121,7 +128,6 @@ public class MasterSystem : MonoBehaviour {
         yield return ScreenOverlayController.FadeInScreen(1f);
         allManagersAreInitialized = true;
         isInitialized = true;
-        OnSceneManagersInitialized?.Invoke();
     }
 
     bool TryToAddInitializedManager(SceneManager manager) {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Assets._Scripts;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour {
+    public event Action OnLevelGenerated;
+    
     const float ROOM_SCALE_MULTIPLIER = 0.7f;
     const float SLOW_ROOM_GENERATE_DELAY = 1f;
     readonly WaitForSeconds waitDelay = new WaitForSeconds(SLOW_ROOM_GENERATE_DELAY);
@@ -222,14 +225,17 @@ public class LevelGenerator : MonoBehaviour {
     
     IEnumerator GenerateLevelSlowly(Room firstRoom) {
         var firstRoomDoorsData = firstRoom.DoorsData;
+        int generateBossRoomIndex = Random.Range(0f, 1f) < 0.5f ? 0 : 1;
         for (int i = 0; i < firstRoomDoorsData.Length; i++) {
             var doors = firstRoomDoorsData[i];
             nextRoomType = RoomType.MainRoom;
-            yield return GenerateFromRoom(firstRoom, doors);
+            yield return GenerateFromRoom(firstRoom, doors, generateBossRoomIndex == i);
         }
+        
+        OnLevelGenerated?.Invoke();
     }
 
-    IEnumerator GenerateFromRoom(Room firstRoom, DoorData firstDoorData) {
+    IEnumerator GenerateFromRoom(Room firstRoom, DoorData firstDoorData, bool generateBossRoom) {
         currentRoom = firstRoom;
         currentRoomData.entryDoors = firstDoorData;
         
@@ -245,17 +251,24 @@ public class LevelGenerator : MonoBehaviour {
                     continue;
                 
                 var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
-                if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
-                    SpawnRoom(roomData);
-                    // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
+                bool roomWasGenerated = false;
+                for (int j = 0; j < 10; j++) {
+                    if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData)) {
+                        SpawnRoom(roomData);
+                        roomWasGenerated = true;
+                        // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
+                        break;
+                    }
+                }
+
+                if (roomWasGenerated) {
                     break;
                 } else {
-                  Debug.LogError("GENERATOR FAILED");  
+                    Debug.LogError("Generator error");   
                 }
             }
             
-            if (Random.Range(0f, 1f) < 0.5f)
-                spawnCorridor = !spawnCorridor;
+            spawnCorridor = !spawnCorridor;
         }
     }
 }
