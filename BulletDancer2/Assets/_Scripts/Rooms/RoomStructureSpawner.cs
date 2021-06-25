@@ -12,6 +12,7 @@ public class RoomStructureSpawner : MonoBehaviour {
         int randIdx = Random.Range(0, possibleRoomStructures.Count);
         var randomStructure = possibleRoomStructures[randIdx];
         var structure = Instantiate(randomStructure);
+        structure.transform.SetParent(gameObject.transform);
         structure.transform.position = spawnLocation.position;
     }
 }
