@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MasterSystem : MonoBehaviour {
     public event Action OnSceneManagersInitialized;
@@ -29,13 +30,10 @@ public class MasterSystem : MonoBehaviour {
         activeSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
         
         ScreenOverlayController.SetDim();
-
+        
         if (levelGenerator == null) {
-            levelGenerator = FindObjectOfType<LevelGenerator>();
-            if (levelGenerator == null) {
-                Debug.LogError("[MasterSystem]: LevelGenerator component isn't found");
-                return;
-            }
+            Debug.LogError("[MasterSystem]: LevelGenerator component isn't found");
+            return;
         }
         levelGenerator.Initialize(this);
         CollectManagers();
@@ -45,6 +43,12 @@ public class MasterSystem : MonoBehaviour {
     void Update() {
         if (!isInitialized)
             return;
+        
+        var keyboard = Keyboard.current;
+        if (keyboard.escapeKey.wasPressedThisFrame) {
+            Application.Quit();
+            return;
+        }
 
         for (int i = 0; i < managers.Length; i++) {
             var manager = managers[i];
@@ -79,8 +83,8 @@ public class MasterSystem : MonoBehaviour {
             yield return null;
         }
 
-        HandleManagersInitialized();
-        yield return null;
+        Debug.Log("[MasterSystem]: All managers initialized successfully");
+        yield return FadeInScreenAndFinishInit();
     }
 
     IEnumerator WaitForManagerInitialization(SceneManager manager) {
@@ -104,11 +108,6 @@ public class MasterSystem : MonoBehaviour {
     IEnumerator ReloadLevelCor() {
         yield return ScreenOverlayController.FadeOutScreen(2f);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
-
-    void HandleManagersInitialized() {
-        Debug.Log("[MasterSystem]: All managers initialized successfully");
-        StartCoroutine(FadeInScreenAndFinishInit());
     }
 
     IEnumerator FadeInScreenAndFinishInit() {

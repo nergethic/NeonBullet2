@@ -22,8 +22,6 @@ MonoBehaviour:
     copyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
     screenSpaceShadowPS: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
     samplingPS: {fileID: 4800000, guid: 04c410c9937594faa893a11dceb85f7e, type: 3}
-    tileDepthInfoPS: {fileID: 4800000, guid: f451c6bec16aa51408bdfd37f70aed12, type: 3}
-    tileDeferredPS: {fileID: 4800000, guid: 344787727e03649488a1022c09fa74b5, type: 3}
     stencilDeferredPS: {fileID: 4800000, guid: e9155b26e1bc55942a41e518703fe304, type: 3}
     fallbackErrorPS: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
     materialErrorPS: {fileID: 4800000, guid: 5fd9a8feb75a4b5894c241777f519d4e, type: 3}
@@ -59,6 +57,6 @@ MonoBehaviour:
   settings:
     IsEnabled: 1
     WhenToInsert: 1000
-    FluidMaterialToBlit: {fileID: 2100000, guid: 880b6a4f5ab94494ca849aaf7048d490, type: 2}
+    FluidMaterialToBlit: {fileID: 2100000, guid: 2f7b80dd1aa3aa84a970b93bf03aa8c9, type: 2}
     DistortionMaterialToBlit: {fileID: 2100000, guid: 31cb7f70588cad54b909994626b5f748, type: 2}
     PixelizeMaterialToBlit: {fileID: 2100000, guid: aa23ed7b31e6c7846a38eaf8eb68818b, type: 2}
