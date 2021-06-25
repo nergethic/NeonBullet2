@@ -5,6 +5,9 @@ using UnityEngine;
 public class LaserBoss : Entity {
     [SerializeField] List<Transform> bulletSpawnPoints;
     [SerializeField] Transform spiralBulletDirection;
+    
+    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.1f);
+    readonly WaitForSeconds WaitSomeTime2 = new WaitForSeconds(0.06f);
 
     List<int> projectilesEntered = new List<int>();
     
@@ -19,8 +22,6 @@ public class LaserBoss : Entity {
         StartCoroutine(StartShooting());
     }
 
-    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.1f);
-    readonly WaitForSeconds WaitSomeTime2 = new WaitForSeconds(0.06f);
     IEnumerator StartShooting() {
         float duration = 0.8f;
         while (true) {

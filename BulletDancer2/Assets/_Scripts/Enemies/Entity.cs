@@ -25,6 +25,10 @@ public class Entity : MonoBehaviour {
         this.player = player;
         this.projectileManager = projectileManager;
     }
+    
+    public void OnDestroy() {
+        StopAllCoroutines();
+    }
 
     public virtual void Tick(float dt) {}
 
