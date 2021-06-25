@@ -63,6 +63,21 @@ public class ProjectileManager : SceneManager {
         return projectile;
     }
 
+    private static Projectile SpawnProjectileObject(GameObject projectileGameObject)
+    {
+        var spawnedProjectileGameObject = Instantiate(projectileGameObject);
+        var projectile = spawnedProjectileGameObject.GetComponent<Projectile>();
+        return projectile;
+    }
+
+    public Vector2 GetVectorWithRotation(Vector2 dir ,float angle)
+    {
+        float radian = angle * Mathf.Deg2Rad;
+        float _x = dir.x * Mathf.Cos(radian) - dir.y * Mathf.Sin(radian);
+        float _y = dir.x * Mathf.Sin(radian) + dir.y * Mathf.Cos(radian);
+        return new Vector2(_x, _y);
+    }
+
     public override void Tick(float dt) {}
 }
 
