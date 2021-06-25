@@ -22,7 +22,8 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] List<Room> nextRoomsBlueprints;
 
     [SerializeField] bool DEBUG_SlowDownGeneration;
-    
+
+    MasterSystem masterSystem;
     RoomType nextRoomType;
     Room currentRoom;
     RoomData currentRoomData;
@@ -37,6 +38,7 @@ public class LevelGenerator : MonoBehaviour {
     Coroutine generateRoomsCor;
 
     public void Initialize(MasterSystem masterSystem) {
+        this.masterSystem = masterSystem;
         foreach (var cor in corridors)
             Assert.IsTrue(cor is Corridor);
 
@@ -63,6 +65,9 @@ public class LevelGenerator : MonoBehaviour {
             StopCoroutine(generateRoomsCor);
             generateRoomsCor = null;
         }
+
+        var entityManager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
+        entityManager.Reset();
         
         for (int i = roomsParent.childCount - 1; i >= 0; i--)
             Destroy(roomsParent.GetChild(i).gameObject);
