@@ -73,16 +73,9 @@ public class BulletBoss : Entity {
     }
     
     void ShootBullets() {
-        var bullet = projectileManager.SpawnProjectile(mainBulletSpawnPoint.position, ProjectileType.StandardOrange, false, 5f);
-        bullet.SetDirection(mainBulletSpawnPoint.up);
-        
-        var bullet2 = projectileManager.SpawnProjectile(mainBulletSpawnPoint2.position, ProjectileType.StandardOrange, false, 5f);
-        bullet2.SetDirection(mainBulletSpawnPoint2.up);
-        
-        var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, ProjectileType.StandardBlue, false, 5f);
-        bullet3.SetDirection(leftBulletSpawnPoint.up);
-        
-        var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, ProjectileType.StandardBlue, false, 5f);
-        bullet4.SetDirection(rightBulletSpawnPoint.up);
+        var bullet = projectileManager.SpawnProjectile(mainBulletSpawnPoint.position, mainBulletSpawnPoint.up, ProjectileType.StandardOrange, false, 5f);
+        var bullet2 = projectileManager.SpawnProjectile(mainBulletSpawnPoint2.position, mainBulletSpawnPoint2.up,ProjectileType.StandardOrange, false, 5f);
+        var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, leftBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
+        var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, rightBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
     }
 }

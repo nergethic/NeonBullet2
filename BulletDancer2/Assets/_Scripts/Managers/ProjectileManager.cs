@@ -39,21 +39,27 @@ public class ProjectileManager : SceneManager {
         ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
-    public Projectile SpawnProjectile(Vector3 position, ProjectileType type, bool ownedByPlayer, float speed) {
+    public Projectile SpawnProjectile(Vector3 position, Vector2 dir, ProjectileType type, bool ownedByPlayer, float speed)
+    {
         bool found = projectiles.TryGetValue(type, out var projectileGameObject);
         if (!found)
             return null;
-        
-        var spawnedProjectileGameObject = Instantiate(projectileGameObject);
-        var projectile = spawnedProjectileGameObject.GetComponent<Projectile>();
-        if (projectile == null) {
+
+        Projectile projectile = SpawnProjectileObject(projectileGameObject);
+        if (projectile == null)
+        {
             Debug.LogError("[ProjectileManager]: projectile is null");
             return null;
         }
-        
-        projectile.Initialize(Vector2.zero, ownedByPlayer, speed);
+
+
+        projectile.Initialize(new ProjectileData { 
+            dir = dir.normalized,
+            speed = speed,
+            ownedByPlayer = ownedByPlayer
+        });
+
         projectile.transform.position = position;
-        
         return projectile;
     }
 

@@ -191,27 +191,22 @@ public class TankBoss : Entity {
     
     void ShootBullet() {
         PlayAttackEvent();
-        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
         Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
-        bullet.SetDirection(direction);
+        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, ProjectileType.Energy, false, 5f);
     }
     
     void ShootQuadrupleBullet() {
-        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.left, ProjectileType.Energy, false, 5f);
         bullet.gameObject.transform.localScale *= 2f;
-        bullet.SetDirection(Vector3.left);
         
-        var bullet2 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        var bullet2 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.right, ProjectileType.Energy, false, 5f);
         bullet2.gameObject.transform.localScale *= 2f;
-        bullet2.SetDirection(Vector3.right);
         
-        var bullet3 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        var bullet3 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.up, ProjectileType.Energy, false, 5f);
         bullet3.gameObject.transform.localScale *= 2f;
-        bullet3.SetDirection(Vector3.up);
         
-        var bullet4 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, ProjectileType.Energy, false, 5f);
+        var bullet4 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.down, ProjectileType.Energy, false, 5f);
         bullet4.gameObject.transform.localScale *= 2f;
-        bullet4.SetDirection(Vector3.down);
     }
 }
 

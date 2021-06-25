@@ -18,9 +18,8 @@ public class Grenade : Item, ThrowableItem
         playerController.ThrowableItem = null;
         StartCoroutine(Fly(speed, itemDirection));*/
 
-        projectile = projectileManager.SpawnProjectile(playerController.transform.position, ProjectileType.Grenade, true, speed);
+        projectile = projectileManager.SpawnProjectile(playerController.transform.position, itemDirection, ProjectileType.Grenade, true, speed);
         if (projectile != null) {
-            projectile.SetDirection(itemDirection);
             projectile.DestroyEvent += OnProjectileDestroy;
         }
     }

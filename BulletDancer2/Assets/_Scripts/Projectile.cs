@@ -7,7 +7,6 @@ public class Projectile : MonoBehaviour {
     [SerializeField] float maxAirTime = 3f;
     [SerializeField] ProjectileType type;
     [SerializeField] int damage = 1;
-
     public event Action DestroyEvent;
     public ProjectileData projectileData;
 
@@ -17,7 +16,6 @@ public class Projectile : MonoBehaviour {
     private int enemyCollisionLayerMask;
     
     private float airTime = 0f;
-    private Vector2 dir;
     
     public ProjectileType Type() => type;
 
@@ -28,17 +26,10 @@ public class Projectile : MonoBehaviour {
         enemyCollisionLayerMask = LayerMask.NameToLayer("EnemyCollision");
     }
 
-    public void Initialize(Vector2 dir, bool ownedByPlayer, float _speed = 1f) {
-        this.dir = dir.normalized;
-
-        projectileData.ownedByPlayer = ownedByPlayer;
+    public void Initialize(ProjectileData projectileData) {
         projectileData.typeMask = (int)type;
         projectileData.damage = damage;
-        projectileData.speed = _speed;
-    }
-
-    public void SetDirection(Vector2 dir) {
-        this.dir = dir.normalized;
+        this.projectileData = projectileData;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -65,8 +56,8 @@ public class Projectile : MonoBehaviour {
         }
         
         var newPos = myTransform.position;
-        newPos.x += Time.deltaTime * dir.x * projectileData.speed;
-        newPos.y += Time.deltaTime * dir.y * projectileData.speed;
+        newPos.x += Time.deltaTime * projectileData.dir.x * projectileData.speed;
+        newPos.y += Time.deltaTime * projectileData.dir.y * projectileData.speed;
         
         myTransform.position = newPos;
     }
@@ -77,4 +68,5 @@ public struct ProjectileData {
     public int typeMask; // NOTE: for now there are no mixed types
     public int damage;
     public float speed;
+    public Vector2 dir;
 }
