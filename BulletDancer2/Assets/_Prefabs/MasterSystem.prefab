@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3815d8f3303eecf4386165221a3d5c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenMat: {fileID: 2100000, guid: 880b6a4f5ab94494ca849aaf7048d490, type: 2}
+  screenMat: {fileID: 2100000, guid: 2f7b80dd1aa3aa84a970b93bf03aa8c9, type: 2}
 --- !u!1 &3204108454410066108
 GameObject:
   m_ObjectHideFlags: 0
