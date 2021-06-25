@@ -773,10 +773,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 42
     m_Right: 30
-    m_Top: 110
+    m_Top: 130
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 30
+  m_Spacing: 40
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -1609,9 +1609,9 @@ MonoBehaviour:
   rb: {fileID: 692140117}
   throwableSpawn: {fileID: 2369749028770392893}
   projectileManager: {fileID: 0}
+  val: 200
   weapon: {fileID: 774757010475013799}
   activeWeapon: {fileID: 0}
-  val: 200
 --- !u!114 &5876669769141105488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1624,6 +1624,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7489e238fced12448e4d875bc7f0af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 3
+  energy: 3
   inventory: {fileID: 1561285542673174724}
   healthBar: {fileID: 6332311620604957368}
   energyBar: {fileID: 4590582457492017777}
@@ -1638,9 +1640,7 @@ MonoBehaviour:
   Resources: {fileID: 8759699351071077285}
   playerSpeed: 10
   dashSpeed: 7
-  health: 3
   MaxHealth: 4
-  energy: 3
   MaxEnergy: 3
   isImmuneToDamage: 0
   isAbsorbingEnergy: 0
@@ -8365,7 +8365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -148.41
+      value: -222.41
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8506,7 +8506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -148.41
+      value: -542.87006
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8647,7 +8647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -148.41
+      value: -649.69006
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9034,7 +9034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -148.41
+      value: -329.23
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9441,7 +9441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -148.41
+      value: -436.05002
       objectReference: {fileID: 0}
     - target: {fileID: 8827769888075059381, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
