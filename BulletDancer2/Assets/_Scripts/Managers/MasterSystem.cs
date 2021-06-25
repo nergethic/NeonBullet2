@@ -51,9 +51,11 @@ public class MasterSystem : MonoBehaviour {
 #else
                 Application.Quit();
 #endif
-            
             return;
         }
+        
+        if (keyboard.backspaceKey.wasPressedThisFrame)
+            ReloadLevel();
 
         for (int i = 0; i < managers.Length; i++) {
             var manager = managers[i];
