@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
 
     readonly Color shieldDefaultColor = new Color(0.24f, 0.68f, 0.95f, 0f);
     readonly Color shieldHitColor = new Color(0.24f, 0.45f, 0.95f, 0f);
+    readonly int ShieldColorID = Shader.PropertyToID("_Color");
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
@@ -167,12 +168,12 @@ public class Player : MonoBehaviour {
         
         yield return null;
     }
-
+    
     void UpdateShieldColor(bool wasHit) {
         if (wasHit)
-            shieldMaterial.SetColor("_Color", shieldHitColor);
+            shieldMaterial.SetColor(ShieldColorID, shieldHitColor);
         else
-            shieldMaterial.SetColor("_Color", shieldDefaultColor);
+            shieldMaterial.SetColor(ShieldColorID, shieldDefaultColor);
     }
     
     IEnumerator HandleDeath() {
@@ -184,10 +185,8 @@ public class Player : MonoBehaviour {
         var masterSystem = FindObjectOfType<MasterSystem>(); // TODO: spawn player from master system
         if (masterSystem == null)
             yield break;
-        
-        yield return masterSystem.ScreenOverlayController.FadeOutScreen(2f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-        yield return null;
+
+        masterSystem.ReloadLevel();
     }
 }
 

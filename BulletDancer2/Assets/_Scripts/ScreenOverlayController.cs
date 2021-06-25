@@ -6,7 +6,11 @@ public class ScreenOverlayController : MonoBehaviour {
     readonly int DimValID = Shader.PropertyToID("_DimVal");
     
     void Awake() {
-        screenMat.SetFloat(DimValID, 0f);
+        SetDim();
+    }
+
+    public void SetDim() {
+        screenMat.SetFloat(DimValID, 1f);
     }
     
     public IEnumerator FadeInScreen(float fadeOutDuration) {
@@ -16,7 +20,7 @@ public class ScreenOverlayController : MonoBehaviour {
             normalizedTime += Time.deltaTime / fadeOutDuration;
             yield return null;
         }
-        screenMat.SetFloat(DimValID, 1f);
+        screenMat.SetFloat(DimValID, 0f);
     }
 
     public IEnumerator FadeOutScreen(float fadeOutDuration) {
@@ -26,6 +30,6 @@ public class ScreenOverlayController : MonoBehaviour {
             normalizedTime += Time.deltaTime / fadeOutDuration;
             yield return null;
         }
-        screenMat.SetFloat(DimValID, 0f);
+        screenMat.SetFloat(DimValID, 1f);
     }
 }

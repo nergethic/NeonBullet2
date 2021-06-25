@@ -25,8 +25,9 @@ public class MasterSystem : MonoBehaviour {
     void Awake() {
         data.player = player;
         data.playerController = playerController;
-        
         activeSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
+        
+        ScreenOverlayController.SetDim();
         CollectManagers();
         StartCoroutine(InitializeManagers());
     }
@@ -39,6 +40,10 @@ public class MasterSystem : MonoBehaviour {
             var manager = managers[i];
             manager.Tick(Time.deltaTime);
         }
+    }
+
+    public void ReloadLevel() {
+        StartCoroutine(ReloadLevelCor());
     }
 
     IEnumerator InitializeManagers() {
@@ -85,9 +90,19 @@ public class MasterSystem : MonoBehaviour {
             yield return WaitForSomeTime;
         }
     }
+    
+    IEnumerator ReloadLevelCor() {
+        yield return ScreenOverlayController.FadeOutScreen(2f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
 
     void HandleManagersInitialized() {
         Debug.Log("[MasterSystem]: All managers initialized successfully");
+        StartCoroutine(FadeInScreenAndFinishInit());
+    }
+
+    IEnumerator FadeInScreenAndFinishInit() {
+        yield return ScreenOverlayController.FadeInScreen(1f);
         allManagersAreInitialized = true;
         isInitialized = true;
         OnSceneManagersInitialized?.Invoke();
