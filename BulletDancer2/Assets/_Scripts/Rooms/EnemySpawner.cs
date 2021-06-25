@@ -5,12 +5,14 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] List<Enemy> enemies;
     [SerializeField] List<Transform> enemiesSpawnPoints;
     [SerializeField] List<EnemySpawnArea> enemySpawnAreas;
+    [SerializeField] Entity boss;
+    [SerializeField] Transform bossSpawn;
     
     EntitySceneManager entityManager;
-    List<Enemy> spawnedEnemies;
+    List<Entity> spawnedEnemies;
 
     void Start() {
-        spawnedEnemies = new List<Enemy>();
+        spawnedEnemies = new List<Entity>();
 
         entityManager = GetEntityManager();
         if (entityManager == null)
@@ -26,22 +28,27 @@ public class EnemySpawner : MonoBehaviour {
         for (int i = 0; i < enemiesSpawnPoints.Count; i++) {
             int randIndex = Random.Range(0, enemies.Count);
             var randomEnemy = enemies[randIndex];
-            SpawnEnemy(randomEnemy, enemiesSpawnPoints[i].position);
+            SpawnEntity(randomEnemy, enemiesSpawnPoints[i].position);
         }
+        
+        if (boss == null)
+            return;
+        
+        SpawnEntity(boss, bossSpawn.position);
     }
 
     void SpawnEnemiesFromSpawnAreas() {
         for (int i = 0; i < enemySpawnAreas.Count; i++) {
             var area = enemySpawnAreas[i];
-            SpawnEnemy(area.GetAssignedEnemy(), area.GetRandomPointWithinArea());
+            SpawnEntity(area.GetAssignedEnemy(), area.GetRandomPointWithinArea());
         }
     }
 
-    void SpawnEnemy(Enemy enemy, Vector3 position) {
-        var createdEnemy = Instantiate(enemy);
-        createdEnemy.transform.position = position;
-        createdEnemy.transform.SetParent(gameObject.transform);
-        spawnedEnemies.Add(createdEnemy);
+    void SpawnEntity(Entity entity, Vector3 position) {
+        var createdEntity = Instantiate(entity);
+        createdEntity.transform.position = position;
+        createdEntity.transform.SetParent(gameObject.transform);
+        spawnedEnemies.Add(createdEntity);
     }
 
     void HandleEntityManagerOnOnInitializationCompleted() {
