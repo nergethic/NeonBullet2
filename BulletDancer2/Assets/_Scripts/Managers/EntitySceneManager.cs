@@ -19,18 +19,23 @@ public class EntitySceneManager : SceneManager {
                 Debug.LogError("[EntitySceneManager]: one of the entities is null");
                 return;
             }
-            entity.Initialize(data.player, projectileManager);
-
-            if (entity is Enemy enemy)
-                HandleDrop(enemy);
+            
+            InitEntity(entity);
         }
         
         ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
     public void AddEntity(Entity entity) {
-        entity.Initialize(data.player, projectileManager);
+        InitEntity(entity);
         entites.Add(entity);
+    }
+    
+    void InitEntity(Entity entity) {
+        entity.Initialize(data.player, projectileManager);
+
+        if (entity is Enemy enemy)
+            HandleDrop(enemy);
     }
 
     void HandleDrop(Enemy enemy) {
