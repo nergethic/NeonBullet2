@@ -77,6 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomsParent: {fileID: 5274951475682589382}
   mainRoomBlueprint: {fileID: 5258066947909809073, guid: 2f53cf2c3ac0549408dd12e386dc24e6, type: 3}
+  bossRoomBlueprint: {fileID: 5258066947909809073, guid: caf1c2f4e925b1c46b3b5ca19d54fcca, type: 3}
   rooms:
   - {fileID: 5258066947909809073, guid: bbfebe3b2f4233a4ea6962cab781cd85, type: 3}
   - {fileID: 5258066947909809073, guid: a1d50d92cb7fb8349ac9a37d00c675e6, type: 3}
@@ -88,7 +89,8 @@ MonoBehaviour:
   - {fileID: 1561976432640144186, guid: 470b42b570eb0bb45bc74413a6f4fd19, type: 3}
   testRoom: {fileID: 6468640304348695878}
   testRoomCollider: {fileID: 5138115800558457231}
-  numberOfRooms: 6
+  numberOfRooms: 3
+  nextRoomsBlueprints: []
   DEBUG_SlowDownGeneration: 0
 --- !u!1001 &4737141743108486233
 PrefabInstance:
