@@ -117,10 +117,8 @@ public class MasterSystem : MonoBehaviour {
 
         return false;
     }
-    
-#if UNITY_EDITOR
-    [ContextMenu("Collect Managers")]
-    public void CollectManagers() {
+
+    void CollectManagers() {
         managers = gameObject.GetComponentsInChildren<SceneManager>();
         if (managers == null) {
             Debug.LogError("[MasterSystem]: managers are null");
@@ -130,7 +128,6 @@ public class MasterSystem : MonoBehaviour {
         foreach (var manager in managers)
             activeSceneManagers.Add(manager.Type, manager);
     }
-#endif
 }
 
 public enum SceneManagerType {

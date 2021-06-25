@@ -17,28 +17,22 @@ public class ItemSceneManager : SceneManager {
         }
         
         CollectSceneItems();
-        foreach (var item in items) {
+        foreach (var item in items)
             item.Initialize(data.player, data.playerController, projectileManager);
-        }
-        
+
         ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
-    public void AddItem(Item item)
-    {
+    public void AddItem(Item item) {
         item.Initialize(data.player, data.playerController, projectileManager);
     }
 
     public override void Tick(float dt) {
     }
-
-#if UNITY_EDITOR
-    [ContextMenu("Collect Scene Items")]
-    public void CollectSceneItems() {
-        Undo.RecordObject(this, "[ItemSceneManager]: Collecting Items");
+    
+    void CollectSceneItems() {
         var foundSceneItems = FindObjectsOfType<Item>();
         if (foundSceneItems != null && foundSceneItems.Length > 0)
             items = foundSceneItems.ToList();
     }
-#endif
 }

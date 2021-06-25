@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class EntitySceneManager : SceneManager {
@@ -65,14 +64,10 @@ public class EntitySceneManager : SceneManager {
             entity.Tick(dt);
         }
     }
-
-#if UNITY_EDITOR
-    [ContextMenu("Collect Scene Items")]
-    public void CollectSceneEntities() {
-        Undo.RecordObject(this, "[EntitySceneManager]: Collecting entities");
+    
+    void CollectSceneEntities() {
         var foundSceneEntities = FindObjectsOfType<Entity>(false);
         if (foundSceneEntities != null && foundSceneEntities.Length > 0)
             entites = foundSceneEntities.ToList();
     }
-#endif
 }
