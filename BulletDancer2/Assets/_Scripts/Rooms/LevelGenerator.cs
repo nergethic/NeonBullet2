@@ -39,7 +39,7 @@ public class LevelGenerator : MonoBehaviour {
     [ContextMenu("Generate")]
     public void Generate() {
         RemoveRooms();
-        GenerateLevel();
+        GenerateLevel(mainRoom);
     }
 
     private void Update() {
@@ -69,13 +69,13 @@ public class LevelGenerator : MonoBehaviour {
         Generate();
     }
 
-    void GenerateLevel() {
+    void GenerateLevel(Room firstRoom) {
         nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
         if (generateRoomsCor != null) {
             StopCoroutine(generateRoomsCor);
             generateRoomsCor = null;
         }
-        generateRoomsCor = StartCoroutine(GenerateLevelSlowly());
+        generateRoomsCor = StartCoroutine(GenerateLevelSlowly(firstRoom));
     }
 
     bool TryFindNextRoom(DoorDirection nextDoorsDirection, bool spawnCorridor, out RoomData newRoomData) {
@@ -172,9 +172,6 @@ public class LevelGenerator : MonoBehaviour {
         PrepareTestRoomCollider(room, roomPosition);
         Bounds roomBounds = testRoomCollider.bounds;
         
-        //var room.GetBounds()
-        //Physics.OverlapBox()
-        
         foreach (var generatedRoom in alreadyGeneratedRooms) {
             var bounds = generatedRoom.GetBounds();
             if (bounds.Intersects(roomBounds)) {
@@ -215,19 +212,28 @@ public class LevelGenerator : MonoBehaviour {
         alreadyGeneratedRooms.Add(mainRoom);
         
         roomSize = mainRoom.GetSize();
-        currentRoom = mainRoom;
-        currentRoomData.entryDoors = mainRoom.DoorsData[0];
-        nextRoomType = RoomType.MainRoom;
     }
     
-    IEnumerator GenerateLevelSlowly() {
+    IEnumerator GenerateLevelSlowly(Room firstRoom) {
+        var firstRoomDoorsData = firstRoom.DoorsData;
+        for (int i = 0; i < firstRoomDoorsData.Length; i++) {
+            var doors = firstRoomDoorsData[i];
+            nextRoomType = RoomType.MainRoom;
+            yield return GenerateFromRoom(firstRoom, doors);
+        }
+    }
+
+    IEnumerator GenerateFromRoom(Room firstRoom, DoorData firstDoorData) {
+        currentRoom = firstRoom;
+        currentRoomData.entryDoors = firstDoorData;
+        
         bool spawnCorridor = true;
         for (int i = 0; i < numberOfRooms; i++) {
             if (DEBUG_SlowDownGeneration)
                 yield return waitDelay;
             else
                 yield return null;
-            
+
             foreach (var doorEntry in currentRoom.DoorsData) {
                 if (doorEntry.direction == currentRoomData.entryDoors.direction)
                     continue;
