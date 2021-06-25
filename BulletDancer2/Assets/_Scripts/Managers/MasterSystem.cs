@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MasterSystem : MonoBehaviour {
+    public event Action OnSceneManagersInitialized;
+    
+    const int MAX_NUMBER_OF_WAIT_INTERVALS = 10;
+    
     [SerializeField] SceneManager[] managers;
     [SerializeField] Player player;
     [SerializeField] PlayerController playerController;
@@ -36,30 +41,13 @@ public class MasterSystem : MonoBehaviour {
 
     IEnumerator InitializeManagers() {
         Debug.Log("[MasterSystem]: Waiting for manager initialization...");
-        const int MAX_NUMBER_OF_WAIT_INTERVALS = 10;
-
+        
         foreach (var manager in managers) {
-            ManagerInitializationState currentManagerState;
             manager.Init(this, data);
 
-            for (int i = 0; i < MAX_NUMBER_OF_WAIT_INTERVALS; i++) {
-                currentManagerState = manager.InitializationState;
-                
-                if (currentManagerState == ManagerInitializationState.COMPLETED) {
-                    Debug.Log($"-- manager '{manager.name}' init completed");
-                    break;
-                }
-                
-                if (currentManagerState == ManagerInitializationState.FAILED) {
-                    Debug.LogError($"-- manager '{manager.name}' init failed");
-                    break;
-                }
-                
-                yield return WaitForSomeTime;
-            }
-
-            currentManagerState = manager.InitializationState;
-            switch (currentManagerState) {
+            yield return WaitForManagerInitialization(manager);
+            
+            switch (manager.InitializationState) {
                 case ManagerInitializationState.IN_PROGRESS:
                     Debug.Log($"[MasterSystem]: Manager '{manager.name}' failed, taking too long to initialize, previous manager could failed initialization");
                     break;
@@ -74,10 +62,33 @@ public class MasterSystem : MonoBehaviour {
             yield return null;
         }
 
+        HandleManagersInitialized();
+        yield return null;
+    }
+
+    IEnumerator WaitForManagerInitialization(SceneManager manager) {
+        for (int i = 0; i < MAX_NUMBER_OF_WAIT_INTERVALS; i++) {
+            ManagerInitializationState currentManagerState = manager.InitializationState;
+                
+            if (currentManagerState == ManagerInitializationState.COMPLETED) {
+                Debug.Log($"-- manager '{manager.name}' init completed");
+                break;
+            }
+                
+            if (currentManagerState == ManagerInitializationState.FAILED) {
+                Debug.LogError($"-- manager '{manager.name}' init failed");
+                break;
+            }
+                
+            yield return WaitForSomeTime;
+        }
+    }
+
+    void HandleManagersInitialized() {
         Debug.Log("[MasterSystem]: All managers initialized successfully");
         allManagersAreInitialized = true;
         isInitialized = true;
-        yield return null;
+        OnSceneManagersInitialized?.Invoke();
     }
 
     bool TryToAddInitializedManager(SceneManager manager) {

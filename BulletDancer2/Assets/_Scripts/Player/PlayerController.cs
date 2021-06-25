@@ -1,4 +1,3 @@
-
 using _Config;
 using Assets._Scripts.Player.Inventory;
 using System;
@@ -14,6 +13,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Transform throwableSpawn;
     [SerializeField] ProjectileManager projectileManager;
+    [SerializeField] float val;
+    
+    const string ITEM_TAG_NAME = "Item";
+    const string RESOURCE_TAG_NAME = "Resource";
+    const string PROJECTILE_TAG_NAME = "Projectile"; 
+    
     public SpriteRenderer weapon;
     public event Action FootstepEvent;
     public event Action DashEvent;
@@ -23,14 +28,19 @@ public class PlayerController : MonoBehaviour {
     public event Action PickUpEvent;
     public ThrowableItem ThrowableItem { get; set; }
     public Weapon activeWeapon;
-    private Item pickableItem;
-    private Resource pickableResource;
-    private Controls controls;
-    private bool isPause = false;
+    
+    Item pickableItem;
+    Resource pickableResource;
+    Controls controls;
+    bool isPause;
+    
+    Vector2 dPlayer = Vector2.zero; // velocity
+    Vector2 ddPlayer = Vector2.zero; // acceleration
+    Vector3 lastPosition = Vector3.zero;
+    Vector2 lastMovementDirection;
+    float currentSpeed;
 
-    private float currentSpeed;
-
-    private void Start() {
+    void Start() {
         controls.Player.ShowInventory.performed += OnShowInventory;
         controls.Player.ShowInventory.Enable();
         controls.Player.ShowCrafting.performed += OnShowCraftingPanel;
@@ -46,7 +56,7 @@ public class PlayerController : MonoBehaviour {
         activeWeapon.SpriteRenderer.sprite = null;
     }
 
-    private void OnEnable() {
+    void OnEnable() {
         controls = new Controls();
         controls.Player.Fire.performed         += OnFire;
         controls.Player.FireReleased.performed += OnFireReleased;
@@ -61,7 +71,7 @@ public class PlayerController : MonoBehaviour {
         EnableControls();
     }
     
-    private void OnDisable() {
+    void OnDisable() {
         controls.Player.Fire.performed         -= OnFire;
         controls.Player.FireReleased.performed -= OnFireReleased;
         controls.Player.Block.performed        -= OnBlock;
@@ -75,7 +85,7 @@ public class PlayerController : MonoBehaviour {
         DisableControls();
     }
 
-    private void EnableControls() {
+    void EnableControls() {
         controls.Player.Fire.Enable();
         controls.Player.FireReleased.Enable();
         controls.Player.Block.Enable();
@@ -87,8 +97,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.PickUp.Enable();
     }
 
-    private void DisableControls() {
-
+    void DisableControls() {
         controls.Player.Fire.Disable();
         controls.Player.FireReleased.Disable();
         controls.Player.Block.Disable();
@@ -106,64 +115,61 @@ public class PlayerController : MonoBehaviour {
         controls.Player.ShowCrafting.performed -= OnShowCraftingPanel;
         controls.Player.ShowCrafting.Disable();
     }
-
-    [SerializeField] float val;
-    private Vector2 velBooster = Vector2.zero;
-    private void Update() {
-        // mouse
-
+    
+    Vector2 velBooster = Vector2.zero;
+    void Update() {
         SetPlayerRotation();
-        if (!isPause)
-        {
-            var mouse = Mouse.current;
-            if (mouse.leftButton.isPressed && player.Energy >= 1 && activeWeapon != null) {
-                if (Mathf.Approximately(loadingShot, 0))
-                    ChargeEvent();
-                loadingShot += 1f * Time.deltaTime;
-                currentSpeed = 2f;
-            }
-            else if (mouse.leftButton.wasReleasedThisFrame) {
-                if (loadingShot > 0.474f && player.Energy >= 1) {
-                    player.Energy -= 1;
-                    {
-                        var bulletDirection = GetCentralizedMousePos().normalized;
-                        activeWeapon.Shoot(bulletDirection);
-                        ShootingEvent();
-                        velBooster = -bulletDirection * val;
-                    }
-                }
-                else
-                    StopChargeEvent();
+        if (isPause)
+            return;
 
-                currentSpeed = player.playerSpeed;
-                loadingShot = 0f;
-            }
+        HandleMouseInput();
+        HandleKeyboardInput();
+    }
 
-            var keyboard = Keyboard.current; if (keyboard.qKey.isPressed && ThrowableItem != null)
-            {
-                loadingItemAction += 1f * Time.deltaTime;
-
-            } else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null) {
-                ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
-                ThrowableItem = null;
-                loadingItemAction = 0f;
-            }
+    void HandleKeyboardInput() {
+        var keyboard = Keyboard.current;
+        if (keyboard.qKey.isPressed && ThrowableItem != null) {
+            loadingItemAction += 1f * Time.deltaTime;
+        } else if (keyboard.qKey.wasReleasedThisFrame && ThrowableItem != null) {
+            ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
+            ThrowableItem = null;
+            loadingItemAction = 0f;
         }
     }
 
-    private void SetPlayerRotation() {
+    void HandleMouseInput() {
+        var mouse = Mouse.current;
+        if (mouse.leftButton.isPressed && player.Energy >= 1 && activeWeapon != null) {
+            if (Mathf.Approximately(loadingShot, 0))
+                ChargeEvent?.Invoke();
+            loadingShot += 1f * Time.deltaTime;
+            currentSpeed = 2f;
+        } else if (mouse.leftButton.wasReleasedThisFrame) {
+            if (loadingShot > 0.474f && player.Energy >= 1) {
+                player.Energy -= 1;
+                {
+                    var bulletDirection = GetCentralizedMousePos().normalized;
+                    activeWeapon.Shoot(bulletDirection);
+                    ShootingEvent?.Invoke();
+                    velBooster = -bulletDirection * val;
+                }
+            }
+            else
+                StopChargeEvent?.Invoke();
+
+            currentSpeed = player.playerSpeed;
+            loadingShot = 0f;
+        }
+    }
+
+    void SetPlayerRotation() {
         Vector2 mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 playerPos = playerPosition.position;
         Vector2 lookDir = mousePos - playerPos;
         var angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
         rb.rotation = angle;
     }
-
-    Vector2 dPlayer = Vector2.zero; // velocity
-    Vector2 ddPlayer = Vector2.zero; // acceleration
-    Vector3 lastPosition = Vector3.zero;
-
-    Vector2 lastMovementDirection;
+    
     void FixedUpdate() {
         Vector3 newPlayerPos = playerPosition.position;
         lastMovementDirection = controls.Player.Move.ReadValue<Vector2>();
@@ -229,47 +235,48 @@ public class PlayerController : MonoBehaviour {
         return mouseWorldPoint - cameraPos;
     }
 
-    private float loadingShot = 0f;
-    private float loadingItemAction = 0f;
-    private void OnFire(InputAction.CallbackContext context) {
+    float loadingShot = 0f;
+    float loadingItemAction = 0f;
+    void OnFire(InputAction.CallbackContext context) {
         //if (!context.performed)
             //return;
 
     }
 
-    private void OnFireReleased(InputAction.CallbackContext context) {
+    void OnFireReleased(InputAction.CallbackContext context) {
         if (!context.performed)
             return;
     }
 
-    private void OnBlock(InputAction.CallbackContext context) {
+    void OnBlock(InputAction.CallbackContext context) {
         if (!context.performed)
             return;
         player.PerformBlock();
     }
     
-    private void OnAim(InputAction.CallbackContext context) {
+    void OnAim(InputAction.CallbackContext context) {
         Debug.Log("Aim");
     }
     
-    private void OnMove(InputAction.CallbackContext context) {
+    void OnMove(InputAction.CallbackContext context) {
         Vector2 value = context.ReadValue<Vector2>();
         // Debug.Log(value);
     }
     
-    private void OnDash(InputAction.CallbackContext context) {
+    void OnDash(InputAction.CallbackContext context) {
         Debug.Log("Dash");
         if (player.PerformDash())
             DashEvent();
     }
     
-    private void OnSelect(InputAction.CallbackContext context) {
+    void OnSelect(InputAction.CallbackContext context) {
         Debug.Log("Select");
     }
     
-    private void OnBack(InputAction.CallbackContext context) {
+    void OnBack(InputAction.CallbackContext context) {
         Debug.Log("Back");
     }
+    
     void OnPickUp(InputAction.CallbackContext context) {
         if (pickableItem != null) {
             player.Inventory.AddItem(pickableItem);
@@ -323,28 +330,25 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void OnItemAction(InputAction.CallbackContext context) {
+    void OnItemAction(InputAction.CallbackContext context) {}
 
-    }
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Item"))
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag(ITEM_TAG_NAME))
             pickableItem = other.GetComponent<Item>();
-        else if (other.CompareTag("Resource"))
+        else if (other.CompareTag(RESOURCE_TAG_NAME))
             pickableResource = other.GetComponent<Resource>();
-        else if (other.CompareTag("Projectile")) {
+        else if (other.CompareTag(PROJECTILE_TAG_NAME)) {
             var projectile = other.GetComponent<Projectile>();
             if (projectile != null)
                 if (!projectile.projectileData.ownedByPlayer) 
                     player.HandleProjectile(projectile);
         }
     }
-
-    private void OnTriggerExit2D(Collider2D other) {
-        if (other.CompareTag("Item"))
+    
+    void OnTriggerExit2D(Collider2D other) {
+        if (other.CompareTag(ITEM_TAG_NAME))
             pickableItem = null;
-        if (other.CompareTag("Resource"))
+        if (other.CompareTag(RESOURCE_TAG_NAME))
             pickableResource = null;
     }
 }
-

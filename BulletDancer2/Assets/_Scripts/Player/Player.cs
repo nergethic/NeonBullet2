@@ -172,23 +172,27 @@ public class Player : MonoBehaviour {
         else
             shieldMaterial.SetColor("_Color", shieldDefaultColor);
     }
-
-    const float fadeOutDuration = 2f;
-
+    
     IEnumerator HandleDeath() {
         DeathEvent();
         controller.enabled = false;
         particle.startColor = Color.red;
         particle.Play();
-        
+
+        yield return FadeOutScreen();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    const float FADE_OUT_DURATION = 2f;
+    readonly int DimValID = Shader.PropertyToID("_DimVal");
+    IEnumerator FadeOutScreen() {
         float normalizedTime = 0;
         while (normalizedTime <= 1f) {
-            screenMaterial.SetFloat("_DimVal", normalizedTime);
-            normalizedTime += Time.deltaTime / fadeOutDuration;
+            screenMaterial.SetFloat(DimValID, normalizedTime);
+            normalizedTime += Time.deltaTime / FADE_OUT_DURATION;
             yield return null;
         }
-        screenMaterial.SetFloat("_DimVal", 0f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        screenMaterial.SetFloat(DimValID, 0f);
     }
 }
 
