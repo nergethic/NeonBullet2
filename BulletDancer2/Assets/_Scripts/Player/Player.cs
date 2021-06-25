@@ -6,8 +6,14 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour {
+    public event Action BlockEvent;
+    public event Action DeathEvent;
+    public event Action HitEvent;
+    public event Action SpawnEvent;
+    
+    [SerializeField] int health;
+    [SerializeField] int energy;
     [SerializeField] PlayerInventory inventory;
-    public PlayerInventory Inventory => inventory;
     [SerializeField] PlayerStatusBar healthBar;
     [SerializeField] PlayerStatusBar energyBar;
     [SerializeField] int ore;
@@ -18,11 +24,10 @@ public class Player : MonoBehaviour {
     [SerializeField] Material screenMaterial;
     [SerializeField] PlayerController controller;
     [SerializeField] ParticleSystem particle;
-    public event Action BlockEvent;
-    public event Action DeathEvent;
-    public event Action HitEvent;
-    public event Action SpawnEvent;
+    
     public PlayerResources Resources;
+    public PlayerInventory Inventory => inventory;
+    
     Coroutine dashCor;
     Coroutine blockCor;
 
@@ -31,7 +36,6 @@ public class Player : MonoBehaviour {
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
-    [SerializeField] int health;
     public int MaxHealth = 4;
     public int Health {
         get => health;
@@ -40,8 +44,7 @@ public class Player : MonoBehaviour {
             healthBar.UpdateStatusBar(health);
         }
     }
-
-    [SerializeField] int energy;
+    
     public int MaxEnergy = 3;
     public int Energy {
         get => energy;
@@ -54,22 +57,21 @@ public class Player : MonoBehaviour {
     public bool isImmuneToDamage;
     public bool isAbsorbingEnergy;
     public bool isDashing;
-    private bool isDead;
+    bool isDead;
 
-    private const float IMMUNITY_AFTER_BEING_HIT = 1f;
-    private const float DASH_DURATION = 0.3f;
-    private const float SHIELD_DURATION_TIME = 0.45f;
+    const float IMMUNITY_AFTER_BEING_HIT = 1f;
+    const float DASH_DURATION = 0.3f;
+    const float SHIELD_DURATION_TIME = 0.45f;
 
-    private void Awake() {
+    void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
-        screenMaterial.SetFloat("_DimVal", 0f);
     }
     
-    private void Start() {
+    void Start() {
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
         UpdateShieldColor(false);
-        SpawnEvent();
+        SpawnEvent?.Invoke();
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
@@ -77,7 +79,7 @@ public class Player : MonoBehaviour {
             return;
         
         Health -= projectileData.damage;
-        HitEvent();
+        HitEvent?.Invoke();
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
             isDead = true;
@@ -108,7 +110,7 @@ public class Player : MonoBehaviour {
         var projectileData = projectile.projectileData;
         if (isAbsorbingEnergy) {
             if (projectileData.typeMask == (int)ProjectileType.Energy) {
-                BlockEvent();
+                BlockEvent?.Invoke();
                 int newEnergy = Energy + 1;
                 if (newEnergy <= MaxEnergy)
                     Energy = newEnergy;
@@ -174,25 +176,18 @@ public class Player : MonoBehaviour {
     }
     
     IEnumerator HandleDeath() {
-        DeathEvent();
+        DeathEvent?.Invoke();
         controller.enabled = false;
         particle.startColor = Color.red;
         particle.Play();
 
-        yield return FadeOutScreen();
+        var masterSystem = FindObjectOfType<MasterSystem>(); // TODO: spawn player from master system
+        if (masterSystem == null)
+            yield break;
+        
+        yield return masterSystem.ScreenOverlayController.FadeOutScreen(2f);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
-
-    const float FADE_OUT_DURATION = 2f;
-    readonly int DimValID = Shader.PropertyToID("_DimVal");
-    IEnumerator FadeOutScreen() {
-        float normalizedTime = 0;
-        while (normalizedTime <= 1f) {
-            screenMaterial.SetFloat(DimValID, normalizedTime);
-            normalizedTime += Time.deltaTime / FADE_OUT_DURATION;
-            yield return null;
-        }
-        screenMaterial.SetFloat(DimValID, 0f);
+        yield return null;
     }
 }
 
