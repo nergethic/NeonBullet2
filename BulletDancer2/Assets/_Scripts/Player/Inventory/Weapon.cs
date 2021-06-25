@@ -8,6 +8,7 @@ public class Weapon : Item
     public ProjectileType projectileType;
     public WeaponType type; 
     public Sprite topView;
+    private Coroutine cor;
     public override void Use()
     {
         base.Use();
@@ -59,6 +60,14 @@ public class Weapon : Item
                 var bullet = projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
                 bullet.gameObject.transform.localScale *= 1.5f;
                 break;
+            case WeaponType.Uzi:
+                if (cor != null)
+                {
+                    StopCoroutine(cor);
+                    cor = null;
+                }
+                cor = StartCoroutine(StartShooting(dir));
+                break;
             default:
                 break;
         }
@@ -66,9 +75,23 @@ public class Weapon : Item
 
     public void SetButtonStatus(Weapon weapon, bool isActive) => ItemSlot.SetButtonStatus(this, isActive);
 
+    IEnumerator StartShooting(Vector2 dir)
+    {
+        var numberOfBalls = 3;
+
+        for (int i = 0; i < numberOfBalls; i++)
+        {
+            var bullet = projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
+            bullet.gameObject.transform.localScale *= 0.6f;
+            yield return new WaitForSeconds(0.03f);
+        }
+    }
+
     public enum WeaponType
     {
         Basic,
-        Shotgun
+        Shotgun,
+        Rpg,
+        Uzi
     }
 }
