@@ -6,15 +6,20 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] List<Transform> enemiesSpawnPoints;
     [SerializeField] List<EnemySpawnArea> enemySpawnAreas;
     
-    // TODO: get EntitySceneManager at the beginning and init spawned entities
     EntitySceneManager entityManager;
     List<Enemy> spawnedEnemies;
 
     void Start() {
         spawnedEnemies = new List<Enemy>();
-        SpawnEnemiesFromSpawnPoints();
-        SpawnEnemiesFromSpawnAreas();
-        InitializeSpawnedEnemies();
+
+        entityManager = GetEntityManager();
+        if (entityManager == null)
+            return;
+        
+        if (entityManager.IsInitialized)
+            HandleEntityManagerOnOnInitializationCompleted();
+        else
+            entityManager.OnInitializationCompleted += HandleEntityManagerOnOnInitializationCompleted;
     }
 
     void SpawnEnemiesFromSpawnPoints() {
@@ -39,25 +44,29 @@ public class EnemySpawner : MonoBehaviour {
         spawnedEnemies.Add(createdEnemy);
     }
 
-    void InitializeSpawnedEnemies() {
-        var masterSystem = FindObjectOfType<MasterSystem>();
-        if (masterSystem != null) {
-            entityManager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
-            if (entityManager == null) {
-                Debug.LogError("Couldn't get entity manager");
-            } else {
-                if (entityManager.IsInitialized)
-                    HandleEntityManagerOnOnInitializationCompleted();
-                else
-                    entityManager.OnInitializationCompleted += HandleEntityManagerOnOnInitializationCompleted;
-            }
-        } else
-            Debug.LogError("Couldn't get master system");
-    }
-    
     void HandleEntityManagerOnOnInitializationCompleted() {
         entityManager.OnInitializationCompleted -= HandleEntityManagerOnOnInitializationCompleted;
+        
+        SpawnEnemiesFromSpawnPoints();
+        SpawnEnemiesFromSpawnAreas();
+        
         foreach (var enemy in spawnedEnemies)
             entityManager.AddEntity(enemy);
+    }
+
+    EntitySceneManager GetEntityManager() {
+        var masterSystem = FindObjectOfType<MasterSystem>();
+        if (masterSystem == null) {
+            Debug.LogError("[EnemySpawner]: Couldn't get master system");
+            return null;
+        }
+        
+        var manager = masterSystem.TryGetManager<EntitySceneManager>(SceneManagerType.Entity);
+        if (manager == null) {
+            Debug.LogError("Couldn't get entity manager");
+            return null;
+        }
+
+        return manager;
     }
 }

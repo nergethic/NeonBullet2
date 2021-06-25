@@ -27,6 +27,11 @@ public class EntitySceneManager : SceneManager {
     }
 
     public void AddEntity(Entity entity) {
+        if (entites.Contains(entity)) {
+            Debug.LogError($"[EntitySceneManager]: entity '{entity.name}' is already added to the manager");
+            return;
+        }
+        
         InitEntity(entity);
         entites.Add(entity);
     }
