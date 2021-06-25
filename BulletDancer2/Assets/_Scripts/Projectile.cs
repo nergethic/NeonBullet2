@@ -41,8 +41,7 @@ public class Projectile : MonoBehaviour {
         
         if (other.gameObject.layer != playerLayerMask && other.gameObject.layer != defaultLayerMask)
         {
-            if (DestroyEvent != null)
-                DestroyEvent();
+            DestroyEvent?.Invoke();
             Destroy(gameObject);
         }
     }
@@ -50,8 +49,7 @@ public class Projectile : MonoBehaviour {
     void Update() {
         airTime += Time.deltaTime;
         if (airTime >= maxAirTime) {
-            if (DestroyEvent != null)
-                DestroyEvent();
+            DestroyEvent?.Invoke();
             Destroy(gameObject);    
         }
         
