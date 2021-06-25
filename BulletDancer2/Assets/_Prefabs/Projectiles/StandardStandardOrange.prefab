@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTransform: {fileID: 4873777290460590293}
   speed: 5.5
-  maxAirTime: 3
+  maxAirTime: 1
   type: 4
   damage: 1
 --- !u!50 &2631856542782191728
@@ -130,6 +130,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

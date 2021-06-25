@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Weapon : Item
 {
+    [SerializeField] float speed;
     public ProjectileType projectileType;
+    public WeaponType type; 
     public Sprite topView;
     public override void Use()
     {
@@ -41,5 +43,28 @@ public class Weapon : Item
         }
     }
 
+    public void Shoot(Vector2 dir)
+    {
+        switch (type)
+        {
+            case WeaponType.Basic:
+                projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
+                break;
+            case WeaponType.Shotgun:
+                projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
+                projectileManager.SpawnProjectile(playerController.transform.position, projectileManager.GetVectorWithRotation(dir, 25), projectileType, true, speed);
+                projectileManager.SpawnProjectile(playerController.transform.position, projectileManager.GetVectorWithRotation(dir, -25), projectileType, true, speed);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void SetButtonStatus(Weapon weapon, bool isActive) => ItemSlot.SetButtonStatus(this, isActive);
+
+    public enum WeaponType
+    {
+        Basic,
+        Shotgun
+    }
 }

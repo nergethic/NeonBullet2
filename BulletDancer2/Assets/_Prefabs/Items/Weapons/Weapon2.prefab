@@ -100,7 +100,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 4278127495783848478}
   playerController: {fileID: 0}
+  speed: 5
   projectileType: 4
+  type: 1
   topView: {fileID: 7057801135558962131, guid: 8caccdc72abf2994791540e14644bc06, type: 3}
 --- !u!61 &8366985670786951662
 BoxCollider2D:
