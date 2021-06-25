@@ -36,8 +36,18 @@ public class LevelGenerator : MonoBehaviour {
     List<Room> nextRoomsBlueprintsCopy;
     Coroutine generateRoomsCor;
 
+    public void Initialize(MasterSystem masterSystem) {
+        foreach (var cor in corridors)
+            Assert.IsTrue(cor is Corridor);
+
+        mainRoom = Instantiate(mainRoomBlueprint);
+        ResetState();
+
+        masterSystem.OnSceneManagersInitialized += GenerateLevel;
+    }
+
     [ContextMenu("Generate")]
-    public void Generate() {
+    public void GenerateLevel() {
         RemoveRooms();
         GenerateLevel(mainRoom);
     }
@@ -45,7 +55,7 @@ public class LevelGenerator : MonoBehaviour {
     private void Update() {
         var keyboard = Keyboard.current;
         if (keyboard.gKey.wasPressedThisFrame)
-            Generate();
+            GenerateLevel();
     }
 
     void RemoveRooms() {
@@ -58,15 +68,6 @@ public class LevelGenerator : MonoBehaviour {
             Destroy(roomsParent.GetChild(i).gameObject);
 
         ResetState();
-    }
-
-    void Awake() {
-        foreach (var cor in corridors)
-            Assert.IsTrue(cor is Corridor);
-
-        mainRoom = Instantiate(mainRoomBlueprint);
-        ResetState();
-        Generate();
     }
 
     void GenerateLevel(Room firstRoom) {
@@ -243,6 +244,8 @@ public class LevelGenerator : MonoBehaviour {
                     SpawnRoom(roomData);
                     // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
                     break;
+                } else {
+                  Debug.LogError("GENERATOR FAILED");  
                 }
             }
             

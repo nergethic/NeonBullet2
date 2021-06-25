@@ -10,6 +10,7 @@ public class MasterSystem : MonoBehaviour {
     
     [SerializeField] SceneManager[] managers;
     [SerializeField] ScreenOverlayController screenOverlayController;
+    [SerializeField] LevelGenerator levelGenerator;
     [SerializeField] Player player;
     [SerializeField] PlayerController playerController;
     Dictionary<SceneManagerType, SceneManager> activeSceneManagers;
@@ -28,6 +29,15 @@ public class MasterSystem : MonoBehaviour {
         activeSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
         
         ScreenOverlayController.SetDim();
+
+        if (levelGenerator == null) {
+            levelGenerator = FindObjectOfType<LevelGenerator>();
+            if (levelGenerator == null) {
+                Debug.LogError("[MasterSystem]: LevelGenerator component isn't found");
+                return;
+            }
+        }
+        levelGenerator.Initialize(this);
         CollectManagers();
         StartCoroutine(InitializeManagers());
     }
