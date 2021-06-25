@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8214777190557650763}
   - component: {fileID: 8366985670786951662}
   m_Layer: 0
-  m_Name: Weapon2
+  m_Name: Rpg
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2425615879352741913, guid: dfe08712564f7f64cbb5fa295bdf2dcd, type: 3}
+  m_Sprite: {fileID: -7099825290505073598, guid: dfe08712564f7f64cbb5fa295bdf2dcd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
   playerController: {fileID: 0}
   speed: 5
   projectileType: 4
-  type: 1
-  topView: {fileID: 7057801135558962131, guid: 8caccdc72abf2994791540e14644bc06, type: 3}
+  type: 2
+  topView: {fileID: 6306999314160741799, guid: 8caccdc72abf2994791540e14644bc06, type: 3}
 --- !u!61 &8366985670786951662
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -121,7 +121,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.28, y: 0.16}
+    oldSize: {x: 0.33, y: 0.16}
     newSize: {x: 0.08, y: 0.11}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

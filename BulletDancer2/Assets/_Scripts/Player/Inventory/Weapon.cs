@@ -55,6 +55,10 @@ public class Weapon : Item
                 projectileManager.SpawnProjectile(playerController.transform.position, projectileManager.GetVectorWithRotation(dir, 25), projectileType, true, speed);
                 projectileManager.SpawnProjectile(playerController.transform.position, projectileManager.GetVectorWithRotation(dir, -25), projectileType, true, speed);
                 break;
+            case WeaponType.Rpg:
+                var bullet = projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
+                bullet.gameObject.transform.localScale *= 1.5f;
+                break;
             default:
                 break;
         }
