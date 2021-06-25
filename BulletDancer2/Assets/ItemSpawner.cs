@@ -13,6 +13,7 @@ public class ItemSpawner : MonoBehaviour
     void Start()
     {
         spawnedItems = new List<Item>();
+        itemManager = GetItemManager();
         SpawnItemsFromSpawnPoints();
         InitializeSpawnedItems();
     }
@@ -37,22 +38,18 @@ public class ItemSpawner : MonoBehaviour
 
     void InitializeSpawnedItems()
     {
-        var masterSystem = GetComponent<MasterSystem>();
-        if (masterSystem != null)
+        if (itemManager == null)
         {
-            itemManager = masterSystem.TryGetManager<ItemSceneManager>(SceneManagerType.Item);
-            if (itemManager == null)
-            {
-                Debug.LogError("Couldn't get item manager");
-            }
-            else
-            {
-                if (itemManager.IsInitialized)
-                    HandleEntityManagerOnOnInitializationCompleted();
-                else
-                    itemManager.OnInitializationCompleted += HandleEntityManagerOnOnInitializationCompleted;
-            }
+            Debug.LogError("Couldn't get item manager");
         }
+        else
+        {
+            if (itemManager.IsInitialized)
+                HandleEntityManagerOnOnInitializationCompleted();
+            else
+                itemManager.OnInitializationCompleted += HandleEntityManagerOnOnInitializationCompleted;
+        }
+        
     }
 
     void HandleEntityManagerOnOnInitializationCompleted()
@@ -60,5 +57,24 @@ public class ItemSpawner : MonoBehaviour
         itemManager.OnInitializationCompleted -= HandleEntityManagerOnOnInitializationCompleted;
         foreach (var item in spawnedItems)
             itemManager.AddItem(item);
+    }
+
+    ItemSceneManager GetItemManager()
+    {
+        var masterSystem = FindObjectOfType<MasterSystem>();
+        if (masterSystem == null)
+        {
+            Debug.LogError("[EnemySpawner]: Couldn't get master system");
+            return null;
+        }
+
+        var manager = masterSystem.TryGetManager<ItemSceneManager>(SceneManagerType.Item);
+        if (manager == null)
+        {
+            Debug.LogError("Couldn't get entity manager");
+            return null;
+        }
+
+        return manager;
     }
 }
