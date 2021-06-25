@@ -69,7 +69,7 @@ public class Player : MonoBehaviour {
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
         UpdateShieldColor(false);
-        SpawnEvent();
+        SpawnEvent?.Invoke();
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour {
             return;
         
         Health -= projectileData.damage;
-        HitEvent();
+        HitEvent?.Invoke();
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
             isDead = true;
@@ -108,7 +108,7 @@ public class Player : MonoBehaviour {
         var projectileData = projectile.projectileData;
         if (isAbsorbingEnergy) {
             if (projectileData.typeMask == (int)ProjectileType.Energy) {
-                BlockEvent();
+                BlockEvent?.Invoke();
                 int newEnergy = Energy + 1;
                 if (newEnergy <= MaxEnergy)
                     Energy = newEnergy;
@@ -174,7 +174,7 @@ public class Player : MonoBehaviour {
     }
     
     IEnumerator HandleDeath() {
-        DeathEvent();
+        DeathEvent?.Invoke();
         controller.enabled = false;
         particle.startColor = Color.red;
         particle.Play();
