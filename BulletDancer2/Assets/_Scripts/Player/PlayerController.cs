@@ -17,8 +17,9 @@ public class PlayerController : MonoBehaviour {
     
     const string ITEM_TAG_NAME = "Item";
     const string RESOURCE_TAG_NAME = "Resource";
-    const string PROJECTILE_TAG_NAME = "Projectile"; 
-    
+    const string PROJECTILE_TAG_NAME = "Projectile";
+
+    public Vector2 Acceleration => ddPlayer;
     public SpriteRenderer weapon;
     public event Action FootstepEvent;
     public event Action DashEvent;

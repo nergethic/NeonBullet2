@@ -21,12 +21,12 @@ public class Player : MonoBehaviour {
     [SerializeField] int gold;
     [SerializeField] Transform shield;
     [SerializeField] Material shieldMaterial;
-    [SerializeField] Material screenMaterial;
     [SerializeField] PlayerController controller;
     [SerializeField] ParticleSystem particle;
     
     public PlayerResources Resources;
     public PlayerInventory Inventory => inventory;
+    public PlayerController Controller => controller;
     public bool IsDead => health <= 0;
     
     Coroutine dashCor;

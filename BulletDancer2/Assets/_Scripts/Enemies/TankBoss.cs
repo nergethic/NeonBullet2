@@ -8,43 +8,64 @@ public class TankBoss : Entity {
     [SerializeField] Transform bulletSpawnPoint;
     [SerializeField] GameObject explosion;
 
-    List<int> projectilesEntered = new List<int>();
+    const float speed = 0.8f;
+    const float SHOOTING_DISTANCE = 35f;
+    const float MOVEMENT_TIME = 2.5f;
     
+    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.06f);
+    List<int> projectilesEntered = new List<int>();
+    TankDirection currentDirection = TankDirection.Left;
+    Coroutine cor;
     float timer;
     float oldZBaseRotation;
     float baseRotationT;
-    TankDirection currentDirection = TankDirection.Left;
-    const float speed = 0.8f;
-    const float SHOOTING_DISTANCE = 35f;
-    Coroutine cor;
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
         cor = StartCoroutine(StartShooting());
     }
-
-    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(0.06f);
+    
     IEnumerator StartShooting() {
         float duration = 0.8f;
+        int quadrupleShootCount = 0;
+        int uziShootCount = 0;
         while (true) {
             if (player.IsDead)
                 yield break;
             
             if (Vector3.SqrMagnitude(player.transform.position - transform.position) < SHOOTING_DISTANCE) {
-                float totalTime = 0;
-                while (totalTime <= duration) {
-                    totalTime += Time.deltaTime;
-                    ShootBullet();
-                    yield return WaitSomeTime;
-                    totalTime += 0.045f;
+                if (uziShootCount % 4 == 0) {
+                    float totalTime = 0;
+                    while (totalTime <= 1f) {
+                        totalTime += Time.deltaTime;
+                        ShootBullet(false, Mathf.Clamp01(1f-totalTime+0.4f));
+                        yield return new WaitForSeconds(0.15f);
+                        totalTime += 0.15f;
+                    }
+                    ShootQuadrupleBullet(quadrupleShootCount % 4);
+                    quadrupleShootCount++;
+                    uziShootCount++;
+                    yield return new WaitForSeconds(0.5f);
+                } else {
+                    float totalTime = 0;
+                    while (totalTime <= duration) {
+                        totalTime += Time.deltaTime;
+                        ShootBullet(true);
+                        yield return WaitSomeTime;
+                        totalTime += 0.045f;
+                    }
+
+                    uziShootCount++;
+                    
+                    ShootCircle(10, 2, false);  
+                    yield return new WaitForSeconds(0.3f);
+                    ShootCircle(8, 4, true);
                 }
-                ShootQuadrupleBullet();
-                ShootBullet();
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
         }
     }
-
+    
     public override void Tick(float dt) {
         base.Tick(dt);
 
@@ -54,11 +75,11 @@ public class TankBoss : Entity {
         float increment = dt * speed;
 
         timer += dt;
-        if (timer >= 1.0f) {
+        if (timer >= MOVEMENT_TIME) {
             SwitchDirection();
             baseRotationT = 0f;
             oldZBaseRotation = tankBase.eulerAngles.z;
-            timer = 0f;
+            timer -= MOVEMENT_TIME;
         }
 
         baseRotationT += dt*3.0f;
@@ -166,52 +187,75 @@ public class TankBoss : Entity {
             return;
 
         projectilesEntered.Add(id);
+        if (isDead || !bullet.projectileData.ownedByPlayer)
+            return;
         
-        if (bullet.projectileData.ownedByPlayer) {
-            if (!isDead)
-            {
-                Health -= bullet.projectileData.damage;
-                Destroy(bullet.gameObject);
-                PlayHitEvent();
+        Health -= bullet.projectileData.damage;
+        Destroy(bullet.gameObject);
+        PlayHitEvent();
 
-                if (Health <= 0)
-                {
-                    isDead = true;
-                    //PlayDeathEvent();
-                    if(cor != null) {
-                        StopCoroutine(cor);
-                        cor = null;
-                    }
-                    var explosionInstance = Instantiate(explosion, transform);
-                    explosionInstance.transform.localScale = new Vector3(12, 12);
-                    explosionInstance.transform.parent = null;
-                    Destroy(gameObject);
-                }
-
+        if (Health <= 0) {
+            isDead = true;
+            //PlayDeathEvent();
+            if (cor != null) {
+                StopCoroutine(cor);
+                cor = null;
             }
-            
+            var explosionInstance = Instantiate(explosion, transform);
+            explosionInstance.transform.localScale = new Vector3(12, 12);
+            explosionInstance.transform.parent = null;
+            Destroy(gameObject);
         }
     }
     
-    void ShootBullet() {
+    void ShootBullet(bool randomizeDirection, float speedMultiplier = 1f) {
         PlayAttackEvent();
         var playerPos = player.transform.position;
-        Vector2 direction = new Vector2(playerPos.x - transform.position.x, playerPos.y - transform.position.y);
-        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, ProjectileType.Energy, false, 5f);
+        if (randomizeDirection) {
+            var acc = player.Controller.Acceleration * Time.deltaTime * 0.2f;
+            playerPos.x += acc.x;
+            playerPos.y += acc.y;
+            playerPos.x += Random.Range(-0.2f, 0.2f);
+            playerPos.y += Random.Range(-0.2f, 0.2f);
+        }
+        var dirToPlayer = new Vector2(playerPos.x - transform.position.x, playerPos.y - transform.position.y);
+        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, dirToPlayer, ProjectileType.Standard, false, 4.5f*speedMultiplier);
     }
     
-    void ShootQuadrupleBullet() {
-        var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.left, ProjectileType.Energy, false, 5f);
-        bullet.gameObject.transform.localScale *= 2f;
-        
-        var bullet2 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.right, ProjectileType.Energy, false, 5f);
-        bullet2.gameObject.transform.localScale *= 2f;
-        
-        var bullet3 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.up, ProjectileType.Energy, false, 5f);
-        bullet3.gameObject.transform.localScale *= 2f;
-        
-        var bullet4 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, Vector3.down, ProjectileType.Energy, false, 5f);
-        bullet4.gameObject.transform.localScale *= 2f;
+    void ShootQuadrupleBullet(int energyBulletIndex) {
+        for (int i = 0; i < 4; i++) {
+            var bulletSpawnPos = bulletSpawnPoint.position;
+            var bulletType = i == energyBulletIndex ? ProjectileType.Energy : ProjectileType.Standard;
+            Vector2 dir = Vector2.zero;
+            if (i == 0)
+                dir = Vector2.left;
+            else if (i == 1)
+                dir = Vector2.up;
+            else if (i == 2)
+                dir = Vector2.right;
+            else if (i == 3)
+                dir = Vector2.down;
+            
+            var bullet = projectileManager.SpawnProjectile(bulletSpawnPos, dir, bulletType, false, 3f);
+            bullet.gameObject.transform.localScale *= 2f;
+        }
+    }
+
+    int shootCircleCount = 0;
+    void ShootCircle(int burstsCount, int bulletCountInBurst, bool hasEnergyBullets) {
+        for (int i = 0; i < burstsCount; i++) {
+            float angle = i * (360f/burstsCount) * Mathf.Deg2Rad;
+            var projectileType = shootCircleCount % 8 == i ? ProjectileType.Energy : ProjectileType.Standard;
+            if (!hasEnergyBullets)
+                projectileType = ProjectileType.Standard;
+            for (int j = 0; j < bulletCountInBurst; j++) {
+                float angleOffset = j * 5f * Mathf.Deg2Rad;
+                var dir = new Vector2(Mathf.Cos(angle+angleOffset), Mathf.Sin(angle+angleOffset));
+                var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, dir, projectileType, false, 1.8f);
+            }
+        }
+
+        shootCircleCount++;
     }
 }
 
