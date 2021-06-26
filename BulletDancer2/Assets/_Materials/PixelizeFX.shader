@@ -3,6 +3,8 @@ Shader "Custom/PixelizePP"
     Properties
     {
         [HideInInspector] _MainTex ("Texture", 2D) = "white" {}
+        _Height ("Height", Float) = 0.1
+        _Color ("Scanline Color", Color) = (0.3, 0.3, 0.3, 0.5)
     }
     SubShader
     {
@@ -31,6 +33,8 @@ Shader "Custom/PixelizePP"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float _Height;
+            float4 _Color;
             
             float2 pixelArt(float2 uv, const float pixelSample) {
                 half pixel = 1 / pixelSample;
@@ -38,19 +42,18 @@ Shader "Custom/PixelizePP"
                 return pixelUV;
             }
 
-            v2f vert (appdata v)
-            {
+            v2f vert (appdata v) {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
-            {
-                fixed4 col = tex2D(_MainTex, pixelArt(i.uv, 300));
-                return col;
-                //return fixed4(0, 1, 0, 0);
+            fixed4 frag (v2f i) : SV_Target {
+                half3 mainTex = tex2D(_MainTex, pixelArt(i.uv, 300));
+                float scanline = sin(i.uv.y * _Height) * 0.5 + 0.5;
+                mainTex = lerp(mainTex, mainTex*_Color.rgb, _Color.a * scanline);
+                return half4(mainTex, 1);
             }
             ENDCG
         }
