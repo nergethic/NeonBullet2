@@ -16,9 +16,9 @@ public class Entity : MonoBehaviour {
     public event Action HitEvent;
     public event Action AttackEvent;
 
-    public void PlayDeathEvent() => DeathEvent();
-    public void PlayHitEvent() => HitEvent();
-    public void PlayAttackEvent() => AttackEvent();
+    public void PlayDeathEvent() => DeathEvent?.Invoke();
+    public void PlayHitEvent() => HitEvent?.Invoke();
+    public void PlayAttackEvent() => AttackEvent?.Invoke();
     
     public virtual void Initialize(Player player, ProjectileManager projectileManager) {
         SetSprite(sprite);
