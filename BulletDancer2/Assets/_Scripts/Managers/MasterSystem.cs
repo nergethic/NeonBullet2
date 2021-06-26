@@ -47,6 +47,7 @@ public class MasterSystem : MonoBehaviour {
         StartCoroutine(InitializeManagers());
     }
 
+    int backspacePressedFrames;
     void Update() {
         if (!isInitialized)
             return;
@@ -60,9 +61,15 @@ public class MasterSystem : MonoBehaviour {
 #endif
             return;
         }
-        
-        if (keyboard.backspaceKey.wasPressedThisFrame)
-            ReloadLevel();
+
+        if (keyboard.backspaceKey.isPressed) {
+            backspacePressedFrames++;
+            if (backspacePressedFrames >= 60) {
+                ReloadLevel();
+                backspacePressedFrames = 0;
+            }
+        } else
+            backspacePressedFrames = 0;
 
         for (int i = 0; i < managers.Length; i++) {
             var manager = managers[i];
@@ -106,6 +113,12 @@ public class MasterSystem : MonoBehaviour {
             ManagerInitializationState currentManagerState = manager.InitializationState;
                 
             if (currentManagerState == ManagerInitializationState.COMPLETED) {
+                if (manager is EntitySceneManager entitySceneManager)
+                    data.entityManager = entitySceneManager;
+                else if (manager is ItemSceneManager itemSceneManager)
+                    data.itemManager = itemSceneManager;
+                else if (manager is ProjectileManager projectileManager)
+                    data.projectileManager = projectileManager;
                 Debug.Log($"-- manager '{manager.name}' init completed");
                 break;
             }
@@ -162,4 +175,7 @@ public enum SceneManagerType {
 public class SceneManagerData {
     public Player player;
     public PlayerController playerController;
+    public EntitySceneManager entityManager;
+    public ItemSceneManager itemManager;
+    public ProjectileManager projectileManager;
 }
