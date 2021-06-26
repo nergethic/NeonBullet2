@@ -598,14 +598,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   renderer: {fileID: 0}
-  Health: 2
-  MaxHealth: 2
+  Health: 3
+  MaxHealth: 3
   isDead: 0
-  drop: 0
   cannon: {fileID: 9146937164679488907}
   bulletSpawnPoint: {fileID: 1676554546574250843}
-  shootingDistance: 20
-  bulletSpeed: 3.2
+  shootingDistance: 25
+  bulletSpeed: 5
+  shootFrequency: 2.3
+  upgraded: 1
 --- !u!58 &6243688807117069141
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Turret : Enemy {
@@ -5,19 +6,29 @@ public class Turret : Enemy {
     [SerializeField] Transform bulletSpawnPoint;
     [SerializeField] float shootingDistance = 20f;
     [SerializeField] float bulletSpeed = 3.2f;
+    [SerializeField] float shootFrequency = 2.3f;
+    [SerializeField] bool upgraded;
+    
+    const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
     
     int counter;
-    private const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
+    float timer = 0f;
     
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
         
-        InvokeRepeating(SHOOT_BULLET_METHOD_NAME, 1, 2.3f);
+        InvokeRepeating(SHOOT_BULLET_METHOD_NAME, 1, shootFrequency);
         DeathEvent += () => CancelInvoke(SHOOT_BULLET_METHOD_NAME);
     }
     
     public override void Tick(float dt) {
         base.Tick(dt);
+        
+        timer += Time.deltaTime;
+        if (timer >= shootFrequency) {
+            timer -= shootFrequency;
+            StartCoroutine(ShootBullet());
+        }
 
         SetCannonRotation();
     }
@@ -35,21 +46,34 @@ public class Turret : Enemy {
         cannon.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
     }
     
-    void ShootBullet() {
+    IEnumerator ShootBullet() {
         if (player.IsDead)
-            return;
+            yield break;
         
         if (Vector3.SqrMagnitude(player.transform.position - transform.position) > shootingDistance)
-            return;
+            yield break;
 
-        ProjectileType bulletType = ProjectileType.Standard;
-        if (counter % 2 == 0)
-            bulletType = ProjectileType.Energy;
+        var bulletType = SelectBulletType(counter);
+        counter++;
 
         var playerPos= player.transform.position;
         Vector2 direction = new Vector2(playerPos.x - transform.position.x, playerPos.y - transform.position.y);
         var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, bulletType, false, bulletSpeed);
         PlayAttackEvent();
-        counter++;
+        
+        if (upgraded) {
+            yield return new WaitForSeconds(0.2f);
+            bulletType = SelectBulletType(counter);
+            counter++;
+            var bullet2 = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, bulletType, false, bulletSpeed);
+            PlayAttackEvent();  
+        }
+    }
+
+    ProjectileType SelectBulletType(int counter) {
+        ProjectileType bulletType = ProjectileType.Energy;
+        if (counter % 2 == 0)
+            bulletType = ProjectileType.Standard;
+        return bulletType;
     }
 }
