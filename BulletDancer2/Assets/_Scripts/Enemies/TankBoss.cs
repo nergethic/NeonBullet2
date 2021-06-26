@@ -204,10 +204,10 @@ public class TankBoss : Entity {
             var explosionInstance = Instantiate(explosion, transform);
             explosionInstance.transform.localScale = new Vector3(12, 12);
             explosionInstance.transform.parent = null;
-            Destroy(gameObject);
+            StartCoroutine(HandleDeathCor());
         }
     }
-    
+
     void ShootBullet(bool randomizeDirection, float speedMultiplier = 1f) {
         PlayAttackEvent();
         var playerPos = player.transform.position;
@@ -256,6 +256,15 @@ public class TankBoss : Entity {
         }
 
         shootCircleCount++;
+    }
+    
+    IEnumerator HandleDeathCor() {
+        var masterSystem = FindObjectOfType<MasterSystem>();
+        if (masterSystem != null) {
+            yield return new WaitForSeconds(3f);
+            masterSystem.ReloadLevel();
+        }
+        Destroy(gameObject);
     }
 }
 
