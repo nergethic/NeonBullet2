@@ -37,8 +37,6 @@ public class BulletBoss : Entity {
                 totalTime += bulletFrequency;
             }
         }
-
-        yield return null;
     }
 
     [SerializeField] private float param1;

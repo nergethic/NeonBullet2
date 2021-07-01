@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour {
@@ -23,7 +22,7 @@ public class Room : MonoBehaviour {
 
 [Serializable]
 public struct DoorData {
-    public Transform location;
+    public Transform doorTransform;
     public DoorDirection direction;
 }
 

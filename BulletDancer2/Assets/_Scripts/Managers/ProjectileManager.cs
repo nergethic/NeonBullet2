@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ProjectileManager : SceneManager {
@@ -39,15 +38,13 @@ public class ProjectileManager : SceneManager {
         ChangeInitializationState(ManagerInitializationState.COMPLETED);
     }
 
-    public Projectile SpawnProjectile(Vector3 position, Vector2 dir, ProjectileType type, bool ownedByPlayer, float speed)
-    {
+    public Projectile SpawnProjectile(Vector3 position, Vector2 dir, ProjectileType type, bool ownedByPlayer, float speed) {
         bool found = projectiles.TryGetValue(type, out var projectileGameObject);
         if (!found)
             return null;
 
         Projectile projectile = SpawnProjectileObject(projectileGameObject);
-        if (projectile == null)
-        {
+        if (projectile == null) {
             Debug.LogError("[ProjectileManager]: projectile is null");
             return null;
         }
@@ -62,16 +59,8 @@ public class ProjectileManager : SceneManager {
         projectile.transform.position = position;
         return projectile;
     }
-
-    private static Projectile SpawnProjectileObject(GameObject projectileGameObject)
-    {
-        var spawnedProjectileGameObject = Instantiate(projectileGameObject);
-        var projectile = spawnedProjectileGameObject.GetComponent<Projectile>();
-        return projectile;
-    }
-
-    public Vector2 GetVectorWithRotation(Vector2 dir ,float angle)
-    {
+    
+    public Vector2 GetVectorWithRotation(Vector2 dir ,float angle) {
         float radian = angle * Mathf.Deg2Rad;
         float _x = dir.x * Mathf.Cos(radian) - dir.y * Mathf.Sin(radian);
         float _y = dir.x * Mathf.Sin(radian) + dir.y * Mathf.Cos(radian);
@@ -79,6 +68,12 @@ public class ProjectileManager : SceneManager {
     }
 
     public override void Tick(float dt) {}
+
+    static Projectile SpawnProjectileObject(GameObject projectileGameObject) {
+        var spawnedProjectileGameObject = Instantiate(projectileGameObject);
+        var projectile = spawnedProjectileGameObject.GetComponent<Projectile>();
+        return projectile;
+    }
 }
 
 public enum ProjectileType {

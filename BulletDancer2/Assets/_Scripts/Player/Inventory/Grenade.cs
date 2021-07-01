@@ -1,17 +1,13 @@
 using Assets._Scripts.Player.Inventory;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : Item, ThrowableItem
-{
+public class Grenade : Item, ThrowableItem {
     [SerializeField] Transform myTransform;
     [SerializeField] GameObject explosionEffect;
     [SerializeField] Rigidbody2D rb;
-    private Projectile projectile;
-    public void Throw(float speed, Vector2 itemDirection, Vector2 throwableSpawn)
-    {
+    Projectile projectile;
+    
+    public void Throw(float speed, Vector2 itemDirection, Vector2 throwableSpawn) {
         /*myTransform.position = throwableSpawn;
         gameObject.SetActive(true);
         ItemSlot.RemoveItemFromSlot();
@@ -24,8 +20,7 @@ public class Grenade : Item, ThrowableItem
         }
     }
 
-    private void OnProjectileDestroy()
-    {
+    void OnProjectileDestroy() {
         ItemSlot.RemoveItemFromSlot();
         var explosion = Instantiate(explosionEffect);
         explosion.transform.position = projectile.transform.position;
@@ -34,20 +29,14 @@ public class Grenade : Item, ThrowableItem
         Destroy(gameObject);
     }
 
-    public override void Use()
-    {
-        if (playerController.ThrowableItem is null)
-        {
+    public override void Use() {
+        if (playerController.ThrowableItem is null) {
             base.Use();
             playerController.ThrowableItem = this;
             SetButtonStatus(this, true);
-        }
-        else if (playerController.ThrowableItem == this)
-        {
+        } else if (playerController.ThrowableItem is Grenade grenade && grenade == this) {
             RemoveActiveGrenade();
-        }
-        else
-        {
+        } else {
             base.Use();
             playerController.ThrowableItem.SetButtonStatus(playerController.ThrowableItem, false);
             playerController.ThrowableItem = this;
@@ -55,10 +44,8 @@ public class Grenade : Item, ThrowableItem
         }
     }
 
-    public void RemoveActiveGrenade()
-    {
-        if (playerController.ThrowableItem == this)
-        {
+    public void RemoveActiveGrenade() {
+        if (playerController.ThrowableItem is Grenade grenade && grenade == this) {
             playerController.ThrowableItem = null;
             SetButtonStatus(this, false);
         }

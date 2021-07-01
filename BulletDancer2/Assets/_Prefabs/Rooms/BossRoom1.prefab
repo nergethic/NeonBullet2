@@ -1157,7 +1157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3085142969303327210}
   m_Layer: 0
-  m_Name: TopDoor
+  m_Name: RightDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1269,7 +1269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8536207729347215960}
   m_Layer: 0
-  m_Name: BottomDoor
+  m_Name: TopDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,13 +1422,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomType: 0
   doorsData:
-  - location: {fileID: 3085142969303327210}
+  - doorTransform: {fileID: 3085142969303327210}
     direction: 3
-  - location: {fileID: 8536207729347215960}
+  - doorTransform: {fileID: 8536207729347215960}
     direction: 0
-  - location: {fileID: 8536207729347215960}
+  - doorTransform: {fileID: 903520052498796078}
     direction: 2
-  - location: {fileID: 8536207729347215960}
+  - doorTransform: {fileID: 6614257925989583038}
     direction: 1
   collider: {fileID: 2202757611080960065}
 --- !u!61 &7666793199978531517

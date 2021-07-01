@@ -171,16 +171,14 @@ public class Player : MonoBehaviour {
     }
     
     void UpdateShieldColor(bool wasHit) {
-        if (wasHit)
-            shieldMaterial.SetColor(ShieldColorID, shieldHitColor);
-        else
-            shieldMaterial.SetColor(ShieldColorID, shieldDefaultColor);
+        shieldMaterial.SetColor(ShieldColorID, wasHit ? shieldHitColor : shieldDefaultColor);
     }
     
     IEnumerator HandleDeath() {
         DeathEvent?.Invoke();
         controller.enabled = false;
-        particle.startColor = Color.red;
+        var main = particle.main;
+        main.startColor = Color.red;
         particle.Play();
 
         var masterSystem = FindObjectOfType<MasterSystem>(); // TODO: spawn player from master system

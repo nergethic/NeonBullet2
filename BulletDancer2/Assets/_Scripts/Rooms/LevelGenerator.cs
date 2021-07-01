@@ -268,6 +268,7 @@ public class LevelGenerator : MonoBehaviour {
                 for (int j = 0; j < 5; j++) {
                     if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData, generateBossRoom && numberOfGeneratedRooms == roomsToGenerate-1)) {
                         SpawnRoom(roomData);
+                        //roomData.entryDoors.doorTransform.gameObject.SetActive(false);
                         numberOfGeneratedRooms++;
                         roomWasGenerated = true;
                         // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)

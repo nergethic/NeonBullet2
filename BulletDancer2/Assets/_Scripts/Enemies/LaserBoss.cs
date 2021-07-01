@@ -59,8 +59,6 @@ public class LaserBoss : Entity {
             // ShootQuadrupleBullet();
             //yield return new WaitForSeconds(0.3f);
         }
-
-        yield return null;
     }
 
     [SerializeField] private float param1;

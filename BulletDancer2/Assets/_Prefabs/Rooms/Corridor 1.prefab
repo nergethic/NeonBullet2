@@ -107,6 +107,8 @@ MonoBehaviour:
   - {fileID: 6035741086760662853, guid: e14ba0317e1162e4db2b016ad90a9785, type: 3}
   enemiesSpawnPoints: []
   enemySpawnAreas: []
+  boss: {fileID: 0}
+  bossSpawn: {fileID: 0}
 --- !u!1 &1128365896426551394
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,7 +458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3085142969303327210}
   m_Layer: 0
-  m_Name: TopDoor
+  m_Name: LeftDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,9 +695,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomType: 2
   doorsData:
-  - location: {fileID: 8536207729347215960}
+  - doorTransform: {fileID: 8536207729347215960}
     direction: 1
-  - location: {fileID: 3085142969303327210}
+  - doorTransform: {fileID: 3085142969303327210}
     direction: 2
   collider: {fileID: 2231542607666549629}
 --- !u!61 &2572400217262228103
