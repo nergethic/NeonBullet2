@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
     const string ITEM_TAG_NAME = "Item";
     const string RESOURCE_TAG_NAME = "Resource";
     const string PROJECTILE_TAG_NAME = "Projectile";
+    const string SPIKES_TAG_NAME = "Spikes";
 
     public Vector2 Acceleration => ddPlayer;
     public SpriteRenderer weapon;
@@ -338,14 +339,17 @@ public class PlayerController : MonoBehaviour {
             pickableItem = other.GetComponent<Item>();
         else if (other.CompareTag(RESOURCE_TAG_NAME))
             pickableResource = other.GetComponent<Resource>();
-        else if (other.CompareTag(PROJECTILE_TAG_NAME)) {
+        else if (other.CompareTag(PROJECTILE_TAG_NAME))
+        {
             var projectile = other.GetComponent<Projectile>();
             if (projectile != null)
-                if (!projectile.projectileData.ownedByPlayer) 
+                if (!projectile.projectileData.ownedByPlayer)
                     player.HandleProjectile(projectile);
         }
+        else if (other.CompareTag(SPIKES_TAG_NAME))
+            player.PlayerHitBySpikes();
     }
-    
+
     void OnTriggerExit2D(Collider2D other) {
         if (other.CompareTag(ITEM_TAG_NAME))
             pickableItem = null;
