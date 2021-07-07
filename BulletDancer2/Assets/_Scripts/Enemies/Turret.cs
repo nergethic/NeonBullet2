@@ -8,6 +8,7 @@ public class Turret : Enemy {
     [SerializeField] float bulletSpeed = 3.2f;
     [SerializeField] float shootFrequency = 2.3f;
     [SerializeField] bool upgraded;
+    [SerializeField] Animator animator;
     
     const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
     
@@ -59,6 +60,10 @@ public class Turret : Enemy {
         var playerPos= player.transform.position;
         Vector2 direction = new Vector2(playerPos.x - transform.position.x, playerPos.y - transform.position.y);
         var bullet = projectileManager.SpawnProjectile(bulletSpawnPoint.position, direction, bulletType, false, bulletSpeed);
+        if (animator != null)
+        {
+            animator.Play("Shoot");
+        }
         PlayAttackEvent();
         
         if (upgraded) {

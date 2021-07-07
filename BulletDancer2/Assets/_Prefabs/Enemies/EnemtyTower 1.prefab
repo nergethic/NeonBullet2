@@ -474,6 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9146937164679488907}
   - component: {fileID: 9146937164679488906}
+  - component: {fileID: 5234344780961873938}
   m_Layer: 0
   m_Name: turretCannon
   m_TagString: Untagged
@@ -489,7 +490,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9146937164679488900}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.031, z: 0}
+  m_LocalPosition: {x: 0, y: 0.035, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 1676554546574250843}
@@ -537,7 +538,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 1098179606456428539, guid: dc4fd28f91c7024409cf1cee30fd1a1d, type: 3}
+  m_Sprite: {fileID: 6001530999571837591, guid: 8466f7a31a3fe3b46b5568f1afefae07, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -548,6 +549,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &5234344780961873938
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146937164679488900}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 766f8e10be605c24ba8cef539f6035bb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9146937165377057666
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,6 +627,7 @@ MonoBehaviour:
   bulletSpeed: 5
   shootFrequency: 2.3
   upgraded: 1
+  animator: {fileID: 5234344780961873938}
 --- !u!58 &6243688807117069141
 CircleCollider2D:
   m_ObjectHideFlags: 0
