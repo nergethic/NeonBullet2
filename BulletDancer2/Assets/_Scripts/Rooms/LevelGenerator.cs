@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour {
@@ -45,6 +44,12 @@ public class LevelGenerator : MonoBehaviour {
         foreach (var cor in corridors)
             Assert.IsTrue(cor is Corridor);
 
+        AssertRoomDataIsInitialized(mainRoomBlueprint);
+        foreach (var room in rooms)
+            AssertRoomDataIsInitialized(room);
+        foreach (var corridor in corridors)
+            AssertRoomDataIsInitialized(corridor);
+
         mainRoom = Instantiate(mainRoomBlueprint);
         ResetState();
 
@@ -83,7 +88,8 @@ public class LevelGenerator : MonoBehaviour {
             isCorridor = spawnCorridor
         };
         
-        if (nextRoomsBlueprintsCopy.Count != 0) { // NOTE: code for debug purposes
+#if UNITY_EDITOR // NOTE: debug code
+        if (nextRoomsBlueprintsCopy.Count != 0) {
             var roomBlueprint = nextRoomsBlueprintsCopy[0];
             nextRoomsBlueprintsCopy.RemoveAt(0);
             newRoomData.room = roomBlueprint;
@@ -96,6 +102,7 @@ public class LevelGenerator : MonoBehaviour {
             
             return true;
         }
+#endif
 
         availableRooms = new List<Room>(rooms);
         availableCorridors = new List<Room>(corridors);
@@ -133,13 +140,11 @@ public class LevelGenerator : MonoBehaviour {
         return false;
     }
 
-    void SpawnRoom(RoomData roomData) {
+    Room SpawnRoom(RoomData roomData) {
         Room newRoom = Instantiate(roomData.room);
         newRoom.transform.position = roomData.spawnPosition;
         newRoom.transform.SetParent(roomsParent);
-        alreadyGeneratedRooms.Add(newRoom);
-        currentRoom = newRoom;
-        currentRoomData = roomData;
+        return newRoom;
     }
 
     void HandleWrongRoom(Room roomToCreate) {
@@ -152,7 +157,7 @@ public class LevelGenerator : MonoBehaviour {
             return false;
 
         // NOTE: room could be placed but let's check if its doors aren't blocked
-        var doors = roomData.room.DoorsData;
+        var doors = roomData.room.doorsData;
         if (doors.Length == 1)
             return true;
         
@@ -219,7 +224,7 @@ public class LevelGenerator : MonoBehaviour {
     
     bool generateFromRoomWasSuccessful;
     IEnumerator GenerateLevelSlowly(Room firstRoom) {
-        var firstRoomDoorsData = firstRoom.DoorsData;
+        var firstRoomDoorsData = firstRoom.doorsData;
         int generateBossRoomIndex = Random.Range(0f, 1f) < 0.5f ? 0 : 1;
         
         for (int i = 0; i < firstRoomDoorsData.Length; i++) {
@@ -239,7 +244,7 @@ public class LevelGenerator : MonoBehaviour {
         OnLevelGenerated?.Invoke();
         yield return null;
     }
-
+    
     IEnumerator GenerateFromRoom(Room firstRoom, DoorData firstDoorData, bool generateBossRoom) {
         currentRoom = firstRoom;
         currentRoomData.entryDoors = firstDoorData;
@@ -259,19 +264,32 @@ public class LevelGenerator : MonoBehaviour {
             else
                 yield return null;
 
-            foreach (var doorEntry in currentRoom.DoorsData) {
-                if (doorEntry.direction == currentRoomData.entryDoors.direction)
+            var exitRoomDoors = currentRoom.doorsData;
+            for (int exitDoorsIdx = 0; exitDoorsIdx < exitRoomDoors.Length; exitDoorsIdx++) {
+                var exitDoors = exitRoomDoors[exitDoorsIdx];
+                if (exitDoors.direction == currentRoomData.entryDoors.direction)
                     continue;
                 
-                var nextDoorsDirection = doorEntry.direction.GetOppositeDirection();
+                var nextEntryDoorsDirection = exitDoors.direction.GetOppositeDirection();
                 bool roomWasGenerated = false;
                 for (int j = 0; j < 5; j++) {
-                    if (TryFindNextRoom(nextDoorsDirection, spawnCorridor, out var roomData, generateBossRoom && numberOfGeneratedRooms == roomsToGenerate-1)) {
-                        SpawnRoom(roomData);
-                        //roomData.entryDoors.doorTransform.gameObject.SetActive(false);
+                    if (TryFindNextRoom(nextEntryDoorsDirection, spawnCorridor, out var roomData, generateBossRoom && numberOfGeneratedRooms == roomsToGenerate-1)) {
+                        var spawnedRoom = SpawnRoom(roomData);
+                        alreadyGeneratedRooms.Add(spawnedRoom);
+                        currentRoom = spawnedRoom;
+                        currentRoomData = roomData;
+                        OpenDoors(exitDoors.doorTransform);
+                        OpenDoors(roomData.entryDoors.doorTransform);
                         numberOfGeneratedRooms++;
                         roomWasGenerated = true;
-                        // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
+                        if (numberOfGeneratedRooms == roomsToGenerate) {
+                            for (int k = 0; k < currentRoom.doorsData.Length; k++) {
+                                if (currentRoom.doorsData[k].direction == currentRoomData.entryDoors.direction)
+                                    continue;
+                                CloseDoors(currentRoom.doorsData[k].doorTransform);
+                            }
+                        }
+                            // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
                         break;
                     }
                 }
@@ -285,6 +303,24 @@ public class LevelGenerator : MonoBehaviour {
         
         generateFromRoomWasSuccessful = numberOfGeneratedRooms == roomsToGenerate;
         yield return null;
+    }
+
+    void OpenDoors(Transform doors) {
+        doors.gameObject.SetActive(false);
+    }
+    
+    void CloseDoors(Transform doors) {
+        doors.gameObject.SetActive(true);
+    }
+    
+    void AssertRoomDataIsInitialized(Room room) {
+        if (room == null) {
+            Assert.IsTrue(false, "[LevelGenerator]: room is null");
+            return;
+        }
+            
+        foreach (var data in room.doorsData)
+            Assert.IsTrue(data.doorTransform != null, $"[LevelGenerator]: doorsData transform is null in '{room.name}' prefab");
     }
 }
 
