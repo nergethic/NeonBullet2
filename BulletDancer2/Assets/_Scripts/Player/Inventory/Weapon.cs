@@ -33,28 +33,35 @@ public class Weapon : Item {
             case WeaponType.Basic:
                 projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
                 break;
+            
             case WeaponType.Shotgun:
-                projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
-                projectileManager.SpawnProjectile(playerController.transform.position, projectileManager.GetVectorWithRotation(dir, 25), projectileType, true, speed);
-                projectileManager.SpawnProjectile(playerController.transform.position, projectileManager.GetVectorWithRotation(dir, -25), projectileType, true, speed);
+                Vector3 playerPos = playerController.transform.position;
+                for (int i = -1; i <= 1; i++) {
+                    var bulletDir = projectileManager.GetVectorWithRotation(dir, i * 5f);
+                    projectileManager.SpawnProjectile(playerPos, bulletDir, projectileType, true, speed);
+                }
                 break;
+            
             case WeaponType.Rpg:
                 var bullet = projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
                 bullet.gameObject.transform.localScale *= 1.5f;
                 break;
+            
             case WeaponType.Uzi:
-                if (cor != null) {
-                    StopCoroutine(cor);
-                    cor = null;
-                }
-                cor = StartCoroutine(StartShooting(dir));
+                RestartUziShootCor(dir);
                 break;
         }
     }
 
+    void RestartUziShootCor(Vector2 dir) {
+        if (cor != null)
+            StopCoroutine(cor);
+        cor = StartCoroutine(StartShooting(dir));
+    }
+
     public void SetButtonStatus(Weapon weapon, bool isActive) => ItemSlot.SetButtonStatus(this, isActive);
 
-    void RemoveActiveWeapon() {
+    public void RemoveActiveWeapon() {
         if (playerController.activeWeapon == this) {
             playerController.activeWeapon = null;
             playerController.weapon.sprite = null;
@@ -63,8 +70,7 @@ public class Weapon : Item {
     }
 
     IEnumerator StartShooting(Vector2 dir) {
-        var numberOfBalls = 3;
-
+        const int numberOfBalls = 3;
         for (int i = 0; i < numberOfBalls; i++) {
             var bullet = projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
             bullet.gameObject.transform.localScale *= 0.6f;
@@ -79,3 +85,4 @@ public class Weapon : Item {
         Uzi
     }
 }
+
