@@ -6,6 +6,7 @@ public class Spikes : MonoBehaviour
 {
     [SerializeField] List<Sprite> sprites;
     [SerializeField] SpriteRenderer sr;
+    [SerializeField] Collider2D collider2d;
     private float time = 0;
     private int currentSprite = 0;
     private bool isAnimationForeward = true;
@@ -22,8 +23,9 @@ public class Spikes : MonoBehaviour
         if (time > 1 && !isSpikesReadyToGo)
         {
             isSpikesReadyToGo = true;
+            collider2d.enabled = true;
         }
-        else if (time > 0.1f && isSpikesReadyToGo)
+        else if (time > 0.07f && isSpikesReadyToGo)
         {
             time = 0;
             if (isAnimationForeward && currentSprite < spritesNumber - 1)
@@ -43,6 +45,7 @@ public class Spikes : MonoBehaviour
             {
                 isAnimationForeward = true;
                 isSpikesReadyToGo = false;
+                collider2d.enabled = false;
             }
 
             if (isSpikesReadyToGo)

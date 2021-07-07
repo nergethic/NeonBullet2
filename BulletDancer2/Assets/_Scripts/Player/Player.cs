@@ -89,6 +89,21 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void PlayerHitBySpikes()
+    {
+        if (isDead)
+            return;
+
+        Health--;
+        HitEvent?.Invoke();
+        StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
+        if (Health <= 0 && !isDead)
+        {
+            isDead = true;
+            StartCoroutine(HandleDeath());
+        }
+    }
+
     public bool PerformDash() {
         if (dashCor != null)
             return false;
