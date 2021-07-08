@@ -8421,11 +8421,15 @@ PrefabInstance:
       objectReference: {fileID: 8214777190557650763, guid: 0e00101b9da85b943965517c9c9ca6f7, type: 3}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredOre
-      value: 0
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
+      propertyPath: requiredGold
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredIron
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: craftingPanel
@@ -8562,11 +8566,15 @@ PrefabInstance:
       objectReference: {fileID: 8214777190557650763, guid: be07b3b7d73fcd146a4430571e6ac935, type: 3}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredOre
-      value: 0
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
+      propertyPath: requiredGold
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredIron
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: craftingPanel
@@ -8949,11 +8957,15 @@ PrefabInstance:
       objectReference: {fileID: 8214777190557650763, guid: d08e8226349df2f4687a70e4d7e8227c, type: 3}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredOre
-      value: 0
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
+      propertyPath: requiredGold
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredIron
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: craftingPanel
@@ -9356,11 +9368,15 @@ PrefabInstance:
       objectReference: {fileID: 8214777190557650763, guid: 8b435add0440a53428689c825197a920, type: 3}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredOre
-      value: 0
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
+      propertyPath: requiredGold
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: requiredIron
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5320372160184906801, guid: e9b1f79ffb033344e93fbe9365dc1b55, type: 3}
       propertyPath: craftingPanel
