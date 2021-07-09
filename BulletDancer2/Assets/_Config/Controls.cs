@@ -115,6 +115,14 @@ namespace _Config
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Teleport"",
+                    ""type"": ""Button"",
+                    ""id"": ""e39b1a45-b365-402b-957c-b65831330e25"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -304,6 +312,17 @@ namespace _Config
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a52d8f61-a390-4b84-af05-e00d9e915b30"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -351,6 +370,7 @@ namespace _Config
             m_Player_ShowCrafting = m_Player.FindAction("ShowCrafting", throwIfNotFound: true);
             m_Player_ItemAction = m_Player.FindAction("ItemAction", throwIfNotFound: true);
             m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
+            m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ButtonClick = m_UI.FindAction("ButtonClick", throwIfNotFound: true);
@@ -415,6 +435,7 @@ namespace _Config
         private readonly InputAction m_Player_ShowCrafting;
         private readonly InputAction m_Player_ItemAction;
         private readonly InputAction m_Player_Block;
+        private readonly InputAction m_Player_Teleport;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -431,6 +452,7 @@ namespace _Config
             public InputAction @ShowCrafting => m_Wrapper.m_Player_ShowCrafting;
             public InputAction @ItemAction => m_Wrapper.m_Player_ItemAction;
             public InputAction @Block => m_Wrapper.m_Player_Block;
+            public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -476,6 +498,9 @@ namespace _Config
                     @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                    @Teleport.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
+                    @Teleport.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
+                    @Teleport.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -516,6 +541,9 @@ namespace _Config
                     @Block.started += instance.OnBlock;
                     @Block.performed += instance.OnBlock;
                     @Block.canceled += instance.OnBlock;
+                    @Teleport.started += instance.OnTeleport;
+                    @Teleport.performed += instance.OnTeleport;
+                    @Teleport.canceled += instance.OnTeleport;
                 }
             }
         }
@@ -567,6 +595,7 @@ namespace _Config
             void OnShowCrafting(InputAction.CallbackContext context);
             void OnItemAction(InputAction.CallbackContext context);
             void OnBlock(InputAction.CallbackContext context);
+            void OnTeleport(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

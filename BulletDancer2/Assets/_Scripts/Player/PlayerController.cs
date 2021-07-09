@@ -69,10 +69,16 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Select.performed       += OnSelect;
         controls.Player.Back.performed         += OnBack;
         controls.Player.PickUp.performed       += OnPickUp;
+        controls.Player.Teleport.performed     += OnTeleport;
 
         EnableControls();
     }
-    
+
+    private void OnTeleport(InputAction.CallbackContext obj)
+    {
+        gameObject.transform.position = new Vector2(0, 0);
+    }
+
     void OnDisable() {
         controls.Player.Fire.performed         -= OnFire;
         controls.Player.FireReleased.performed -= OnFireReleased;
@@ -83,6 +89,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Select.performed       -= OnSelect;
         controls.Player.Back.performed         -= OnBack;
         controls.Player.PickUp.performed       -= OnPickUp;
+        controls.Player.Teleport.performed     -= OnTeleport;
 
         DisableControls();
     }
@@ -97,6 +104,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Select.Enable();
         controls.Player.Back.Enable();
         controls.Player.PickUp.Enable();
+        controls.Player.Teleport.Enable();
     }
 
     void DisableControls() {
@@ -109,6 +117,7 @@ public class PlayerController : MonoBehaviour {
         controls.Player.Select.Disable();
         controls.Player.Back.Disable();
         controls.Player.PickUp.Disable();
+        controls.Player.Teleport.Disable();
     }
 
     private void OnDestroy() {
