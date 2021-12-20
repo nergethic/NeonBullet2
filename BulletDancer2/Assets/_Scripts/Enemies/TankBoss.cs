@@ -259,10 +259,11 @@ public class TankBoss : Entity {
     }
     
     IEnumerator HandleDeathCor() {
-        var masterSystem = FindObjectOfType<MasterSystem>();
-        if (masterSystem != null) {
+        var levelGenerator = FindObjectOfType<LevelGenerator>();
+        if (levelGenerator != null) {
             yield return new WaitForSeconds(3f);
-            masterSystem.ReloadLevel();
+            levelGenerator.GenerateLevel();
+            player.transform.position = player.startPosition;
         }
         Destroy(gameObject);
     }

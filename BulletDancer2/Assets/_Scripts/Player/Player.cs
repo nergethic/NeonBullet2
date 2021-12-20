@@ -55,6 +55,7 @@ public class Player : MonoBehaviour {
             energyBar.UpdateStatusBar(energy);
         }
     }
+    public Vector3 startPosition;
 
     public bool isImmuneToDamage;
     public bool isAbsorbingEnergy;
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour {
     }
     
     void Start() {
+        startPosition = this.gameObject.transform.position;
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
         UpdateShieldColor(false);
