@@ -81,6 +81,11 @@ public class MasterSystem : MonoBehaviour {
         StartCoroutine(ReloadLevelCor());
     }
 
+    public void LoadNextLevel()
+    {
+        StartCoroutine(LoadNextLevelCor());
+    }
+
     IEnumerator InitializeManagers() {
         Debug.Log("[MasterSystem]: Waiting for manager initialization...");
         
@@ -135,6 +140,13 @@ public class MasterSystem : MonoBehaviour {
     IEnumerator ReloadLevelCor() {
         yield return ScreenOverlayController.FadeOutScreen(2f);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    IEnumerator LoadNextLevelCor()
+    {
+        yield return ScreenOverlayController.FadeOutScreen(2f);
+        levelGenerator.GenerateLevel();
+        player.transform.position = player.startPosition;
     }
 
     IEnumerator FadeInScreenAndFinishInit() {
