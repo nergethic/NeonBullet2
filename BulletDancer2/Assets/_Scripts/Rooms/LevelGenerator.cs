@@ -108,7 +108,7 @@ public class LevelGenerator : MonoBehaviour {
         availableCorridors = new List<Room>(corridors);
         selectedRoomList = spawnCorridor ? availableCorridors : availableRooms;
         
-        for (int triesCount = 0; triesCount < 200; triesCount++) {
+        for (int triesCount = 0; triesCount < selectedRoomList.Count; triesCount++) {
             if (selectedRoomList.Count == 0)
                 return false;
 
@@ -225,7 +225,7 @@ public class LevelGenerator : MonoBehaviour {
     bool generateFromRoomWasSuccessful;
     IEnumerator GenerateLevelSlowly(Room firstRoom) {
         var firstRoomDoorsData = firstRoom.doorsData;
-        int generateBossRoomIndex = Random.Range(0f, 1f) < 0.5f ? 0 : 1;
+        int generateBossRoomIndex = Random.Range(0, 2);
         
         for (int i = 0; i < firstRoomDoorsData.Length; i++) {
             var doors = firstRoomDoorsData[i];
@@ -258,7 +258,6 @@ public class LevelGenerator : MonoBehaviour {
             tryCount++;
             if (tryCount > maxTryCount)
                 break;
-
             if (DEBUG_SlowDownGeneration)
                 yield return waitDelay;
             else
@@ -289,7 +288,6 @@ public class LevelGenerator : MonoBehaviour {
                                 CloseDoors(currentRoom.doorsData[k].doorTransform);
                             }
                         }
-                            // TODO: if a room will have multiple exits this will explode (currentRoom/currentRoomData will be wrong for a second exit)
                         break;
                     }
                 }
