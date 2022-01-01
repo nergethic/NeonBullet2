@@ -53,14 +53,6 @@ public class MasterSystem : MonoBehaviour {
             return;
         
         var keyboard = Keyboard.current;
-        if (keyboard.escapeKey.wasPressedThisFrame) {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#else
-                Application.Quit();
-#endif
-            return;
-        }
 
         if (keyboard.backspaceKey.isPressed) {
             backspacePressedFrames++;
