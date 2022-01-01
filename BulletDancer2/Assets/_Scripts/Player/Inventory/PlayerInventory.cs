@@ -7,9 +7,6 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] int numberOfSlots;
     [SerializeField] InventoryDisplayer inventoryPanel;
     [SerializeField] Player player;
-    public bool IsInventoryActive => inventoryPanel.isActiveAndEnabled;
-
-
     private void Awake()
     {
         slots = inventoryPanel.PrepareItemSlots(numberOfSlots);
@@ -26,15 +23,4 @@ public class PlayerInventory : MonoBehaviour
             }
         }
     }
-    public void ShowInventory()
-    {
-        inventoryPanel.gameObject.SetActive(true);
-    }
-
-    public void HideInventory()
-    {
-        inventoryPanel.gameObject.SetActive(false);
-    }
-
-
 }
