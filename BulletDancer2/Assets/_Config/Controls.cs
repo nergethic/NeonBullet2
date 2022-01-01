@@ -123,6 +123,14 @@ namespace _Config
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShowMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""17324e12-f4da-4977-b5a3-714f472ff06e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -323,6 +331,17 @@ namespace _Config
                     ""action"": ""Teleport"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b06977dd-7551-4cf4-ad9b-7ff7307830d3"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -371,6 +390,7 @@ namespace _Config
             m_Player_ItemAction = m_Player.FindAction("ItemAction", throwIfNotFound: true);
             m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
             m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
+            m_Player_ShowMenu = m_Player.FindAction("ShowMenu", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ButtonClick = m_UI.FindAction("ButtonClick", throwIfNotFound: true);
@@ -436,6 +456,7 @@ namespace _Config
         private readonly InputAction m_Player_ItemAction;
         private readonly InputAction m_Player_Block;
         private readonly InputAction m_Player_Teleport;
+        private readonly InputAction m_Player_ShowMenu;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -453,6 +474,7 @@ namespace _Config
             public InputAction @ItemAction => m_Wrapper.m_Player_ItemAction;
             public InputAction @Block => m_Wrapper.m_Player_Block;
             public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
+            public InputAction @ShowMenu => m_Wrapper.m_Player_ShowMenu;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -501,6 +523,9 @@ namespace _Config
                     @Teleport.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
                     @Teleport.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
                     @Teleport.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
+                    @ShowMenu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowMenu;
+                    @ShowMenu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowMenu;
+                    @ShowMenu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowMenu;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -544,6 +569,9 @@ namespace _Config
                     @Teleport.started += instance.OnTeleport;
                     @Teleport.performed += instance.OnTeleport;
                     @Teleport.canceled += instance.OnTeleport;
+                    @ShowMenu.started += instance.OnShowMenu;
+                    @ShowMenu.performed += instance.OnShowMenu;
+                    @ShowMenu.canceled += instance.OnShowMenu;
                 }
             }
         }
@@ -596,6 +624,7 @@ namespace _Config
             void OnItemAction(InputAction.CallbackContext context);
             void OnBlock(InputAction.CallbackContext context);
             void OnTeleport(InputAction.CallbackContext context);
+            void OnShowMenu(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
