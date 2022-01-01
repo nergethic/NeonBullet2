@@ -1,3 +1,4 @@
+using Assets._Scripts.Player.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +30,6 @@ public class MasterSystem : MonoBehaviour {
         data.player = player;
         data.playerController = playerController;
         activeSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
-        
         ScreenOverlayController.SetDim();
         
         if (levelGenerator == null) {
@@ -124,6 +124,8 @@ public class MasterSystem : MonoBehaviour {
                     data.itemManager = itemSceneManager;
                 else if (manager is ProjectileManager projectileManager)
                     data.projectileManager = projectileManager;
+                else if (manager is UIManager UIManager)
+                    data.uIManager = UIManager;
                 Debug.Log($"-- manager '{manager.name}' init completed");
                 break;
             }
@@ -181,7 +183,8 @@ public enum SceneManagerType {
     Unknown = 0,
     Item,
     Entity,
-    Projectile
+    Projectile,
+    UI
 }
 
 public class SceneManagerData {
@@ -190,4 +193,5 @@ public class SceneManagerData {
     public EntitySceneManager entityManager;
     public ItemSceneManager itemManager;
     public ProjectileManager projectileManager;
+    public UIManager uIManager;
 }
