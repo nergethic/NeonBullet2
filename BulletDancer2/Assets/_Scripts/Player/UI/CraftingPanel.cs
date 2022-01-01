@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftingPanel : MonoBehaviour
+public class CraftingPanel : UIPanel
 {
     public List<CraftingLabel> craftingLabels;
     private List<CraftingLabel> activeCraftingLabels = new List<CraftingLabel>();
