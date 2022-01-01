@@ -1,5 +1,6 @@
 using _Config;
 using Assets._Scripts.Player.Inventory;
+using Assets._Scripts.Player.UI;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,12 +10,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform playerPosition;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
-    [SerializeField] CraftingPanel craftingPanel;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Transform throwableSpawn;
     [SerializeField] ProjectileManager projectileManager;
     [SerializeField] float val;
-    
+    UIManager UIManager;
+
     const string ITEM_TAG_NAME = "Item";
     const string RESOURCE_TAG_NAME = "Resource";
     const string PROJECTILE_TAG_NAME = "Projectile";
@@ -42,11 +43,15 @@ public class PlayerController : MonoBehaviour {
     Vector2 lastMovementDirection;
     float currentSpeed;
 
+    public void InitializeUIManager(UIManager UIManager) => this.UIManager = UIManager;
+
     void Start() {
         controls.Player.ShowInventory.performed += OnShowInventory;
         controls.Player.ShowInventory.Enable();
         controls.Player.ShowCrafting.performed += OnShowCraftingPanel;
         controls.Player.ShowCrafting.Enable();
+        controls.Player.ShowMenu.performed += OnShowMenu;
+        controls.Player.ShowMenu.Enable();
         lastPosition = playerPosition.position;
         currentSpeed = player.playerSpeed;
 
@@ -306,39 +311,16 @@ public class PlayerController : MonoBehaviour {
     }
 
     void OnShowInventory(InputAction.CallbackContext context) {
-        if (player.Inventory.IsInventoryActive) {
-            EnableControls();
-            player.Inventory.HideInventory();
-            isPause = false;
-        } else {
-            player.Inventory.ShowInventory();
-
-            if (craftingPanel.isActiveAndEnabled)
-                craftingPanel.gameObject.SetActive(false);
-            else
-            {
-                isPause = true;
-                DisableControls();
-            }
-        }
+        HandleUIAction(PanelType.Inventory);
     }
 
     void OnShowCraftingPanel(InputAction.CallbackContext context) {
-        if (craftingPanel.isActiveAndEnabled) {
-            EnableControls();
-            craftingPanel.gameObject.SetActive(false);
-            isPause = false;
-        } else {
-            craftingPanel.gameObject.SetActive(true);
-            if (player.Inventory.IsInventoryActive)
-                player.Inventory.HideInventory();
-            else
-            {
-                isPause = true;
-                DisableControls();
-                craftingPanel.Display();
-            }
-        }
+        HandleUIAction(PanelType.Crafting);
+    }
+
+    void OnShowMenu(InputAction.CallbackContext context)
+    {
+        HandleUIAction(PanelType.Options);
     }
 
     void OnItemAction(InputAction.CallbackContext context) {}
@@ -364,5 +346,39 @@ public class PlayerController : MonoBehaviour {
             pickableItem = null;
         if (other.CompareTag(RESOURCE_TAG_NAME))
             pickableResource = null;
+    }
+
+    private void HandleUIAction(PanelType type)
+    {
+        if (UIManager.IsPanelActive)
+        {
+            if (UIManager.ActivePanel.panelType == type)
+            {
+                HidePanel();
+            }
+            else
+            {
+                UIManager.HidePanel();
+                ShowPanel(type);
+            }
+        }
+        else
+        {
+            ShowPanel(type);
+        }
+    }
+
+    private void HidePanel()
+    {
+        EnableControls();
+        UIManager.HidePanel();
+        isPause = false;
+    }
+
+    private void ShowPanel(PanelType type)
+    {
+        UIManager.ShowPanel(type);
+        DisableControls();
+        isPause = true;
     }
 }
