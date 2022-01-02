@@ -18,6 +18,10 @@ namespace Assets._Scripts.Player.UI
         {
             base.Init(masterSystem, data);
             data.playerController.InitializeUIManager(this);
+            foreach (var panel in uiPanels)
+            {
+                panel.Initialize(masterSystem);
+            }
             ChangeInitializationState(ManagerInitializationState.COMPLETED);
         }
 

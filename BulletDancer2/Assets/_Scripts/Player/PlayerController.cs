@@ -129,7 +129,8 @@ public class PlayerController : MonoBehaviour {
         controls.Player.ShowInventory.performed -= OnShowInventory;
         controls.Player.ShowInventory.Disable();
         controls.Player.ShowCrafting.performed -= OnShowCraftingPanel;
-        controls.Player.ShowCrafting.Disable();
+        controls.Player.ShowMenu.performed -= OnShowMenu;
+        controls.Player.ShowMenu.Disable();
     }
     
     Vector2 velBooster = Vector2.zero;
