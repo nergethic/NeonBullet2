@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class OptionsPanel : UIPanel
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject MainPage;
+    [SerializeField] GameObject AudioPage;
+    [SerializeField] AudioMixer audioMixer;
+
+    public void SwitchToAudioPage()
     {
-        
+        MainPage.SetActive(false);
+        AudioPage.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GetBackToMainPage()
     {
-        
+        AudioPage.SetActive(false);
+        MainPage.SetActive(true);
     }
+    public void StartNewGame() => _masterSystem.ReloadLevel();
 
     public void ExitGame()
     {
@@ -24,5 +30,20 @@ public class OptionsPanel : UIPanel
                 Application.Quit();
 #endif
             return;
+    }
+
+    public void SetMusicVolume(float sliderValue)
+    {
+        audioMixer.SetFloat("Music", Mathf.Log10(sliderValue) * 20);
+    }
+
+    public void SetMasterVolume(float sliderValue)
+    {
+        audioMixer.SetFloat("Master", Mathf.Log10(sliderValue) * 20);
+    }
+
+    public void SetSpecialEffectsVolume(float sliderValue)
+    {
+        audioMixer.SetFloat("SpecialEffects", Mathf.Log10(sliderValue) * 20);
     }
 }
