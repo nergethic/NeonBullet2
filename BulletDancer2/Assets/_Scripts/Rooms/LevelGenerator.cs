@@ -23,7 +23,7 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] BoxCollider testRoomCollider;
     [SerializeField] int numberOfRooms;
     [SerializeField] List<Room> nextRoomsBlueprints;
-
+    [SerializeField] Portal portal;
     [SerializeField] bool DEBUG_SlowDownGeneration;
 
     MasterSystem masterSystem;
@@ -271,12 +271,17 @@ public class LevelGenerator : MonoBehaviour {
                 
                 var nextEntryDoorsDirection = exitDoors.direction.GetOppositeDirection();
                 bool roomWasGenerated = false;
+                var spawnBossRoom = generateBossRoom && numberOfGeneratedRooms == roomsToGenerate - 1;
+                var spawnLastRoom = !generateBossRoom && numberOfGeneratedRooms == roomsToGenerate - 1;
                 for (int j = 0; j < 5; j++) {
-                    if (TryFindNextRoom(nextEntryDoorsDirection, spawnCorridor, out var roomData, generateBossRoom && numberOfGeneratedRooms == roomsToGenerate-1)) {
+                    if (TryFindNextRoom(nextEntryDoorsDirection, spawnCorridor, out var roomData, spawnBossRoom)) {
                         var spawnedRoom = SpawnRoom(roomData);
                         alreadyGeneratedRooms.Add(spawnedRoom);
                         currentRoom = spawnedRoom;
                         currentRoomData = roomData;
+                        if (spawnLastRoom)
+                            Instantiate(portal, currentRoom.transform);
+
                         OpenDoors(exitDoors.doorTransform);
                         OpenDoors(roomData.entryDoors.doorTransform);
                         numberOfGeneratedRooms++;
