@@ -44,9 +44,8 @@ public class Enemy : Entity {
     }
 
     private void SpawnDrop() {
-        Resource newResource = null;
-        newResource = Instantiate(_resource, gameObject.transform);
-        newResource.transform.parent = null;
+        var newResource = Instantiate(_resource, gameObject.transform);
+        newResource.transform.parent = gameObject.transform.parent;
     }
 
     private void ResetSprites() {
