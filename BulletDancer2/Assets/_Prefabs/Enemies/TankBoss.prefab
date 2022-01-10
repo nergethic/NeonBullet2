@@ -220,8 +220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   renderer: {fileID: 8510317142386277942}
-  Health: 4
-  MaxHealth: 4
+  Health: 5
+  MaxHealth: 5
   isDead: 0
   tankBase: {fileID: 8510317142386277941}
   cannon: {fileID: 8510317141874192443}
