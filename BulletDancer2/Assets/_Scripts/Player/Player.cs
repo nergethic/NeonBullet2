@@ -22,7 +22,8 @@ public class Player : MonoBehaviour {
     [SerializeField] Transform shield;
     [SerializeField] Material shieldMaterial;
     [SerializeField] PlayerController controller;
-    [SerializeField] ParticleSystem particle;
+    [SerializeField] ParticleSystem bloodParticles;
+    [SerializeField] ParticleSystem smallBloodParticles;
     
     public PlayerResources Resources;
     public PlayerInventory Inventory => inventory;
@@ -68,10 +69,14 @@ public class Player : MonoBehaviour {
 
     void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
+        var main = bloodParticles.main;
+        main.startColor = Color.red;
+        main = smallBloodParticles.main;
+        main.startColor = Color.red;
     }
     
     void Start() {
-        startPosition = this.gameObject.transform.position;
+        startPosition = gameObject.transform.position;
         healthBar.UpdateStatusBar(health);
         energyBar.UpdateStatusBar(Energy);
         UpdateShieldColor(false);
@@ -81,26 +86,15 @@ public class Player : MonoBehaviour {
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
         if (isDead)
             return;
+
+        bool willKillPlayer = Health - projectileData.damage <= 0;
+        if (!willKillPlayer && !isImmuneToDamage) {}
+            smallBloodParticles.Play();
         
         Health -= projectileData.damage;
         HitEvent?.Invoke();
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
-            isDead = true;
-            StartCoroutine(HandleDeath());
-        }
-    }
-
-    public void PlayerHitBySpikes()
-    {
-        if (isDead)
-            return;
-
-        Health--;
-        HitEvent?.Invoke();
-        StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
-        if (Health <= 0 && !isDead)
-        {
             isDead = true;
             StartCoroutine(HandleDeath());
         }
@@ -194,9 +188,7 @@ public class Player : MonoBehaviour {
     IEnumerator HandleDeath() {
         DeathEvent?.Invoke();
         controller.enabled = false;
-        var main = particle.main;
-        main.startColor = Color.red;
-        particle.Play();
+        bloodParticles.Play();
 
         var masterSystem = FindObjectOfType<MasterSystem>(); // TODO: spawn player from master system
         if (masterSystem == null)

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour {
-    [SerializeField] Camera mainCamera;
+    [SerializeField] MainCameraController mainCameraController;
     [SerializeField] Transform playerPosition;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Player player;
@@ -168,6 +168,7 @@ public class PlayerController : MonoBehaviour {
                     var bulletDirection = GetCentralizedMousePos().normalized;
                     activeWeapon.Shoot(bulletDirection);
                     ShootingEvent?.Invoke();
+                    mainCameraController.Shake();
                     velBooster = -bulletDirection * val;
                 }
             }
@@ -180,7 +181,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void SetPlayerRotation() {
-        Vector2 mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 mousePos = mainCameraController.GetCamera().ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 playerPos = playerPosition.position;
         Vector2 lookDir = mousePos - playerPos;
         var angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
@@ -231,7 +232,8 @@ public class PlayerController : MonoBehaviour {
             FootstepEvent();
         }
 
-        Vector3 newCameraPos = mainCamera.transform.position;
+        var camera = mainCameraController.GetCamera();
+        Vector3 newCameraPos = camera.transform.position;
         newCameraPos.x = newPlayerPos.x;
         newCameraPos.y = newPlayerPos.y;
 
@@ -240,14 +242,14 @@ public class PlayerController : MonoBehaviour {
         
         newCameraPos.x += result.x * 0.4f;
         newCameraPos.y += result.y * 0.4f;
-        mainCamera.transform.position = newCameraPos;
-
+        camera.transform.position = newCameraPos;
     }
 
     Vector2 GetCentralizedMousePos() {
+        var camera = mainCameraController.GetCamera();
         Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector3 mouseWorldPoint = mainCamera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, mainCamera.nearClipPlane+Mathf.Epsilon));
-        Vector3 cameraPos = mainCamera.transform.position;
+        Vector3 mouseWorldPoint = camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, camera.nearClipPlane+Mathf.Epsilon));
+        Vector3 cameraPos = camera.transform.position;
         
         return mouseWorldPoint - cameraPos;
     }
@@ -338,8 +340,10 @@ public class PlayerController : MonoBehaviour {
                 if (!projectile.projectileData.ownedByPlayer)
                     player.HandleProjectile(projectile);
         }
-        else if (other.CompareTag(SPIKES_TAG_NAME))
-            player.PlayerHitBySpikes();
+        else if (other.CompareTag(SPIKES_TAG_NAME)) {
+            var spikeProjectileData = new ProjectileData { damage = 1 };
+            player.PlayerHitByProjectileAction(ref spikeProjectileData);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other) {

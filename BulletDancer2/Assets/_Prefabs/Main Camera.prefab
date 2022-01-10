@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4093558624732472260}
   - component: {fileID: 4093558624732472261}
   - component: {fileID: 4093558624732472251}
+  - component: {fileID: 7851416595534208441}
+  - component: {fileID: 767341834524038667}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -108,6 +110,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
@@ -153,3 +156,32 @@ MonoBehaviour:
   wallMat: {fileID: 2100000, guid: ceafbb8d4b200bb4e8c26760d57687d4, type: 2}
   distortionMat: {fileID: 2100000, guid: 31cb7f70588cad54b909994626b5f748, type: 2}
   mainCamera: {fileID: 4093558624732472262}
+  hideWalls: 0
+--- !u!114 &7851416595534208441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4093558624732472257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd30e23050995aa489cdfe455776a667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeLength: 0.15
+  shakePower: 0.018
+--- !u!114 &767341834524038667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4093558624732472257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98df0b5f778921a4bbb90f861dc3824e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 4093558624732472263}
+  shakeController: {fileID: 7851416595534208441}
