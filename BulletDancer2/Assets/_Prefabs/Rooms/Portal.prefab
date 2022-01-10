@@ -209,6 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe0e90a748f8f941b5ca2ae3598b046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vfx: {fileID: 4487269498721037458}
+  detectionRadius: 8
 --- !u!58 &5451790028081647033
 CircleCollider2D:
   m_ObjectHideFlags: 0
