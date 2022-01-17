@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     [SerializeField] PlayerController controller;
     [SerializeField] ParticleSystem bloodParticles;
     [SerializeField] ParticleSystem smallBloodParticles;
+    [SerializeField] RippleEffect rippleEffect;
     
     public PlayerResources Resources;
     public PlayerInventory Inventory => inventory;
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour {
 
     void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
+        rippleEffect.Init(controller.GetCamera());
         var main = bloodParticles.main;
         main.startColor = Color.red;
         main = smallBloodParticles.main;
@@ -91,7 +93,8 @@ public class Player : MonoBehaviour {
         if (!willKillPlayer && !isImmuneToDamage) {}
             smallBloodParticles.Play();
         
-        Health -= projectileData.damage;
+        //Health -= projectileData.damage;
+        controller.GetMainCameraController().Shake();
         HitEvent?.Invoke();
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
@@ -110,6 +113,7 @@ public class Player : MonoBehaviour {
             
         Energy = newEnergy;
         dashCor = StartCoroutine(ToggleDash());
+        //rippleEffect.Emit(new Vector2(0.5f, 0.5f));
         return true;
     }
 
@@ -125,6 +129,7 @@ public class Player : MonoBehaviour {
             if (projectileData.typeMask == (int)ProjectileType.Energy) {
                 BlockEvent?.Invoke();
                 int newEnergy = Energy + 1;
+                rippleEffect.Emit(new Vector2(0.5f, 0.5f));
                 if (newEnergy <= MaxEnergy)
                     Energy = newEnergy;
                 UpdateShieldColor(true);
@@ -132,6 +137,7 @@ public class Player : MonoBehaviour {
                 int newEnergy = Energy - 1;
                 if (newEnergy >= 0) {
                     Energy = newEnergy;
+                    rippleEffect.Emit(new Vector2(0.5f, 0.5f));
                     UpdateShieldColor(true);
                 } else
                     PlayerHitByProjectileAction(ref projectileData);

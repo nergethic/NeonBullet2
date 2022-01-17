@@ -7,12 +7,14 @@ public class BlitRenderFeature : ScriptableRendererFeature {
         public bool IsEnabled = true;
         public RenderPassEvent WhenToInsert = RenderPassEvent.AfterRendering;
         public Material FluidMaterialToBlit;
+        public Material DashDistortionMaterialToBlit;
         public Material DistortionMaterialToBlit;
         public Material PixelizeMaterialToBlit;
     }
     public MyFeatureSettings settings = new MyFeatureSettings();
     
     FluidPass fluidPass;
+    DashDistortionPass dashDistortionPass;
     DistortionPass distortionPass;
     PixelizePass pixelizePass;
 
@@ -21,6 +23,12 @@ public class BlitRenderFeature : ScriptableRendererFeature {
             "Fluid custom pass",
             settings.WhenToInsert,
             settings.FluidMaterialToBlit
+        );
+        
+        dashDistortionPass = new DashDistortionPass(
+            "Dash distortion custom pass",
+            settings.WhenToInsert,
+            settings.DashDistortionMaterialToBlit
         );
         
         distortionPass = new DistortionPass(
@@ -40,6 +48,7 @@ public class BlitRenderFeature : ScriptableRendererFeature {
         //var cameraColorTargetIdent = renderer.cameraColorTarget;
         //pixelizePass.Setup(renderer, cameraColorTargetIdent);
         renderer.EnqueuePass(fluidPass);
+        renderer.EnqueuePass(dashDistortionPass);
         renderer.EnqueuePass(distortionPass);
         renderer.EnqueuePass(pixelizePass);
     }

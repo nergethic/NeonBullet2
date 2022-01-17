@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour {
     const string PROJECTILE_TAG_NAME = "Projectile";
     const string SPIKES_TAG_NAME = "Spikes";
 
+    public Camera GetCamera() => mainCameraController.GetCamera();
+    public MainCameraController GetMainCameraController() => mainCameraController;
     public Vector2 Acceleration => ddPlayer;
     public SpriteRenderer weapon;
     public event Action FootstepEvent;
