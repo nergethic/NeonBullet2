@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.9, y: -3.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1699390068546334673}
   m_RootOrder: 2
@@ -57,6 +58,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6866205229612135867}
   m_Father: {fileID: 1699390068546334673}
@@ -100,6 +102,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.01, y: 3.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1699390068546334673}
   m_RootOrder: 3
@@ -131,6 +134,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1699390068546334673}
   m_RootOrder: 4
@@ -182,6 +186,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.1262492, y: 1.0964878, z: -1.5257802}
   m_LocalScale: {x: 1.4285715, y: 1.4285715, z: 1.4285715}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3085142969303327210}
   - {fileID: 8536207729347215960}
@@ -214,6 +219,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.3, y: -0.83, z: 1.068046}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6298761827195855069}
   m_Father: {fileID: 5318878346157290737}
@@ -247,6 +253,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1699390068546334673}
   m_RootOrder: 0
@@ -329,6 +336,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 886896730413056511}
   m_RootOrder: 0
@@ -1307,7 +1315,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1362,6 +1370,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.73, y: 2.74, z: 1.068046}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6975781267296593247}
   m_Father: {fileID: 5318878346157290737}
@@ -1393,6 +1402,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4285715, y: 1.4285715, z: 1.4285715}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7870306020337260816}
   - {fileID: 1414466485501551781}
@@ -1453,6 +1463,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9027071172057222703}
   - {fileID: 5318878346157290737}
@@ -2718,14 +2729,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f13da1ede3d9ce1469511f384cd57967, type: 3}
---- !u!4 &7111787714228097207 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5658813231270580586, guid: f13da1ede3d9ce1469511f384cd57967, type: 3}
-  m_PrefabInstance: {fileID: 3186861447198294493}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &3083265701651702795 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 501012574242612694, guid: f13da1ede3d9ce1469511f384cd57967, type: 3}
+  m_PrefabInstance: {fileID: 3186861447198294493}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7111787714228097207 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5658813231270580586, guid: f13da1ede3d9ce1469511f384cd57967, type: 3}
   m_PrefabInstance: {fileID: 3186861447198294493}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3307608018927195156

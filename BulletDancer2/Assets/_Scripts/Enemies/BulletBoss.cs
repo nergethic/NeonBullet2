@@ -9,7 +9,7 @@ public class BulletBoss : Entity {
     [SerializeField] Transform rightBulletSpawnPoint;
 
     List<int> projectilesEntered = new List<int>();
-    
+
     float timer;
     float oldZBaseRotation;
     float baseRotationT;
@@ -46,6 +46,20 @@ public class BulletBoss : Entity {
         
         mainBulletSpawnPoint.Rotate(Vector3.forward,  Time.deltaTime*360f, Space.Self);
         mainBulletSpawnPoint2.Rotate(Vector3.forward,  Time.deltaTime*360f, Space.Self);
+        SetCannonRotation();
+    }
+    
+    private void SetCannonRotation() {
+        //if (player.IsDead)
+            //return;
+        
+        Vector2 playerPos = player.transform.position;
+        Vector2 cannonPos = transform.position;
+        Vector2 lookDir = cannonPos - playerPos;
+        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
+
+        var angles = transform.rotation.eulerAngles;
+        transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
