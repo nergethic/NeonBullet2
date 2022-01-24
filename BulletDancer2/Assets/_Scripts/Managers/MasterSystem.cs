@@ -40,10 +40,11 @@ public class MasterSystem : MonoBehaviour {
                 fadeInScreenAndFinishInitCor = StartCoroutine(FadeInScreenAndFinishInit());
             };
         }
-        
+        else
+            StartCoroutine(FadeInScreenAndFinishInit());
+
         CollectManagers();
         StartCoroutine(InitializeManagers());
-        StartCoroutine(FadeInScreenAndFinishInit());
     }
 
     int backspacePressedFrames;
