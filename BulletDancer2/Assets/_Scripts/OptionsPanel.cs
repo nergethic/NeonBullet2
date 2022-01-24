@@ -20,7 +20,9 @@ public class OptionsPanel : UIPanel
         AudioPage.SetActive(false);
         MainPage.SetActive(true);
     }
-    public void StartNewGame() => _masterSystem.ReloadLevel();
+    public void StartNewGame() => UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+
+    public void StartTutorial() => UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
 
     public void ExitGame()
     {
