@@ -17,7 +17,8 @@ public class PlayerInventory : MonoBehaviour
         {
             if (!slot.HasItem)
             {
-                item.Owner = player;
+                item.Owner = player; 
+                item.transform.SetParent(this.transform);
                 slot.Item = item;
                 break;
             }

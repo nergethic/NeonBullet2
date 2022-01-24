@@ -25,13 +25,25 @@ public class ItemSlot : MonoBehaviour
         SetButtonStatus(Item, false);
         HandleEquipableItems();
 
+        item.PutDownItemFromInventory();
         item = null;
         itemImage.sprite = null;
         itemButton.onClick.RemoveAllListeners();
         itemButton.gameObject.SetActive(false);
         deleteButton.gameObject.SetActive(false);
     }
+    public void RemoveItemFromSlotOnItemUse()
+    {
+        SetButtonStatus(Item, false);
+        HandleEquipableItems();
 
+        item = null;
+        itemImage.sprite = null;
+        itemButton.onClick.RemoveAllListeners();
+        itemButton.gameObject.SetActive(false);
+        deleteButton.gameObject.SetActive(false);
+
+    }
     private void HandleEquipableItems()
     {
         if (item is Weapon weapon)
