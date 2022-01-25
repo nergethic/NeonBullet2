@@ -91,7 +91,7 @@ public class RippleEffect : MonoBehaviour {
         }
         gradTexture.Apply();
         
-        material.hideFlags = HideFlags.DontSave;
+        material.hideFlags = HideFlags.None;
         material.SetTexture("_GradTex", gradTexture);
         //InvokeRepeating("Emitt", 2f, 2f);
     }
