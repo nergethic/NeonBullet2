@@ -30,7 +30,6 @@ public class DestructableWall : MonoBehaviour
         if (levelOfDestruction != 0)
         {
             levelOfDestruction -= bullet.projectileData.damage;
-            Destroy(bullet.gameObject);
 
             if (levelOfDestruction <= 0)
             {
