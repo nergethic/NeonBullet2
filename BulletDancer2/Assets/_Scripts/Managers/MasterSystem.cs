@@ -30,19 +30,19 @@ public class MasterSystem : MonoBehaviour {
         data.player = player;
         data.playerController = playerController;
         activeSceneManagers = new Dictionary<SceneManagerType, SceneManager>();
-        ScreenOverlayController.SetDim();
-        
-        if (levelGenerator == null) {
-            Debug.LogError("[MasterSystem]: LevelGenerator component isn't found");
-            return;
+       
+        if (levelGenerator != null) {
+            ScreenOverlayController.SetDim();
+            levelGenerator.Initialize(this);
+            levelGenerator.OnLevelGenerated += () => {
+                if (fadeInScreenAndFinishInitCor != null)
+                    StopCoroutine(fadeInScreenAndFinishInitCor);
+                fadeInScreenAndFinishInitCor = StartCoroutine(FadeInScreenAndFinishInit());
+            };
         }
-        levelGenerator.Initialize(this);
-        levelGenerator.OnLevelGenerated += () => {
-            if (fadeInScreenAndFinishInitCor != null)
-                StopCoroutine(fadeInScreenAndFinishInitCor);
-            fadeInScreenAndFinishInitCor = StartCoroutine(FadeInScreenAndFinishInit());
-        };
-        
+        else
+            StartCoroutine(FadeInScreenAndFinishInit());
+
         CollectManagers();
         StartCoroutine(InitializeManagers());
     }

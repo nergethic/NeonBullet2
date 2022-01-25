@@ -21,7 +21,17 @@ public abstract class Item : MonoBehaviour {
         this.projectileManager = projectileManager;
     }
 
+    public void PutDownItemFromInventory()
+    {
+        transform.parent = null;
+        transform.rotation = Quaternion.identity;
+        gameObject.SetActive(true);
+        gameObject.transform.position = Owner.transform.position;
+        SpriteRenderer.sprite = Sprite;
+    }
+
     private void Awake() {
         Sprite = SpriteRenderer.sprite;
     }
+
 }

@@ -15,7 +15,6 @@ public class ItemAudioController : MonoBehaviour
     }
     private void OnUse()
     {
-        item.Sprite = null;
         item.gameObject.SetActive(true);
         itemSource.PlayOneShot(use);
     }

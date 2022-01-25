@@ -8,20 +8,15 @@ public class Grenade : Item, ThrowableItem {
     Projectile projectile;
     
     public void Throw(float speed, Vector2 itemDirection, Vector2 throwableSpawn) {
-        /*myTransform.position = throwableSpawn;
-        gameObject.SetActive(true);
-        ItemSlot.RemoveItemFromSlot();
-        playerController.ThrowableItem = null;
-        StartCoroutine(Fly(speed, itemDirection));*/
 
         projectile = projectileManager.SpawnProjectile(playerController.transform.position, itemDirection, ProjectileType.Grenade, true, speed);
         if (projectile != null) {
             projectile.DestroyEvent += OnProjectileDestroy;
+            ItemSlot.RemoveItemFromSlotOnItemUse();
         }
     }
 
     void OnProjectileDestroy() {
-        ItemSlot.RemoveItemFromSlot();
         var explosion = Instantiate(explosionEffect);
         explosion.transform.position = projectile.transform.position;
         explosion.transform.localScale = new Vector3(1, 1);
