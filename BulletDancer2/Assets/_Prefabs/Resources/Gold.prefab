@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3712919879426568634}
   - component: {fileID: 3712919879426568517}
   - component: {fileID: 6703953452721692402}
+  - component: {fileID: 5824260418922913202}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Resource
@@ -124,3 +125,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89bde6588a5072149ba0d342b2878c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5824260418922913202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3712919879426568519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.116199814, y: -0.050242912, z: 0}
+  - {x: -0.11951315, y: -0.013074338, z: 0}
+  - {x: -0.11408949, y: 0.040449344, z: 0}
+  - {x: -0.08189641, y: 0.047950923, z: 0}
+  - {x: -0.06631005, y: 0.06306868, z: 0}
+  - {x: 0.013452659, y: 0.06929511, z: 0}
+  - {x: 0.079679236, y: 0.0683541, z: 0}
+  - {x: 0.084717005, y: 0.056023538, z: 0}
+  - {x: 0.099744916, y: 0.052643918, z: -0.000000029802322}
+  - {x: 0.10106547, y: 0.030349543, z: 0}
+  - {x: 0.11380498, y: 0.020148894, z: 0.000000029802322}
+  - {x: 0.11196821, y: -0.040981196, z: 0}
+  - {x: 0.08988574, y: -0.059909053, z: 0}
+  - {x: -0.042013384, y: -0.061033748, z: 0}
+  m_ShapePathHash: -408936015
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 251054

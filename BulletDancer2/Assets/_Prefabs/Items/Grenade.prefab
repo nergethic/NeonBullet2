@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3494659571956619324}
   - component: {fileID: 5724752422718634819}
   - component: {fileID: 608186996}
+  - component: {fileID: 4402466806620296107}
   m_Layer: 0
   m_Name: Grenade
   m_TagString: Item
@@ -101,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 1274278547736680348}
+  ShadowCaster: {fileID: 4402466806620296107}
   playerController: {fileID: 0}
   myTransform: {fileID: 5458829828065545760}
   explosionEffect: {fileID: 3489929141657909040, guid: fecb5f5b4b3ea7647b722661487e8b39, type: 3}
@@ -152,6 +154,33 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4402466806620296107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4644551906453577257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -2.25, y: -3.2050002, z: 0}
+  - {x: -2.25, y: 3.2050002, z: 0}
+  - {x: 2.25, y: 3.2050002, z: 0}
+  - {x: 2.25, y: -3.2050002, z: 0}
+  m_ShapePathHash: 0
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 304140
 --- !u!1001 &6949366085822389443
 PrefabInstance:
   m_ObjectHideFlags: 0

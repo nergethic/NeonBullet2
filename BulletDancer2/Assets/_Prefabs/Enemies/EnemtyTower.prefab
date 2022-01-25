@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 6035741086760662853}
   - component: {fileID: 6243688807117069141}
   - component: {fileID: 7017414464096730209}
+  - component: {fileID: 6940437418832008411}
   m_Layer: 9
   m_Name: EnemtyTower
   m_TagString: Untagged
@@ -647,6 +648,48 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.147
+--- !u!114 &6940437418832008411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146937165377057666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.102535605, y: -0.10889602, z: 0}
+  - {x: -0.13716829, y: -0.057726353, z: 0}
+  - {x: -0.14797062, y: 0.006302446, z: 0}
+  - {x: -0.13322562, y: 0.0719907, z: 0}
+  - {x: -0.09044379, y: 0.12195213, z: 0}
+  - {x: -0.023745298, y: 0.15096378, z: 0.000000029802322}
+  - {x: 0.059271395, y: 0.14188573, z: 0}
+  - {x: 0.112226546, y: 0.101209536, z: 0}
+  - {x: 0.14160913, y: 0.045796484, z: 0}
+  - {x: 0.14774758, y: -0.0047893524, z: 0}
+  - {x: 0.14263523, y: -0.039749652, z: 0}
+  - {x: 0.12616855, y: -0.07777931, z: 0}
+  - {x: 0.11146647, y: -0.0973423, z: 0}
+  - {x: 0.08320701, y: -0.122737005, z: 0}
+  - {x: 0.054919183, y: -0.13713327, z: 0}
+  - {x: 0.023655772, y: -0.1443575, z: 0}
+  - {x: 0.004526794, y: -0.14610697, z: 0}
+  - {x: -0.02121228, y: -0.14607458, z: 0}
+  - {x: -0.0710094, y: -0.13080555, z: 0}
+  m_ShapePathHash: -709473821
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -393254
 --- !u!1 &9146937165460650156
 GameObject:
   m_ObjectHideFlags: 0

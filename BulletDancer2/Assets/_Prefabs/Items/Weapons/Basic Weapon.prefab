@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8214777190557650763}
   - component: {fileID: 8366985670786951662}
   - component: {fileID: 4373382777983063235}
+  - component: {fileID: 1226708868539105823}
   m_Layer: 0
   m_Name: Basic Weapon
   m_TagString: Item
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 4373382777983063235}
+  ShadowCaster: {fileID: 1226708868539105823}
   playerController: {fileID: 0}
   speed: 3
   projectileType: 0
@@ -131,6 +133,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1226708868539105823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679491259254858309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.11789732, y: -0.078422986, z: 0}
+  - {x: -0.11801298, y: -0.022767324, z: 0}
+  - {x: -0.1069739, y: -0.01277959, z: 0}
+  - {x: -0.09698616, y: -0.010151238, z: 0}
+  - {x: -0.097511835, y: 0.0019391784, z: 0}
+  - {x: -0.11801298, y: 0.003516189, z: 0}
+  - {x: -0.11789732, y: 0.060550198, z: 0}
+  - {x: 0.048098832, y: 0.060814247, z: 0}
+  - {x: 0.050201513, y: 0.07816137, z: 0}
+  - {x: 0.08857544, y: 0.07816137, z: 0}
+  - {x: 0.0875241, y: 0.049249504, z: 0}
+  - {x: 0.11526896, y: 0.04951112, z: 0}
+  - {x: 0.11643596, y: -0.0054202043, z: 0}
+  - {x: 0.08857544, y: -0.0038431948, z: 0}
+  - {x: 0.08804977, y: -0.01645928, z: 0}
+  - {x: 0.060714915, y: -0.015933612, z: 0}
+  - {x: 0.059663575, y: -0.028549697, z: 0}
+  - {x: 0.07070265, y: -0.033806402, z: 0}
+  - {x: 0.070587, y: -0.07789732, z: 0}
+  - {x: 0.0028911864, y: -0.07638569, z: 0}
+  - {x: -0.018661294, y: -0.054833215, z: 0}
+  - {x: -0.018135624, y: -0.036960423, z: 0}
+  - {x: -0.030226039, y: -0.03801176, z: 0}
+  - {x: -0.04967584, y: -0.05746156, z: 0}
+  - {x: -0.051778525, y: -0.07848837, z: 0}
+  m_ShapePathHash: -442419897
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 304230
 --- !u!1001 &5141309591977043959
 PrefabInstance:
   m_ObjectHideFlags: 0

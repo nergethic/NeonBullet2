@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4278127495783848478}
   - component: {fileID: 8214777190557650763}
   - component: {fileID: 8366985670786951662}
+  - component: {fileID: 4436094123107216188}
   m_Layer: 0
   m_Name: SniperRifle
   m_TagString: Item
@@ -100,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 4278127495783848478}
+  ShadowCaster: {fileID: 4436094123107216188}
   playerController: {fileID: 0}
   speed: 10
   projectileType: 3
@@ -131,6 +133,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.23323607, y: 0.15541175}
   m_EdgeRadius: 0
+--- !u!114 &4436094123107216188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679491259254858309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.19, y: -0.09, z: 0}
+  - {x: -0.18169834, y: 0.013751429, z: -0.000000029802322}
+  - {x: -0.11417569, y: 0.03329897, z: 0}
+  - {x: -0.076786116, y: 0.09022258, z: 0}
+  - {x: 0.17221077, y: 0.07247728, z: 0}
+  - {x: 0.17789711, y: -0.050208047, z: 0}
+  - {x: 0.06281326, y: -0.040473707, z: 0}
+  - {x: 0.012997858, y: -0.07821422, z: 0}
+  m_ShapePathHash: -1534382011
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 304330
 --- !u!1001 &5141309591977043959
 PrefabInstance:
   m_ObjectHideFlags: 0

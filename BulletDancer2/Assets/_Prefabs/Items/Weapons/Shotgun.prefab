@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4278127495783848478}
   - component: {fileID: 8214777190557650763}
   - component: {fileID: 8366985670786951662}
+  - component: {fileID: 539659653242582636}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Item
@@ -100,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 4278127495783848478}
+  ShadowCaster: {fileID: 539659653242582636}
   playerController: {fileID: 0}
   speed: 5
   projectileType: 4
@@ -131,6 +133,49 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.23323607, y: 0.15541175}
   m_EdgeRadius: 0
+--- !u!114 &539659653242582636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679491259254858309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.10980287, y: -0.07641743, z: 0}
+  - {x: -0.11466245, y: -0.017135795, z: 0}
+  - {x: -0.13757035, y: 0.0041838847, z: 0}
+  - {x: -0.13468555, y: 0.049926896, z: 0}
+  - {x: -0.053277053, y: 0.051789712, z: 0}
+  - {x: -0.03773419, y: 0.07183846, z: 0}
+  - {x: -0.0016364902, y: 0.070839494, z: 0}
+  - {x: -0.00495439, y: 0.05183313, z: 0}
+  - {x: 0.080591515, y: 0.057372164, z: 0}
+  - {x: 0.14, y: 0.08, z: 0}
+  - {x: 0.1389532, y: -0.058613583, z: 0}
+  - {x: 0.09586839, y: -0.056220047, z: 0}
+  - {x: 0.07665697, y: -0.037741143, z: 0}
+  - {x: 0.07647056, y: -0.07623199, z: 0}
+  - {x: 0.00927873, y: -0.076519504, z: 0}
+  - {x: 0.007094495, y: -0.026616398, z: 0}
+  - {x: -0.018181711, y: -0.030506648, z: 0}
+  - {x: -0.02386517, y: -0.044576664, z: 0}
+  - {x: -0.054574974, y: -0.048383325, z: 0}
+  - {x: -0.06174145, y: -0.07599967, z: 0}
+  m_ShapePathHash: 25074621
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 304292
 --- !u!1001 &5141309591977043959
 PrefabInstance:
   m_ObjectHideFlags: 0

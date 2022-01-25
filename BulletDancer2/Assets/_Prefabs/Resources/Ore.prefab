@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7627868740655351091}
   - component: {fileID: 7627868740655351244}
   - component: {fileID: 7627868740655351245}
+  - component: {fileID: 3192140157898157130}
   m_Layer: 0
   m_Name: Ore
   m_TagString: Resource
@@ -124,3 +125,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050e4d2b4e57a7945b2baf4d87597516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3192140157898157130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7627868740655351246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.04516427, y: -0.06798312, z: 0}
+  - {x: -0.046825103, y: -0.058911823, z: 0}
+  - {x: -0.07865344, y: -0.05005477, z: 0}
+  - {x: -0.09056859, y: -0.04764601, z: 0}
+  - {x: -0.08164972, y: -0.03020662, z: 0}
+  - {x: -0.09991294, y: -0.015711319, z: 0}
+  - {x: -0.06324943, y: 0.026622316, z: 0}
+  - {x: -0.030250862, y: 0.06496634, z: 0}
+  - {x: 0.009093933, y: 0.06898928, z: 0}
+  - {x: 0.018770698, y: 0.05576992, z: 0}
+  - {x: 0.05883175, y: 0.060629874, z: 0}
+  - {x: 0.076241404, y: 0.044697326, z: 0}
+  - {x: 0.07856154, y: 0.025111437, z: 0}
+  - {x: 0.0897239, y: 0.012364149, z: -0.000000029802322}
+  - {x: 0.08637392, y: -0.036872946, z: -0.000000029802322}
+  - {x: 0.069152504, y: -0.05637787, z: 0}
+  - {x: 0.04876519, y: -0.058420412, z: 0}
+  - {x: 0.039501674, y: -0.07046305, z: 0}
+  - {x: 0.0089504, y: -0.07064031, z: 0}
+  m_ShapePathHash: -1962937246
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -452904

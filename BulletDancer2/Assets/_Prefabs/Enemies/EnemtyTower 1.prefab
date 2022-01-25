@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 6035741086760662853}
   - component: {fileID: 6243688807117069141}
   - component: {fileID: 7017414464096730209}
+  - component: {fileID: 4697053202525046318}
   m_Layer: 9
   m_Name: EnemtyTower 1
   m_TagString: Untagged
@@ -668,6 +669,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.147
+--- !u!114 &4697053202525046318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146937165377057666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: ed8ee3d04149eda20000000001d904ae
+  m_ShapePath:
+  - {x: -0.14700001, y: -0.147, z: 0}
+  - {x: -0.14700001, y: 0.147, z: 0}
+  - {x: 0.14700001, y: 0.147, z: 0}
+  - {x: 0.14700001, y: -0.147, z: 0}
+  m_ShapePathHash: 0
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -414172
 --- !u!1 &9146937165460650156
 GameObject:
   m_ObjectHideFlags: 0
