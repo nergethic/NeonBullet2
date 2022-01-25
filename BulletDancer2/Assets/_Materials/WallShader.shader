@@ -72,7 +72,7 @@ Shader "Custom/NewUnlitShader"
                 //fixed4 col = tex2D(_MainTex, i.uv);
                 //return col;
                 // return fixed4(i.objectVert.r, i.objectVert.g, i.objectVert.b, 0);
-                return fixed4(0.006, 0.006, 0.008, 0); // i.objectVert.y
+                return fixed4(0.00, 0.00, 0.00, 0); // i.objectVert.y
             }
             ENDCG
         }
