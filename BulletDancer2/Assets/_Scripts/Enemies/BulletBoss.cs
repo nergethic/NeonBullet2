@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BulletBoss : Entity {
     [SerializeField] Transform mainBulletSpawnPoint;
@@ -8,22 +9,62 @@ public class BulletBoss : Entity {
     [SerializeField] Transform leftBulletSpawnPoint;
     [SerializeField] Transform rightBulletSpawnPoint;
 
-    List<int> projectilesEntered = new List<int>();
+    List<int> projectilesEntered = new();
+    
+    readonly Quaternion leftSpawnWide    = Quaternion.Euler(0f, 0f, 138.87f);
+    readonly Quaternion leftSpawnNarrow  = Quaternion.Euler(0f, 0f, 170f);
+    readonly Quaternion rightSpawnWide   = Quaternion.Euler(0f, 0f, -170f);
+    readonly Quaternion rightSpawnNarrow = Quaternion.Euler(0f, 0f, 180f);
+
+    BulletBossStage currentStage;
+    Coroutine mainCannonShoothingCor = null;
+    Coroutine sideCannonsShoothingCor = null;
     
     float timer;
     float oldZBaseRotation;
     float baseRotationT;
     const float speed = 0.8f;
     const float SHOOTING_DISTANCE = 40f;
+    const float bulletFrequency = 0.045f;
+    readonly WaitForSeconds WaitSomeTime = new(bulletFrequency);
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
-        StartCoroutine(StartShooting());
+        Assert.IsTrue(Health >= 5);
+        SwitchStage(BulletBossStage.Inactive);
     }
 
-    const float bulletFrequency = 0.045f;
-    readonly WaitForSeconds WaitSomeTime = new WaitForSeconds(bulletFrequency);
-    IEnumerator StartShooting() {
+    void SwitchStage(BulletBossStage stage) {
+        switch (stage) {
+            case BulletBossStage.Inactive:
+                if (mainCannonShoothingCor != null) {
+                    StopCoroutine(mainCannonShoothingCor);
+                    mainCannonShoothingCor = null;
+                }
+                
+                if (sideCannonsShoothingCor != null) {
+                    StopCoroutine(sideCannonsShoothingCor);
+                    sideCannonsShoothingCor = null;
+                }
+                break;
+            
+            case BulletBossStage.Stage1:
+                mainCannonShoothingCor = StartCoroutine(StartShootingMainCannon());
+                sideCannonsShoothingCor = StartCoroutine(StartShootingSideCannons());
+                break;
+            
+            case BulletBossStage.Stage2:
+                if (mainCannonShoothingCor != null) {
+                    StopCoroutine(mainCannonShoothingCor);
+                    mainCannonShoothingCor = null;
+                }
+                break;
+        }
+        
+        currentStage = stage;
+    }
+    
+    IEnumerator StartShootingMainCannon() {
         float duration = 0.8f;
         while (true) {
             float totalTime = 0;
@@ -32,20 +73,60 @@ public class BulletBoss : Entity {
                     yield return null;
                 }
                 totalTime += Time.deltaTime;
-                ShootBullets();
+                ShootMainBullets();
+                yield return WaitSomeTime;
+                totalTime += bulletFrequency;
+            }
+        }
+    }
+    
+    IEnumerator StartShootingSideCannons() {
+        float duration = 0.8f;
+        while (true) {
+            float totalTime = 0;
+            while (totalTime <= duration) {
+                if (Vector3.SqrMagnitude(player.transform.position - transform.position) > SHOOTING_DISTANCE) {
+                    yield return null;
+                }
+                totalTime += Time.deltaTime;
+                ShootSideBullets();
                 yield return WaitSomeTime;
                 totalTime += bulletFrequency;
             }
         }
     }
 
-    [SerializeField] private float param1;
-    [SerializeField] private float param2;
     public override void Tick(float dt) {
         base.Tick(dt);
+
+        switch (currentStage) {
+            case BulletBossStage.Stage1:
+                break;
+            
+            case BulletBossStage.Stage2:
+                break;
+        }
         
         mainBulletSpawnPoint.Rotate(Vector3.forward,  Time.deltaTime*360f, Space.Self);
         mainBulletSpawnPoint2.Rotate(Vector3.forward,  Time.deltaTime*360f, Space.Self);
+        
+        //Debug.LogError(leftBulletSpawnPoint.rotation.eulerAngles.z);
+        //leftBulletSpawnPoint.rotation = Quaternion.Lerp(leftSpawnWide, leftSpawnNarrow, 0f);
+        //rightBulletSpawnPoint.rotation = Quaternion.Lerp(rightSpawnWide, rightSpawnNarrow, 0f);
+        SetCannonRotation();
+    }
+    
+    private void SetCannonRotation() {
+        //if (player.IsDead)
+            //return;
+        
+        Vector2 playerPos = player.transform.position;
+        Vector2 cannonPos = transform.position;
+        Vector2 lookDir = cannonPos - playerPos;
+        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
+
+        var angles = transform.rotation.eulerAngles;
+        transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -70,10 +151,19 @@ public class BulletBoss : Entity {
         }
     }
     
-    void ShootBullets() {
+    void ShootMainBullets() {
         var bullet = projectileManager.SpawnProjectile(mainBulletSpawnPoint.position, mainBulletSpawnPoint.up, ProjectileType.StandardOrange, false, 5f);
         var bullet2 = projectileManager.SpawnProjectile(mainBulletSpawnPoint2.position, mainBulletSpawnPoint2.up,ProjectileType.StandardOrange, false, 5f);
+    }
+
+    void ShootSideBullets() {
         var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, leftBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
         var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, rightBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
     }
+}
+
+enum BulletBossStage {
+    Inactive = 0,
+    Stage1,
+    Stage2
 }

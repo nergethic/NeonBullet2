@@ -154,6 +154,13 @@ public class PlayerController : MonoBehaviour {
             ThrowableItem = null;
             loadingItemAction = 0f;
         }
+
+        if (keyboard.qKey.isPressed) {
+            var x = FindObjectOfType<BulletBoss>();
+            if (x != null) {
+                playerPosition.position = x.transform.position + (x.transform.right*2f);
+            }
+        }
     }
 
     void HandleMouseInput() {
