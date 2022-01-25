@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public abstract class Item : MonoBehaviour {
     public Sprite Sprite { get; set; }
     public SpriteRenderer SpriteRenderer;
+    public ShadowCaster2D ShadowCaster;
     public Player Owner { get; set; }
     public PlayerController playerController;
     public ItemSlot ItemSlot { get; set; }
@@ -28,6 +30,7 @@ public abstract class Item : MonoBehaviour {
         gameObject.SetActive(true);
         gameObject.transform.position = Owner.transform.position;
         SpriteRenderer.sprite = Sprite;
+        ShadowCaster.enabled = true;
     }
 
     private void Awake() {

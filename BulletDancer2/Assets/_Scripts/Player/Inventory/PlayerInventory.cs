@@ -20,6 +20,7 @@ public class PlayerInventory : MonoBehaviour
                 item.Owner = player; 
                 item.transform.SetParent(this.transform);
                 slot.Item = item;
+                item.ShadowCaster.enabled = false;
                 break;
             }
         }
