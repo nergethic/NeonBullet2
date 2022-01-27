@@ -55,26 +55,7 @@ public class RippleEffect : MonoBehaviour {
 
     public void Init(Camera cam) {
         this.cam = cam;
-        UpdateShaderParameters();
-    }
-    
-    public void Emit(Vector2 pos) {
-        droplets[dropCount++ % droplets.Length].Reset(pos);
-    }
-
-    void UpdateShaderParameters()
-    {
-        material.SetVector("_Drop1", droplets[0].MakeShaderParameter(cam.aspect));
-        material.SetVector("_Drop2", droplets[1].MakeShaderParameter(cam.aspect));
-        material.SetVector("_Drop3", droplets[2].MakeShaderParameter(cam.aspect));
-
-        material.SetColor("_Reflection", reflectionColor);
-        material.SetVector("_Params1", new Vector4(cam.aspect, 1, 1 / waveSpeed, 0));
-        material.SetVector("_Params2", new Vector4(1, 1 / cam.aspect, refractionStrength, reflectionStrength));
-    }
-
-    void Awake()
-    {
+        
         droplets = new Droplet[3];
         droplets[0] = new Droplet();
         droplets[1] = new Droplet();
@@ -94,6 +75,23 @@ public class RippleEffect : MonoBehaviour {
         material.hideFlags = HideFlags.None;
         material.SetTexture("_GradTex", gradTexture);
         //InvokeRepeating("Emitt", 2f, 2f);
+        
+        UpdateShaderParameters();
+    }
+    
+    public void Emit(Vector2 pos) {
+        droplets[dropCount++ % droplets.Length].Reset(pos);
+    }
+
+    void UpdateShaderParameters()
+    {
+        material.SetVector("_Drop1", droplets[0].MakeShaderParameter(cam.aspect));
+        material.SetVector("_Drop2", droplets[1].MakeShaderParameter(cam.aspect));
+        material.SetVector("_Drop3", droplets[2].MakeShaderParameter(cam.aspect));
+
+        material.SetColor("_Reflection", reflectionColor);
+        material.SetVector("_Params1", new Vector4(cam.aspect, 1, 1 / waveSpeed, 0));
+        material.SetVector("_Params2", new Vector4(1, 1 / cam.aspect, refractionStrength, reflectionStrength));
     }
 
     void Emitt() {

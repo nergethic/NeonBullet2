@@ -71,7 +71,8 @@ public class Player : MonoBehaviour {
 
     void Awake() {
         Resources.SetPlayerResources(ore, iron, gold);
-        rippleEffect.Init(controller.GetCamera());
+        var cam = controller.GetCamera();
+        rippleEffect.Init(cam);
         var main = bloodParticles.main;
         main.startColor = Color.red;
         main = smallBloodParticles.main;
@@ -94,7 +95,7 @@ public class Player : MonoBehaviour {
         if (!willKillPlayer && !isImmuneToDamage) {}
             smallBloodParticles.Play();
         
-        //Health -= projectileData.damage;
+        Health -= projectileData.damage;
         controller.GetMainCameraController().Shake();
         HitEvent?.Invoke(projectileData);
         isImmuneToDamage = true;
