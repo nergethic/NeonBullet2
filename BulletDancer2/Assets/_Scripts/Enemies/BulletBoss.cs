@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -45,12 +44,21 @@ public class BulletBoss : Entity {
         teleport.localScale = Vector3.zero;
         teleport.SetParent(null);
         bossBase.enabled = false;
-        player.HitEvent += PlayerOnHitEvent;
+        player.PreHitEvent += PlayerOnHitEvent;
     }
 
     void OnDisable() {
-        player.HitEvent -= PlayerOnHitEvent;
+        player.PreHitEvent -= PlayerOnHitEvent;
         StopAllCoroutines();
+    }
+
+    public void NotifyAboutDeadMinion() {
+        var entitySystem = FindObjectOfType<EntitySceneManager>();
+        if (entitySystem != null) {
+            var spawnForce = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * Random.Range(3f, 5.5f);
+            var m1 = SpawnMinion(spawnForce);
+            entitySystem.AddEntity(m1);
+        }
     }
 
     void SwitchStage(BulletBossStage stage) {
@@ -214,6 +222,7 @@ public class BulletBoss : Entity {
 
     SpaceBossMinion SpawnMinion(Vector2 force) {
         var minionInst = Instantiate(minion, transform.position, Quaternion.identity);
+        minionInst.SetBossOwner(this);
         var rb = minionInst.GetComponentInChildren<Rigidbody2D>();
         if (rb != null) {
             rb.AddForce(force, ForceMode2D.Impulse);
@@ -231,9 +240,9 @@ public class BulletBoss : Entity {
 
         var entitySystem = FindObjectOfType<EntitySceneManager>();
         if (entitySystem != null) {
-            var m1 = SpawnMinion(Vector2.left*Random.Range(3f, 6f));
-            var m2 = SpawnMinion(Vector2.up*Random.Range(3f, 6f));
-            var m3 = SpawnMinion(Vector2.down*Random.Range(3f, 6f));
+            var m1 = SpawnMinion(Vector2.left*Random.Range(3f, 5.5f));
+            var m2 = SpawnMinion(Vector2.up*Random.Range(3f, 5.5f));
+            var m3 = SpawnMinion(Vector2.down*Random.Range(3f, 5.5f));
             entitySystem.AddEntity(m1);
             entitySystem.AddEntity(m2);
             entitySystem.AddEntity(m3);
@@ -256,6 +265,7 @@ public class BulletBoss : Entity {
 
     void PlayerOnHitEvent(ProjectileData projectileData) {
         if (!projectileData.ownedByPlayer && projectileData.typeMask == (int)ProjectileType.StandardBlue) {
+            catchUpTimer = 0f;
             shouldCatchUpPlayer = true;
         }
     }

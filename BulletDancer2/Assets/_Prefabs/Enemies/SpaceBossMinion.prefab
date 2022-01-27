@@ -176,7 +176,8 @@ MonoBehaviour:
   upgraded: 0
   animator: {fileID: 0}
   rb: {fileID: 485406431527689007}
-  collider: {fileID: 2315533156984709565}
+  triggerCollider: {fileID: 6413661274097044001}
+  physicsCollider: {fileID: 2315533156984709565}
 --- !u!50 &485406431527689007
 Rigidbody2D:
   serializedVersion: 4
