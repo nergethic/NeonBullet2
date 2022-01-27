@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     public event Action BlockEvent;
     public event Action DeathEvent;
     public event Action<ProjectileData> HitEvent;
+    public event Action<ProjectileData> PreHitEvent;
     public event Action SpawnEvent;
     
     [SerializeField] int health;
@@ -96,6 +97,7 @@ public class Player : MonoBehaviour {
         //Health -= projectileData.damage;
         controller.GetMainCameraController().Shake();
         HitEvent?.Invoke(projectileData);
+        isImmuneToDamage = true;
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
             isDead = true;
@@ -125,6 +127,7 @@ public class Player : MonoBehaviour {
 
     public void HandleProjectile(Projectile projectile) {
         var projectileData = projectile.projectileData;
+        PreHitEvent?.Invoke(projectileData);
         if (isAbsorbingEnergy) {
             if (projectileData.typeMask == (int)ProjectileType.Energy) {
                 BlockEvent?.Invoke();

@@ -58,11 +58,8 @@ public class PlayerController : MonoBehaviour {
         currentSpeed = player.playerSpeed;
 
         // check why item system didn't init item
-        activeWeapon.Initialize(player, this, projectileManager);
-        player.Inventory.AddItem(activeWeapon);
-        weapon.sprite = activeWeapon.topView;
-        activeWeapon.SetButtonStatus(activeWeapon, true);
-        activeWeapon.SpriteRenderer.sprite = null;
+        if (activeWeapon != null)
+            HandleActiveWeapon();
     }
 
     void OnEnable() {
@@ -394,5 +391,14 @@ public class PlayerController : MonoBehaviour {
         UIManager.ShowPanel(type);
         DisableControls();
         isPause = true;
+    }
+    
+    void HandleActiveWeapon() {
+        activeWeapon.Initialize(player, this, projectileManager);
+        activeWeapon.SetCollider(false);
+        player.Inventory.AddItem(activeWeapon);
+        weapon.sprite = activeWeapon.topView;
+        activeWeapon.SetButtonStatus(activeWeapon, true);
+        activeWeapon.SpriteRenderer.sprite = null;
     }
 }

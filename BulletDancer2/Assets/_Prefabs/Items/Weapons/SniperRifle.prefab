@@ -104,6 +104,7 @@ MonoBehaviour:
   ShadowCaster: {fileID: 4436094123107216188}
   playerController: {fileID: 0}
   speed: 10
+  collider: {fileID: 8366985670786951662}
   projectileType: 3
   type: 0
   topView: {fileID: 255001972926481289, guid: 8caccdc72abf2994791540e14644bc06, type: 3}
@@ -163,7 +164,7 @@ MonoBehaviour:
   - {x: 0.012997858, y: -0.07821422, z: 0}
   m_ShapePathHash: -1534382011
   m_Mesh: {fileID: 0}
-  m_InstanceId: 304330
+  m_InstanceId: 138962
 --- !u!1001 &5141309591977043959
 PrefabInstance:
   m_ObjectHideFlags: 0
