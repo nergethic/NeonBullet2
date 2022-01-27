@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
 
 public class BulletBoss : Entity {
@@ -16,6 +17,7 @@ public class BulletBoss : Entity {
     [SerializeField] Transform teleport;
     [SerializeField] SpriteRenderer bossBase;
     [SerializeField] SpaceBossMinion minion;
+    [SerializeField] ShadowCaster2D shadowCaster;
 
     List<int> projectilesEntered = new();
     
