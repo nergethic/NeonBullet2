@@ -66,7 +66,7 @@ public class PlayerAudioController : MonoBehaviour
 
     private void OnStopCharge() => gunSource.Stop();
 
-    private void OnHit() => hitSource.PlayOneShot(hit);
+    private void OnHit(ProjectileData projectileData) => hitSource.PlayOneShot(hit);
 
     private void OnFootstep()
     {

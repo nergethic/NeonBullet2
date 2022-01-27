@@ -1,13 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public class BulletBoss : Entity {
+    const float PLAYER_DIST_TO_ACTIVATE = 2.8f;
+    const float ROTATION_SPEED = 35f;
+    
     [SerializeField] Transform mainBulletSpawnPoint;
     [SerializeField] Transform mainBulletSpawnPoint2;
     [SerializeField] Transform leftBulletSpawnPoint;
     [SerializeField] Transform rightBulletSpawnPoint;
+    [SerializeField] Transform teleport;
+    [SerializeField] SpriteRenderer bossBase;
+    [SerializeField] SpaceBossMinion minion;
 
     List<int> projectilesEntered = new();
     
@@ -23,6 +32,7 @@ public class BulletBoss : Entity {
     float timer;
     float oldZBaseRotation;
     float baseRotationT;
+    bool shouldCatchUpPlayer;
     const float speed = 0.8f;
     const float SHOOTING_DISTANCE = 40f;
     const float bulletFrequency = 0.045f;
@@ -32,6 +42,15 @@ public class BulletBoss : Entity {
         base.Initialize(player, projectileManager);
         Assert.IsTrue(Health >= 5);
         SwitchStage(BulletBossStage.Inactive);
+        teleport.localScale = Vector3.zero;
+        teleport.SetParent(null);
+        bossBase.enabled = false;
+        player.HitEvent += PlayerOnHitEvent;
+    }
+
+    void OnDisable() {
+        player.HitEvent -= PlayerOnHitEvent;
+        StopAllCoroutines();
     }
 
     void SwitchStage(BulletBossStage stage) {
@@ -49,8 +68,17 @@ public class BulletBoss : Entity {
                 break;
             
             case BulletBossStage.Stage1:
-                mainCannonShoothingCor = StartCoroutine(StartShootingMainCannon());
-                sideCannonsShoothingCor = StartCoroutine(StartShootingSideCannons());
+                teleport.transform.DOScale(new Vector3(.62f, .62f, .62f), 1.2f).OnComplete(() => {
+                    bossBase.enabled = true;
+                    bossBase.sortingOrder = 1;
+                    StartCoroutine(ClearPlayerEnergyPoints());
+                    teleport.transform.DOScale(Vector3.zero, 0.8f).OnComplete(() => {
+                        bossBase.sortingOrder = 10;
+                        //mainCannonShoothingCor = StartCoroutine(StartShootingMainCannon());
+                        sideCannonsShoothingCor = StartCoroutine(StartShootingSideCannons());
+                        StartCoroutine(SpawnMinions());
+                    });
+                });
                 break;
             
             case BulletBossStage.Stage2:
@@ -100,7 +128,13 @@ public class BulletBoss : Entity {
         base.Tick(dt);
 
         switch (currentStage) {
+            case BulletBossStage.Inactive:
+                if (Vector3.Distance(player.transform.position, transform.position) < PLAYER_DIST_TO_ACTIVATE)
+                    SwitchStage(BulletBossStage.Stage1);
+                break;
+            
             case BulletBossStage.Stage1:
+                SetCannonRotation(false);
                 break;
             
             case BulletBossStage.Stage2:
@@ -113,20 +147,37 @@ public class BulletBoss : Entity {
         //Debug.LogError(leftBulletSpawnPoint.rotation.eulerAngles.z);
         //leftBulletSpawnPoint.rotation = Quaternion.Lerp(leftSpawnWide, leftSpawnNarrow, 0f);
         //rightBulletSpawnPoint.rotation = Quaternion.Lerp(rightSpawnWide, rightSpawnNarrow, 0f);
-        SetCannonRotation();
     }
-    
-    private void SetCannonRotation() {
-        //if (player.IsDead)
-            //return;
-        
-        Vector2 playerPos = player.transform.position;
-        Vector2 cannonPos = transform.position;
-        Vector2 lookDir = cannonPos - playerPos;
-        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
 
-        var angles = transform.rotation.eulerAngles;
-        transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
+    float catchUpTimer = 0f;
+    private void SetCannonRotation(bool followPlayer) {
+        if (player.IsDead)
+            return;
+            
+        Vector2 cannonPos = transform.position;
+        Vector2 playerPos = player.transform.position;
+        Vector2 lookDir = cannonPos - playerPos;
+        
+        if (shouldCatchUpPlayer) {
+            var angles = transform.rotation.eulerAngles;
+            var newZAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
+            var finalAngle = Quaternion.Euler(angles.x, angles.y, newZAngle);
+
+            catchUpTimer += Time.deltaTime * 0.5f;
+            if (catchUpTimer > 1f) {
+                catchUpTimer = 0f;
+                shouldCatchUpPlayer = false;
+            }
+            transform.rotation = Quaternion.LerpUnclamped(transform.rotation, finalAngle, catchUpTimer);
+        } else if (followPlayer) {
+            var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
+            var angles = transform.rotation.eulerAngles;
+            transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
+        } else {
+            var angles = transform.eulerAngles;
+            var newAngle = angles.z + Time.deltaTime * ROTATION_SPEED;
+            transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -159,6 +210,54 @@ public class BulletBoss : Entity {
     void ShootSideBullets() {
         var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, leftBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
         var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, rightBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
+    }
+
+    SpaceBossMinion SpawnMinion(Vector2 force) {
+        var minionInst = Instantiate(minion, transform.position, Quaternion.identity);
+        var rb = minionInst.GetComponentInChildren<Rigidbody2D>();
+        if (rb != null) {
+            rb.AddForce(force, ForceMode2D.Impulse);
+        } else {
+            Debug.LogError("Couldn't find rigidbody");
+        }
+
+        return minionInst;
+    }
+
+    IEnumerator SpawnMinions() {
+        Vector2 cannonPos = transform.position;
+        Vector2 playerPos = player.transform.position;
+        Vector2 lookDir = cannonPos - playerPos;
+
+        var entitySystem = FindObjectOfType<EntitySceneManager>();
+        if (entitySystem != null) {
+            var m1 = SpawnMinion(Vector2.left*Random.Range(3f, 6f));
+            var m2 = SpawnMinion(Vector2.up*Random.Range(3f, 6f));
+            var m3 = SpawnMinion(Vector2.down*Random.Range(3f, 6f));
+            entitySystem.AddEntity(m1);
+            entitySystem.AddEntity(m2);
+            entitySystem.AddEntity(m3);
+        }
+
+        yield return null;
+    }
+    
+    IEnumerator ClearPlayerEnergyPoints() {
+        while (player.Energy > 0) {
+            if (player.IsDead)
+                yield break;
+
+            player.Energy--;
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        yield return null;
+    }
+
+    void PlayerOnHitEvent(ProjectileData projectileData) {
+        if (!projectileData.ownedByPlayer && projectileData.typeMask == (int)ProjectileType.StandardBlue) {
+            shouldCatchUpPlayer = true;
+        }
     }
 }
 

@@ -12,8 +12,11 @@ Shader "Custom/NewUnlitShader"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent"
+             "IgnoreProjector"="True"}
         Cull Off
+        Zwrite On
+        ZTest Always
         LOD 100
 
         Pass

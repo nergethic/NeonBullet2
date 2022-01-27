@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 public class Player : MonoBehaviour {
     public event Action BlockEvent;
     public event Action DeathEvent;
-    public event Action HitEvent;
+    public event Action<ProjectileData> HitEvent;
     public event Action SpawnEvent;
     
     [SerializeField] int health;
@@ -95,7 +95,7 @@ public class Player : MonoBehaviour {
         
         //Health -= projectileData.damage;
         controller.GetMainCameraController().Shake();
-        HitEvent?.Invoke();
+        HitEvent?.Invoke(projectileData);
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
             isDead = true;
