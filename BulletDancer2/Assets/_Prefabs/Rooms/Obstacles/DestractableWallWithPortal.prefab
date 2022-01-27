@@ -130,7 +130,7 @@ MonoBehaviour:
   - {fileID: 259762849792794079, guid: 9fb3786f9b187ac4aa36de8c69a97be7, type: 3}
   - {fileID: -6076705832638087513, guid: 9fb3786f9b187ac4aa36de8c69a97be7, type: 3}
   spriteRenderer: {fileID: 5923165357184497163}
-  portal: {fileID: 5451790028081647032, guid: 5d8cf7e6def797e45bf3d381960a0f15, type: 3}
+  portal: {fileID: 5451790028081647032, guid: e68757bb62089514abef41857122ec8b, type: 3}
 --- !u!114 &5905847204625512558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,4 +157,4 @@ MonoBehaviour:
   - {x: 0.08, y: -0.08, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: -394288
+  m_InstanceId: 115552

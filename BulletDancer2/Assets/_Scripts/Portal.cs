@@ -4,7 +4,8 @@ using UnityEngine.VFX;
 public class Portal : MonoBehaviour {
     [SerializeField] VisualEffect vfx;
     [SerializeField] float detectionRadius = 3f;
-    
+    [SerializeField] bool isTutorial = false;
+
     const string playerTagName = "Player";
     PlayerController player;
     bool isPlaying;
@@ -38,6 +39,14 @@ public class Portal : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag(playerTagName))
-            collision.gameObject.transform.position = Vector2.zero;
+        {
+            if (isTutorial)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+                Destroy(gameObject);
+            }
+            else
+                collision.gameObject.transform.position = Vector2.zero;
+        }
     }
 }
