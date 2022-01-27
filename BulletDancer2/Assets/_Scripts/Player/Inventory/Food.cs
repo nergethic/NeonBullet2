@@ -11,7 +11,7 @@ public class Food : Item
 		FoodType.apple => 1,
 		FoodType.banana => 2,
 		FoodType.turkey => 3,
-        FoodType.medkit => 4,
+        FoodType.medkit => 2,
 		_ => 0
 	};
 
