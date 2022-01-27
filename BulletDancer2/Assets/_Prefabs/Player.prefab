@@ -14785,6 +14785,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2262668555997973949}
     m_Modifications:
+    - target: {fileID: 60571812302063053, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71f57f61de6633743a720938077a69de, type: 3}
     - target: {fileID: 286560715018253727, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.70997095
@@ -14813,6 +14817,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1424811057354295922, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71f57f61de6633743a720938077a69de, type: 3}
     - target: {fileID: 2188436541765682010, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -14861,6 +14869,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4509210010401872555, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5546347180688440004, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71f57f61de6633743a720938077a69de, type: 3}
     - target: {fileID: 5633430218397966818, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -14897,6 +14913,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_AlignByGeometry
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7229062843041067680, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71f57f61de6633743a720938077a69de, type: 3}
     - target: {fileID: 7318215731921908102, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
       propertyPath: m_FontData.m_AlignByGeometry
       value: 0
@@ -14997,6 +15017,14 @@ PrefabInstance:
       propertyPath: panelType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7917596216897185490, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8281812128810352767, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71f57f61de6633743a720938077a69de, type: 3}
     - target: {fileID: 8791589357983797012, guid: f5c993902d79a7e4caa8dfab71935423, type: 3}
       propertyPath: m_Name
       value: OptionsPanel
