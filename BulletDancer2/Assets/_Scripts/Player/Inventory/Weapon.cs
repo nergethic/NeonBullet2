@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Weapon : Item {
     [SerializeField] float speed;
+    [SerializeField] new Collider2D collider;
     public ProjectileType projectileType;
     public WeaponType type; 
     public Sprite topView;
@@ -14,6 +15,7 @@ public class Weapon : Item {
 
         if (playerController.activeWeapon is null) {
             base.Use();
+            SetCollider(false);
             playerController.activeWeapon = this;
             playerController.weapon.sprite = topView;
             SetButtonStatus(this, true);
@@ -22,10 +24,15 @@ public class Weapon : Item {
         } else {
             base.Use();
             playerController.activeWeapon.SetButtonStatus(playerController.activeWeapon, false);
+            SetCollider(false);
             playerController.activeWeapon = this;
             playerController.weapon.sprite = topView;
             SetButtonStatus(this, true);
         }
+    }
+
+    public void SetCollider(bool enable) {
+        collider.enabled = enable;
     }
     
     public void Shoot(Vector2 dir) {
@@ -63,6 +70,7 @@ public class Weapon : Item {
 
     public void RemoveActiveWeapon() {
         if (playerController.activeWeapon == this) {
+            SetCollider(true);
             playerController.activeWeapon = null;
             playerController.weapon.sprite = null;
             SetButtonStatus(this, false);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,10 +10,12 @@ public class SpaceBossMinion : Enemy {
     [SerializeField] bool upgraded;
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody2D rb;
-    [SerializeField] new Collider2D collider;
-    
+    [SerializeField] Collider2D triggerCollider;
+    [SerializeField] Collider2D physicsCollider;
+
     const string SHOOT_BULLET_METHOD_NAME = "ShootBullet";
-    
+
+    BulletBoss bossOwner;
     Vector3 spawnPos;
     int counter;
     float timer = 0f;
@@ -27,7 +28,14 @@ public class SpaceBossMinion : Enemy {
         spawnPos = transform.position;
         StartCoroutine(ActivateAfterSomeTime());
         InvokeRepeating(SHOOT_BULLET_METHOD_NAME, 1, shootFrequency);
-        DeathEvent += () => CancelInvoke(SHOOT_BULLET_METHOD_NAME);
+        DeathEvent += OnDeathEvent;
+    }
+
+    private void OnDeathEvent() {
+        DeathEvent -= OnDeathEvent;
+        CancelInvoke(SHOOT_BULLET_METHOD_NAME);
+        if (bossOwner != null)
+            bossOwner.NotifyAboutDeadMinion();
     }
 
     private void OnDisable() {
@@ -48,6 +56,10 @@ public class SpaceBossMinion : Enemy {
         if (isActivated)
             Move();
     }
+    
+    public void SetBossOwner(BulletBoss boss) {
+        bossOwner = boss;
+    }
 
     void Move() {
         var noiseValX = (Mathf.PerlinNoise( spawnPos.x*10f+Time.realtimeSinceStartup, spawnPos.x*10f+Time.realtimeSinceStartup) - 0.5f) * 2.0f; // (-1:1)
@@ -60,7 +72,7 @@ public class SpaceBossMinion : Enemy {
         pos.x += Time.deltaTime*noiseValX;
         pos.y += Time.deltaTime*noiseValY;
 
-        float attractionStrength = diff.sqrMagnitude > 1f ? 1f : 0.3f;
+        float attractionStrength = diff.sqrMagnitude > 0.25f ? 2f : 0.4f;
         pos += diff * Time.deltaTime * attractionStrength;
         
         transform.position = pos;
@@ -110,6 +122,7 @@ public class SpaceBossMinion : Enemy {
         yield return new WaitForSeconds(1.5f);
         spawnPos = transform.position;
         isActivated = true;
+        physicsCollider.enabled = true;
         yield return null;
     }
 
