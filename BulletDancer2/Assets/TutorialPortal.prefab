@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfx: {fileID: 4487269498721037458}
-  detectionRadius: 8
+  detectionRadius: 20
   isTutorial: 1
 --- !u!58 &5451790028081647033
 CircleCollider2D:

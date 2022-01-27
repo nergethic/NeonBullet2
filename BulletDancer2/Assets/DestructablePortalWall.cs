@@ -38,18 +38,15 @@ public class DestructablePortalWall : MonoBehaviour
 
             if (levelOfDestruction <= 0)
             {
-                Destroy(gameObject);
+                var newEffect = Instantiate(effect);
+                newEffect.transform.position = gameObject.transform.position;
+                var spawnedPortal = Instantiate(portal);
+                spawnedPortal.transform.position = gameObject.transform.position;
+                Destroy(gameObject); ;
                 return;
             }
 
             spriteRenderer.sprite = sprites[levelOfDestruction - 1];
         }
-    }
-    private void OnDestroy()
-    {
-        var newEffect = Instantiate(effect);
-        newEffect.transform.position = gameObject.transform.position;
-        var spawnedPortal = Instantiate(portal);
-        spawnedPortal.transform.position = gameObject.transform.position;
     }
 }
