@@ -45,6 +45,7 @@ public class BulletBoss : Entity {
         SwitchStage(BulletBossStage.Inactive);
         teleport.localScale = Vector3.zero;
         teleport.SetParent(null);
+        shadowCaster.castsShadows = false;
         bossBase.enabled = false;
         player.PreHitEvent += PlayerOnHitEvent;
     }
@@ -81,6 +82,7 @@ public class BulletBoss : Entity {
                 teleport.transform.DOScale(new Vector3(.62f, .62f, .62f), 1.2f).OnComplete(() => {
                     bossBase.enabled = true;
                     bossBase.sortingOrder = 1;
+                    shadowCaster.castsShadows = true;
                     StartCoroutine(ClearPlayerEnergyPoints());
                     teleport.transform.DOScale(Vector3.zero, 0.8f).OnComplete(() => {
                         bossBase.sortingOrder = 10;
