@@ -174,7 +174,6 @@ public class PlayerController : MonoBehaviour {
                     var bulletDirection = GetCentralizedMousePos().normalized;
                     activeWeapon.Shoot(bulletDirection);
                     ShootingEvent?.Invoke();
-                    mainCameraController.Shake();
                     velBooster = -bulletDirection * val;
                 }
             }
