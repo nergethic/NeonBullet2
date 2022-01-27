@@ -19,6 +19,11 @@ public class CraftingPanel : UIPanel
         Display();
     }
 
+    public void OnEnable()
+    {
+        Display();
+    }
+
     public void Display()
     {
         var pageIndex = page - 1;
