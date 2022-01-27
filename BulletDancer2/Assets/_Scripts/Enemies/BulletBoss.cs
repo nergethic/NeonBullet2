@@ -39,7 +39,7 @@ public class BulletBoss : Entity {
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
-        Assert.IsTrue(Health >= 5);
+        //Assert.IsTrue(Health >= 5);
         SwitchStage(BulletBossStage.Inactive);
         teleport.localScale = Vector3.zero;
         teleport.SetParent(null);
