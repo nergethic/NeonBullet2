@@ -87,6 +87,10 @@ public class Player : MonoBehaviour {
         SpawnEvent?.Invoke();
     }
 
+    void OnDestroy() {
+        StopAllCoroutines();
+    }
+
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
         if (isDead)
             return;
@@ -96,8 +100,11 @@ public class Player : MonoBehaviour {
             smallBloodParticles.Play();
         
         Health -= projectileData.damage;
-        controller.GetMainCameraController().Shake();
         HitEvent?.Invoke(projectileData);
+        if (blockCor != null) {
+            StopCoroutine(blockCor);
+            blockCor = null;
+        }
         isImmuneToDamage = true;
         StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         if (Health <= 0 && !isDead) {
@@ -129,6 +136,7 @@ public class Player : MonoBehaviour {
     public void HandleProjectile(Projectile projectile) {
         var projectileData = projectile.projectileData;
         PreHitEvent?.Invoke(projectileData);
+        controller.GetMainCameraController().Shake();
         if (isAbsorbingEnergy) {
             if (projectileData.typeMask == (int)ProjectileType.Energy) {
                 BlockEvent?.Invoke();
