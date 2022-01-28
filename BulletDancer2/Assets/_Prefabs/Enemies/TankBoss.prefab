@@ -225,8 +225,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   renderer: {fileID: 8510317142386277942}
-  Health: 5
-  MaxHealth: 5
+  Health: 6
+  MaxHealth: 6
   isDead: 0
   tankBase: {fileID: 8510317142386277941}
   cannon: {fileID: 8510317141874192443}
@@ -284,7 +284,7 @@ MonoBehaviour:
   - {x: 0.38511443, y: -0.41347063, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: -424484
+  m_InstanceId: 80562
 --- !u!1 &8510317141874192442
 GameObject:
   m_ObjectHideFlags: 0

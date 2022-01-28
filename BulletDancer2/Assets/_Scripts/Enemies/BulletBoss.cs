@@ -17,6 +17,7 @@ public class BulletBoss : Entity {
     [SerializeField] SpriteRenderer bossBase;
     [SerializeField] SpaceBossMinion minion;
     [SerializeField] ShadowCaster2D shadowCaster;
+    [SerializeField] GameObject explosion;
 
     List<int> projectilesEntered = new();
     
@@ -222,6 +223,7 @@ public class BulletBoss : Entity {
         
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
+            PlayHitEvent();
             if (Health <= 0) {
                 foreach (var minion in activeMinions)
                     if (minion != null && !minion.isDead) {
@@ -231,6 +233,9 @@ public class BulletBoss : Entity {
                 
                 activeMinions.Clear();
                 isDead = true;
+                var explosionInstance = Instantiate(explosion, transform);
+                explosionInstance.transform.localScale = new Vector3(12, 12);
+                explosionInstance.transform.parent = null;
                 Destroy(gameObject);
             }
             
@@ -244,6 +249,7 @@ public class BulletBoss : Entity {
     }
 
     void ShootSideBullets() {
+        PlayAttackEvent();
         var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, leftBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
         var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, rightBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
     }

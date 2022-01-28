@@ -44,7 +44,7 @@ public class Weapon : Item {
             case WeaponType.Shotgun:
                 Vector3 playerPos = playerController.transform.position;
                 for (int i = -1; i <= 1; i++) {
-                    var bulletDir = projectileManager.GetVectorWithRotation(dir, i * 5f);
+                    var bulletDir = projectileManager.GetVectorWithRotation(dir, i * 15f);
                     projectileManager.SpawnProjectile(playerPos, bulletDir, projectileType, true, speed);
                 }
                 break;
@@ -78,7 +78,7 @@ public class Weapon : Item {
     }
 
     IEnumerator StartShooting(Vector2 dir) {
-        const int numberOfBalls = 3;
+        const int numberOfBalls = 2;
         for (int i = 0; i < numberOfBalls; i++) {
             var bullet = projectileManager.SpawnProjectile(playerController.transform.position, dir, projectileType, true, speed);
             bullet.gameObject.transform.localScale *= 0.6f;
