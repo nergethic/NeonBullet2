@@ -8,6 +8,7 @@ Shader "Custom/NewUnlitShader"
     {
         [HideInInspector] _MainTex ("Texture", 2D) = "white" {}
         _CameraWorldPos ("Camera World Position", Vector) = (0,0,0,0)
+        _Color ("Color", Color) = (0,0,0,0)
         _Hide ("Hide", Float) = 0.0
     }
     SubShader
@@ -45,6 +46,7 @@ Shader "Custom/NewUnlitShader"
             float4 _MainTex_ST;
             float3 _CameraWorldPos;
             float _Hide;
+            fixed4 _Color;
 
             v2f vert (appdata v) {
                 v2f o;
@@ -75,7 +77,7 @@ Shader "Custom/NewUnlitShader"
                 //fixed4 col = tex2D(_MainTex, i.uv);
                 //return col;
                 // return fixed4(i.objectVert.r, i.objectVert.g, i.objectVert.b, 0);
-                return fixed4(0.00, 0.00, 0.00, 0); // i.objectVert.y
+                return fixed4(_Color.r, _Color.g, _Color.b, 0); // i.objectVert.y
             }
             ENDCG
         }

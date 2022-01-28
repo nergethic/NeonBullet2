@@ -6,8 +6,10 @@ public class RenderingOrderOverrider : MonoBehaviour {
     [SerializeField] MeshRenderer r;
     // Start is called before the first frame update
     void Awake() {
-        r.rendererPriority = 100;
-        r.sortingLayerName = "Default";
-        r.sortingOrder = 20;
+        if (r != null) {
+            r.rendererPriority = 100;
+            r.sortingLayerName = "Default";
+            r.sortingOrder = 20;
+        }
     }
 }

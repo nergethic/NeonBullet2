@@ -139,7 +139,7 @@ public class MasterSystem : MonoBehaviour {
     IEnumerator LoadNextLevelCor()
     {
         yield return ScreenOverlayController.FadeOutScreen(2f);
-        levelGenerator.GenerateLevel();
+        levelGenerator.GenerateLevel(1);
         player.transform.position = player.startPosition;
     }
 

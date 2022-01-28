@@ -17,7 +17,9 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] Transform roomsParent;
     [SerializeField] Room mainRoomBlueprint;
     [SerializeField] Room bossRoomBlueprint;
+    [SerializeField] Room level2BossRoomBlueprint;
     [SerializeField] List<Room> rooms;
+    [SerializeField] List<Room> level2Rooms;
     [SerializeField] List<Room> corridors;
     [SerializeField] GameObject testRoom;
     [SerializeField] BoxCollider testRoomCollider;
@@ -25,12 +27,15 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] List<Room> nextRoomsBlueprints;
     [SerializeField] Portal portal;
     [SerializeField] bool DEBUG_SlowDownGeneration;
+    [SerializeField] Material wallMat;
 
     MasterSystem masterSystem;
     Room currentRoom;
     RoomData currentRoomData;
     Room mainRoom;
     Vector2 roomSize;
+    bool generateFromRoomWasSuccessful;
+    int level;
 
     List<Room> availableRooms = new List<Room>();
     List<Room> availableCorridors = new List<Room>();
@@ -47,19 +52,34 @@ public class LevelGenerator : MonoBehaviour {
         AssertRoomDataIsInitialized(mainRoomBlueprint);
         foreach (var room in rooms)
             AssertRoomDataIsInitialized(room);
+        foreach (var room in level2Rooms)
+            AssertRoomDataIsInitialized(room);
         foreach (var corridor in corridors)
             AssertRoomDataIsInitialized(corridor);
 
         mainRoom = Instantiate(mainRoomBlueprint);
         ResetState();
 
-        masterSystem.OnSceneManagersInitialized += GenerateLevel;
+        masterSystem.OnSceneManagersInitialized += MasterSystemOnOnSceneManagersInitialized;
+    }
+
+    private void OnDestroy() {
+        if (masterSystem != null)
+            masterSystem.OnSceneManagersInitialized -= MasterSystemOnOnSceneManagersInitialized;
+    }
+
+    void MasterSystemOnOnSceneManagersInitialized() {
+        GenerateLevel(0);
     }
 
     [ContextMenu("Generate")]
-    public void GenerateLevel() {
+    public void GenerateLevel(int levelToGenerate) {
         RemoveRooms();
-        GenerateLevel(mainRoom);
+        GenerateLevel(mainRoom, levelToGenerate);
+        if (level == 0)
+            wallMat.SetColor("_Color", new Color(0f, 0f, 0f));
+        else
+            wallMat.SetColor("_Color", new Color(0.074f, 0.0666f, 0.1333f));
     }
 
     void RemoveRooms() {
@@ -72,8 +92,9 @@ public class LevelGenerator : MonoBehaviour {
         ResetState();
     }
 
-    void GenerateLevel(Room firstRoom) {
-        nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
+    void GenerateLevel(Room firstRoom, int levelToGenerate) {
+        this.level = levelToGenerate;
+        //nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
         if (generateRoomsCor != null) {
             StopCoroutine(generateRoomsCor);
             generateRoomsCor = null;
@@ -88,6 +109,7 @@ public class LevelGenerator : MonoBehaviour {
             isCorridor = spawnCorridor
         };
         
+        /*
 #if UNITY_EDITOR // NOTE: debug code
         if (nextRoomsBlueprintsCopy.Count != 0) {
             var roomBlueprint = nextRoomsBlueprintsCopy[0];
@@ -103,8 +125,13 @@ public class LevelGenerator : MonoBehaviour {
             return true;
         }
 #endif
+        */
 
-        availableRooms = new List<Room>(rooms);
+        availableRooms = null;
+        if (level == 0)
+            availableRooms = new List<Room>(rooms);
+        else if (level == 1)
+            availableRooms = new List<Room>(level2Rooms);
         availableCorridors = new List<Room>(corridors);
         selectedRoomList = spawnCorridor ? availableCorridors : availableRooms;
         
@@ -117,7 +144,10 @@ public class LevelGenerator : MonoBehaviour {
             newRoomData.room = potentialRoomToSpawn;
             
             if (spawnBossRoom) {
-                potentialRoomToSpawn = bossRoomBlueprint;
+                if (level == 0)
+                    potentialRoomToSpawn = bossRoomBlueprint;
+                else
+                    potentialRoomToSpawn = level2BossRoomBlueprint;
                 newRoomData.room = potentialRoomToSpawn;
             }
 
@@ -222,7 +252,6 @@ public class LevelGenerator : MonoBehaviour {
         roomSize = mainRoom.GetSize();
     }
     
-    bool generateFromRoomWasSuccessful;
     IEnumerator GenerateLevelSlowly(Room firstRoom) {
         var firstRoomDoorsData = firstRoom.doorsData;
         int generateBossRoomIndex = Random.Range(0, 2);
@@ -238,7 +267,7 @@ public class LevelGenerator : MonoBehaviour {
                 yield return null;
                 i = -1;
             }
-            nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
+            //nextRoomsBlueprintsCopy = nextRoomsBlueprints.ToList();
         }
         
         OnLevelGenerated?.Invoke();

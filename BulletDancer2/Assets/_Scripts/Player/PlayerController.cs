@@ -153,10 +153,14 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (keyboard.qKey.isPressed) {
-            var x = FindObjectOfType<BulletBoss>();
-            if (x != null) {
-                playerPosition.position = x.transform.position + (x.transform.right*2f);
-            }
+            //var x = FindObjectOfType<BulletBoss>();
+            //if (x != null) {
+                //playerPosition.position = x.transform.position + (x.transform.right*2f);
+            //}
+            
+            var masterSystem = FindObjectOfType<MasterSystem>(); // TODO: spawn player from master system
+            if (masterSystem != null)
+                masterSystem.LoadNextLevel();
         }
     }
 
@@ -228,7 +232,7 @@ public class PlayerController : MonoBehaviour {
         //dPlayer.y -= Time.fixedDeltaTime * 1.5f;
         //if (dPlayer.magnitude < 0f)
             //dPlayer = Vector2.zero;
-        
+
         playerPosition.position = new Vector3(newPlayerPos.x, newPlayerPos.y, 0f);
 
         var diff = (lastPosition - newPlayerPos).magnitude;
