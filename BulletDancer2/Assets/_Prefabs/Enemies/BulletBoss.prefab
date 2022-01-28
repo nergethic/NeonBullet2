@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 8510317141802309890}
   - component: {fileID: 1675750357162653163}
   - component: {fileID: 2440404862326671940}
+  - component: {fileID: 647900261659462834}
   m_Layer: 9
   m_Name: BulletBoss
   m_TagString: Untagged
@@ -339,6 +340,22 @@ PolygonCollider2D:
       - {x: 0.103428125, y: 0.4165529}
       - {x: -0.09443557, y: 0.43091822}
       - {x: -0.10992551, y: 0.3884235}
+--- !u!58 &647900261659462834
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8510317141802309889}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.43
 --- !u!1 &8510317141874192442
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,8 +401,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8510317142386277941}
   - component: {fileID: 8510317142386277942}
-  - component: {fileID: 8075481686910350005}
   - component: {fileID: 1444163923512769226}
+  - component: {fileID: 8100984827884838049}
   m_Layer: 9
   m_Name: Base
   m_TagString: Untagged
@@ -460,32 +477,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8075481686910350005
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8510317142386277940}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.018887758, y: -0.0003851354}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.98, y: 0.87}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.8010559, y: 0.8261239}
-  m_EdgeRadius: 0
 --- !u!114 &1444163923512769226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,7 +555,23 @@ MonoBehaviour:
   - {x: -0.20457804, y: -0.39411294, z: -0.000000059604645}
   m_ShapePathHash: -366985725
   m_Mesh: {fileID: 0}
-  m_InstanceId: 165488
+  m_InstanceId: 210308
+--- !u!58 &8100984827884838049
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8510317142386277940}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
 --- !u!1 &9215249615378225769
 GameObject:
   m_ObjectHideFlags: 0
