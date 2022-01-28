@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class BulletBoss : Entity {
     const float PLAYER_DIST_TO_ACTIVATE = 2.8f;
-    const float ROTATION_SPEED = 35f;
+    const float ROTATION_SPEED = 10f;
     
     [SerializeField] Transform mainBulletSpawnPoint;
     [SerializeField] Transform mainBulletSpawnPoint2;
@@ -18,7 +18,6 @@ public class BulletBoss : Entity {
     [SerializeField] SpriteRenderer bossBase;
     [SerializeField] SpaceBossMinion minion;
     [SerializeField] ShadowCaster2D shadowCaster;
-    [SerializeField] GameObject explosion;
 
     List<int> projectilesEntered = new();
     
@@ -81,6 +80,8 @@ public class BulletBoss : Entity {
             
             case BulletBossStage.Stage1:
                 teleport.transform.DOScale(new Vector3(.62f, .62f, .62f), 1.2f).OnComplete(() => {
+                    LookAtPoint(player.transform.position);
+                    shouldCatchUpPlayer = true;
                     bossBase.enabled = true;
                     bossBase.sortingOrder = 1;
                     shadowCaster.castsShadows = true;
@@ -131,7 +132,6 @@ public class BulletBoss : Entity {
                 }
                 totalTime += Time.deltaTime;
                 ShootSideBullets();
-
                 yield return WaitSomeTime;
                 totalTime += bulletFrequency;
             }
@@ -184,14 +184,19 @@ public class BulletBoss : Entity {
             }
             transform.rotation = Quaternion.LerpUnclamped(transform.rotation, finalAngle, catchUpTimer);
         } else if (followPlayer) {
-            var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
-            var angles = transform.rotation.eulerAngles;
-            transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
+            LookAtPoint(playerPos);
         } else {
             var angles = transform.eulerAngles;
             var newAngle = angles.z + Time.deltaTime * ROTATION_SPEED;
             transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
         }
+    }
+
+    void LookAtPoint(Vector3 pos) {
+        var lookDir = transform.position - pos;
+        var newAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
+        var angles = transform.rotation.eulerAngles;
+        transform.eulerAngles = new Vector3(angles.x, angles.y, newAngle);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -206,13 +211,9 @@ public class BulletBoss : Entity {
         projectilesEntered.Add(id);
         
         if (bullet.projectileData.ownedByPlayer) {
-            PlayHitEvent();
             Health -= bullet.projectileData.damage;
             if (Health <= 0) {
                 isDead = true;
-                var explosionInstance = Instantiate(explosion, transform);
-                explosionInstance.transform.localScale = new Vector3(12, 12);
-                explosionInstance.transform.parent = null;
                 Destroy(gameObject);
             }
             
@@ -226,7 +227,6 @@ public class BulletBoss : Entity {
     }
 
     void ShootSideBullets() {
-        PlayAttackEvent();
         var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, leftBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
         var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, rightBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
     }
