@@ -236,13 +236,21 @@ public class BulletBoss : Entity {
                 var explosionInstance = Instantiate(explosion, transform);
                 explosionInstance.transform.localScale = new Vector3(12, 12);
                 explosionInstance.transform.parent = null;
-                Destroy(gameObject);
+
+                StartCoroutine(HandleDeathCor());
             }
             
             Destroy(bullet.gameObject);
         }
     }
-    
+
+    IEnumerator HandleDeathCor()
+    {
+        yield return new WaitForSeconds(2f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+        Destroy(gameObject);
+    }
+
     void ShootMainBullets() {
         var bullet = projectileManager.SpawnProjectile(mainBulletSpawnPoint.position, mainBulletSpawnPoint.up, ProjectileType.StandardOrange, false, 5f);
         var bullet2 = projectileManager.SpawnProjectile(mainBulletSpawnPoint2.position, mainBulletSpawnPoint2.up,ProjectileType.StandardOrange, false, 5f);
