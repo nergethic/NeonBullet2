@@ -222,6 +222,7 @@ public class BulletBoss : Entity {
         
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
+            PlayHitEvent();
             if (Health <= 0) {
                 foreach (var minion in activeMinions)
                     if (minion != null && !minion.isDead) {
@@ -244,6 +245,7 @@ public class BulletBoss : Entity {
     }
 
     void ShootSideBullets() {
+        PlayAttackEvent();
         var bullet3 = projectileManager.SpawnProjectile(leftBulletSpawnPoint.position, leftBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
         var bullet4 = projectileManager.SpawnProjectile(rightBulletSpawnPoint.position, rightBulletSpawnPoint.up, ProjectileType.StandardBlue, false, 5f);
     }
