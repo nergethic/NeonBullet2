@@ -44,7 +44,7 @@ public class Weapon : Item {
             case WeaponType.Shotgun:
                 Vector3 playerPos = playerController.transform.position;
                 for (int i = -1; i <= 1; i++) {
-                    var bulletDir = projectileManager.GetVectorWithRotation(dir, i * 5f);
+                    var bulletDir = projectileManager.GetVectorWithRotation(dir, i * 15f);
                     projectileManager.SpawnProjectile(playerPos, bulletDir, projectileType, true, speed);
                 }
                 break;
