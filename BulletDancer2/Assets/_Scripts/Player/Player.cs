@@ -95,21 +95,27 @@ public class Player : MonoBehaviour {
         if (isDead)
             return;
 
+        if (isImmuneToDamage) {
+            return;
+        }
+
         bool willKillPlayer = Health - projectileData.damage <= 0;
         if (!willKillPlayer && !isImmuneToDamage) {}
             smallBloodParticles.Play();
         
         Health -= projectileData.damage;
         HitEvent?.Invoke(projectileData);
-        if (blockCor != null) {
-            StopCoroutine(blockCor);
-            blockCor = null;
-        }
-        isImmuneToDamage = true;
-        StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
+        //if (blockCor != null) {
+            //StopCoroutine(blockCor);
+            //blockCor = null;
+        //}
+        
         if (Health <= 0 && !isDead) {
             isDead = true;
             StartCoroutine(HandleDeath());
+        } else {
+            isImmuneToDamage = true;
+            StartCoroutine(ToggleDamageImmunity(IMMUNITY_AFTER_BEING_HIT));
         }
     }
 
@@ -155,7 +161,7 @@ public class Player : MonoBehaviour {
                     PlayerHitByProjectileAction(ref projectileData);
             }
             
-        } else if (!isImmuneToDamage)
+        } else
             PlayerHitByProjectileAction(ref projectileData);
         
         Destroy(projectile.gameObject);
@@ -185,11 +191,9 @@ public class Player : MonoBehaviour {
         shield.DOScale(Vector3.one*0.35f, 0.1f);
         
         isAbsorbingEnergy = true;
-        isImmuneToDamage = true;
         yield return new WaitForSeconds(absorbtionTime-0.07f);
         shield.DOScale(Vector3.zero, 0.07f);
         yield return new WaitForSeconds(0.07f);
-        isImmuneToDamage = false;
         isAbsorbingEnergy = false;
         
         shield.gameObject.SetActive(false);
