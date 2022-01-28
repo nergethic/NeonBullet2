@@ -228,7 +228,7 @@ public class BulletBoss : Entity {
                 foreach (var minion in activeMinions)
                     if (minion != null && !minion.isDead) {
                         minion.SetBossOwner(null);
-                        minion.Kill(true, false);
+                        minion.Kill(true);
                     }
                 
                 activeMinions.Clear();
@@ -257,6 +257,7 @@ public class BulletBoss : Entity {
     SpaceBossMinion SpawnMinion(Vector2 force) {
         var minionInst = Instantiate(minion, transform.position, Quaternion.identity);
         minionInst.SetBossOwner(this);
+        minionInst.spawnDrop = false;
         activeMinions.Add(minionInst);
         var rb = minionInst.GetComponentInChildren<Rigidbody2D>();
         if (rb != null) {

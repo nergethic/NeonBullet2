@@ -27,13 +27,11 @@ public class SpaceBossMinion : Enemy {
         isActivated = false;
         spawnPos = transform.position;
         StartCoroutine(ActivateAfterSomeTime());
-        InvokeRepeating(SHOOT_BULLET_METHOD_NAME, 1, shootFrequency);
         DeathEvent += OnDeathEvent;
     }
 
     private void OnDeathEvent() {
         DeathEvent -= OnDeathEvent;
-        CancelInvoke(SHOOT_BULLET_METHOD_NAME);
         if (bossOwner != null)
             bossOwner.NotifyAboutDeadMinion(this);
     }

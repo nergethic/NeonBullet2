@@ -4,7 +4,7 @@ using UnityEngine;
 public class Enemy : Entity {
     public ResourceTypeDrop drop { get; set; }
     private Resource _resource;
-    
+    public bool spawnDrop = true;
     List<int> projectilesEntered = new List<int>();
 
     public override void Initialize(Player player, ProjectileManager projectileManager) {
@@ -34,11 +34,11 @@ public class Enemy : Entity {
             Health -= bullet.projectileData.damage;
             PlayHitEvent();
             if (Health <= 0)
-                Kill(false, true);
+                Kill(false);
         }
     }
 
-    public void Kill(bool playHitEvent, bool spawnDrop) {
+    public void Kill(bool playHitEvent) {
         Health = 0;
         if (playHitEvent)
             PlayHitEvent();
