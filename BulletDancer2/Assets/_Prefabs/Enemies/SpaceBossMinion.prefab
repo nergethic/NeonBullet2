@@ -442,7 +442,7 @@ MonoBehaviour:
   - {x: -0.1750639, y: -0.17204528, z: 0}
   m_ShapePathHash: 1728157088
   m_Mesh: {fileID: 0}
-  m_InstanceId: 173454
+  m_InstanceId: 94682
 --- !u!1 &4642185109144807386
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,8 +682,8 @@ MonoBehaviour:
   isDead: 0
   bulletSpawnPoint: {fileID: 3952511900974311421}
   shootingDistance: 20
-  bulletSpeed: 3.2
-  shootFrequency: 2.3
+  bulletSpeed: 4.5
+  shootFrequency: 1.5
   upgraded: 0
   animator: {fileID: 0}
   rb: {fileID: 485406431527689007}
