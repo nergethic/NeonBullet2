@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
 
 public class BulletBoss : Entity {
     const float PLAYER_DIST_TO_ACTIVATE = 2.8f;
-    const float ROTATION_SPEED = 10f;
+    const float ROTATION_SPEED = 28f;
     
     [SerializeField] Transform mainBulletSpawnPoint;
     [SerializeField] Transform mainBulletSpawnPoint2;

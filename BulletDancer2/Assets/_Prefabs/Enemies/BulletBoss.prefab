@@ -260,8 +260,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   renderer: {fileID: 8510317142386277942}
-  Health: 5
-  MaxHealth: 5
+  Health: 6
+  MaxHealth: 6
   isDead: 0
   mainBulletSpawnPoint: {fileID: 7107846538603853966}
   mainBulletSpawnPoint2: {fileID: 2656298232430222772}
@@ -271,7 +271,6 @@ MonoBehaviour:
   bossBase: {fileID: 8510317142386277942}
   minion: {fileID: 8745286227751337900, guid: 8089faffd84eff44ea1b027d659b71b4, type: 3}
   shadowCaster: {fileID: 1444163923512769226}
-  explosion: {fileID: 3489929141657909040, guid: 12f059a67baeb98448d5d745dbb3bb2e, type: 3}
 --- !u!60 &2440404862326671940
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -555,7 +554,7 @@ MonoBehaviour:
   - {x: -0.20457804, y: -0.39411294, z: -0.000000059604645}
   m_ShapePathHash: -366985725
   m_Mesh: {fileID: 0}
-  m_InstanceId: 210308
+  m_InstanceId: 249600
 --- !u!58 &8100984827884838049
 CircleCollider2D:
   m_ObjectHideFlags: 0
