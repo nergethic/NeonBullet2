@@ -33,14 +33,21 @@ public class Enemy : Entity {
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
             PlayHitEvent();
-            if (Health <= 0) {
-                isDead = true;
-                SpawnDrop();
-                ResetSprites();
-                PlayDeathEvent();
-                Destroy(gameObject);
-            }
+            if (Health <= 0)
+                Kill(false, true);
         }
+    }
+
+    public void Kill(bool playHitEvent, bool spawnDrop) {
+        Health = 0;
+        if (playHitEvent)
+            PlayHitEvent();
+        if (spawnDrop)
+            SpawnDrop();
+        ResetSprites();
+        isDead = true;
+        PlayDeathEvent();
+        Destroy(gameObject);
     }
 
     private void SpawnDrop() {

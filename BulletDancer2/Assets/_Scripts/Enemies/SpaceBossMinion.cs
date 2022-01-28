@@ -35,7 +35,7 @@ public class SpaceBossMinion : Enemy {
         DeathEvent -= OnDeathEvent;
         CancelInvoke(SHOOT_BULLET_METHOD_NAME);
         if (bossOwner != null)
-            bossOwner.NotifyAboutDeadMinion();
+            bossOwner.NotifyAboutDeadMinion(this);
     }
 
     private void OnDisable() {

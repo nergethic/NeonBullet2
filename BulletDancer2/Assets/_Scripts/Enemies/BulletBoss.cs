@@ -26,6 +26,7 @@ public class BulletBoss : Entity {
     readonly Quaternion rightSpawnWide   = Quaternion.Euler(0f, 0f, -170f);
     readonly Quaternion rightSpawnNarrow = Quaternion.Euler(0f, 0f, 180f);
 
+    List<SpaceBossMinion> activeMinions;
     BulletBossStage currentStage;
     Coroutine mainCannonShoothingCor = null;
     Coroutine sideCannonsShoothingCor = null;
@@ -42,6 +43,7 @@ public class BulletBoss : Entity {
     public override void Initialize(Player player, ProjectileManager projectileManager) {
         base.Initialize(player, projectileManager);
         //Assert.IsTrue(Health >= 5);
+        activeMinions = new List<SpaceBossMinion>();
         SwitchStage(BulletBossStage.Inactive);
         teleport.localScale = Vector3.zero;
         teleport.SetParent(null);
@@ -55,7 +57,15 @@ public class BulletBoss : Entity {
         StopAllCoroutines();
     }
 
-    public void NotifyAboutDeadMinion() {
+    public void NotifyAboutDeadMinion(SpaceBossMinion killedMinion) {
+        if (activeMinions == null)
+            return;
+        
+        if (activeMinions.Contains(killedMinion))
+            activeMinions.Remove(killedMinion);
+        
+        if (isDead)
+            return;
         var entitySystem = FindObjectOfType<EntitySceneManager>();
         if (entitySystem != null) {
             var spawnForce = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * Random.Range(3f, 5.5f);
@@ -88,6 +98,7 @@ public class BulletBoss : Entity {
                     StartCoroutine(ClearPlayerEnergyPoints());
                     teleport.transform.DOScale(Vector3.zero, 0.8f).OnComplete(() => {
                         bossBase.sortingOrder = 10;
+                        Health = MaxHealth;
                         //mainCannonShoothingCor = StartCoroutine(StartShootingMainCannon());
                         sideCannonsShoothingCor = StartCoroutine(StartShootingSideCannons());
                         StartCoroutine(SpawnMinions());
@@ -213,6 +224,13 @@ public class BulletBoss : Entity {
         if (bullet.projectileData.ownedByPlayer) {
             Health -= bullet.projectileData.damage;
             if (Health <= 0) {
+                foreach (var minion in activeMinions)
+                    if (minion != null && !minion.isDead) {
+                        minion.SetBossOwner(null);
+                        minion.Kill(true, false);
+                    }
+                
+                activeMinions.Clear();
                 isDead = true;
                 Destroy(gameObject);
             }
@@ -234,6 +252,7 @@ public class BulletBoss : Entity {
     SpaceBossMinion SpawnMinion(Vector2 force) {
         var minionInst = Instantiate(minion, transform.position, Quaternion.identity);
         minionInst.SetBossOwner(this);
+        activeMinions.Add(minionInst);
         var rb = minionInst.GetComponentInChildren<Rigidbody2D>();
         if (rb != null) {
             rb.AddForce(force, ForceMode2D.Impulse);
