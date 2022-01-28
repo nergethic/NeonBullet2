@@ -17,6 +17,7 @@ public class BulletBoss : Entity {
     [SerializeField] SpriteRenderer bossBase;
     [SerializeField] SpaceBossMinion minion;
     [SerializeField] ShadowCaster2D shadowCaster;
+    [SerializeField] GameObject explosion;
 
     List<int> projectilesEntered = new();
     
@@ -232,6 +233,9 @@ public class BulletBoss : Entity {
                 
                 activeMinions.Clear();
                 isDead = true;
+                var explosionInstance = Instantiate(explosion, transform);
+                explosionInstance.transform.localScale = new Vector3(12, 12);
+                explosionInstance.transform.parent = null;
                 Destroy(gameObject);
             }
             
