@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour {
         //if (dPlayer.magnitude < 0f)
             //dPlayer = Vector2.zero;
         
-        playerPosition.position = newPlayerPos;
+        playerPosition.position = new Vector3(newPlayerPos.x, newPlayerPos.y, 0f);
 
         var diff = (lastPosition - newPlayerPos).magnitude;
         if (diff > 0.3f) {
