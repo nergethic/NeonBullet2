@@ -338,16 +338,20 @@ public class PlayerController : MonoBehaviour {
             pickableItem = other.GetComponent<Item>();
         else if (other.CompareTag(RESOURCE_TAG_NAME))
             pickableResource = other.GetComponent<Resource>();
-        else if (other.CompareTag(PROJECTILE_TAG_NAME))
-        {
-            var projectile = other.GetComponent<Projectile>();
+        else if (other.CompareTag(PROJECTILE_TAG_NAME) || other.CompareTag(SPIKES_TAG_NAME)) {
+            Projectile projectile = null;
+            if (other.CompareTag(PROJECTILE_TAG_NAME))
+                projectile = other.GetComponent<Projectile>();
+            else {
+                var go = new GameObject();
+                go.transform.SetParent(other.gameObject.transform);
+                projectile = go.AddComponent<Projectile>();
+                projectile.projectileData.damage = 1;
+            }
+            
             if (projectile != null)
                 if (!projectile.projectileData.ownedByPlayer)
                     player.HandleProjectile(projectile);
-        }
-        else if (other.CompareTag(SPIKES_TAG_NAME)) {
-            var spikeProjectileData = new ProjectileData { damage = 1 };
-            player.PlayerHitByProjectileAction(ref spikeProjectileData);
         }
     }
 
@@ -360,6 +364,8 @@ public class PlayerController : MonoBehaviour {
 
     private void HandleUIAction(PanelType type)
     {
+        if (UIManager == null)
+            return;
         if (UIManager.IsPanelActive)
         {
             if (UIManager.ActivePanel.panelType == type)
