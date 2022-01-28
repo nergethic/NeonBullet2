@@ -79,7 +79,7 @@ public class LevelGenerator : MonoBehaviour {
         if (level == 0)
             wallMat.SetColor("_Color", new Color(0f, 0f, 0f));
         else
-            wallMat.SetColor("_Color", new Color(0.074f, 0.0666f, 0.1333f));
+            wallMat.SetColor("_Color", new Color(0.02995793f, 0.02647739f, 0.06603769f));
     }
 
     void RemoveRooms() {
