@@ -204,6 +204,8 @@ public class TankBoss : Entity {
             var explosionInstance = Instantiate(explosion, transform);
             explosionInstance.transform.localScale = new Vector3(12, 12);
             explosionInstance.transform.parent = null;
+            player.MaxHealth++;
+            player.Health++;
             StartCoroutine(HandleDeathCor());
         }
     }
