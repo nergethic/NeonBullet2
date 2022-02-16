@@ -16,11 +16,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] float val;
     UIManager UIManager;
 
-    const string ITEM_TAG_NAME = "Item";
-    const string RESOURCE_TAG_NAME = "Resource";
-    const string PROJECTILE_TAG_NAME = "Projectile";
-    const string SPIKES_TAG_NAME = "Spikes";
-
     public Camera GetCamera() => mainCameraController.GetCamera();
     public MainCameraController GetMainCameraController() => mainCameraController;
     public Vector2 Acceleration => ddPlayer;
@@ -33,9 +28,7 @@ public class PlayerController : MonoBehaviour {
     public event Action PickUpEvent;
     public ThrowableItem ThrowableItem { get; set; }
     public Weapon activeWeapon;
-    
-    Item pickableItem;
-    Resource pickableResource;
+ 
     Controls controls;
     bool isPause;
     
@@ -306,20 +299,8 @@ public class PlayerController : MonoBehaviour {
     }
     
     void OnPickUp(InputAction.CallbackContext context) {
-        if (pickableItem != null) {
-            player.Inventory.AddItem(pickableItem);
-            pickableItem.gameObject.SetActive(false);
-            pickableItem = null;
+        if (player.PickUp())
             PickUpEvent();
-        }
-
-        if (pickableResource != null)
-        {
-            pickableResource.AddResource(player.Resources);
-            Destroy(pickableResource.gameObject);
-            pickableResource = null;
-            PickUpEvent();
-        }
     }
 
     void OnShowInventory(InputAction.CallbackContext context) {
@@ -337,34 +318,6 @@ public class PlayerController : MonoBehaviour {
 
     void OnItemAction(InputAction.CallbackContext context) {}
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag(ITEM_TAG_NAME))
-            pickableItem = other.GetComponent<Item>();
-        else if (other.CompareTag(RESOURCE_TAG_NAME))
-            pickableResource = other.GetComponent<Resource>();
-        else if (other.CompareTag(PROJECTILE_TAG_NAME) || other.CompareTag(SPIKES_TAG_NAME)) {
-            Projectile projectile = null;
-            if (other.CompareTag(PROJECTILE_TAG_NAME))
-                projectile = other.GetComponent<Projectile>();
-            else {
-                var go = new GameObject();
-                go.transform.SetParent(other.gameObject.transform);
-                projectile = go.AddComponent<Projectile>();
-                projectile.projectileData.damage = 1;
-            }
-            
-            if (projectile != null)
-                if (!projectile.projectileData.ownedByPlayer)
-                    player.HandleProjectile(projectile);
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other) {
-        if (other.CompareTag(ITEM_TAG_NAME))
-            pickableItem = null;
-        if (other.CompareTag(RESOURCE_TAG_NAME))
-            pickableResource = null;
-    }
 
     private void HandleUIAction(PanelType type)
     {

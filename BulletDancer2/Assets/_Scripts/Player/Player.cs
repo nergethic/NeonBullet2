@@ -39,6 +39,14 @@ public class Player : MonoBehaviour {
     readonly Color shieldHitColor = new Color(0.24f, 0.45f, 0.95f, 0f);
     readonly int ShieldColorID = Shader.PropertyToID("_Color");
 
+    const string ITEM_TAG_NAME = "Item";
+    const string RESOURCE_TAG_NAME = "Resource";
+    const string PROJECTILE_TAG_NAME = "Projectile";
+    const string SPIKES_TAG_NAME = "Spikes";
+
+    Item pickableItem;
+    Resource pickableResource;
+
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
     public int MaxHealth = 4;
@@ -89,6 +97,60 @@ public class Player : MonoBehaviour {
 
     void OnDestroy() {
         StopAllCoroutines();
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag(ITEM_TAG_NAME))
+            pickableItem = other.GetComponent<Item>();
+        else if (other.CompareTag(RESOURCE_TAG_NAME))
+            pickableResource = other.GetComponent<Resource>();
+        else if (other.CompareTag(PROJECTILE_TAG_NAME) || other.CompareTag(SPIKES_TAG_NAME))
+        {
+            Projectile projectile = null;
+            if (other.CompareTag(PROJECTILE_TAG_NAME))
+                projectile = other.GetComponent<Projectile>();
+            else
+            {
+                var go = new GameObject();
+                go.transform.SetParent(other.gameObject.transform);
+                projectile = go.AddComponent<Projectile>();
+                projectile.projectileData.damage = 1;
+            }
+
+            if (projectile != null)
+                if (!projectile.projectileData.ownedByPlayer)
+                    HandleProjectile(projectile);
+        }
+    }
+
+    public bool PickUp()
+    {
+        if (pickableItem != null)
+        {
+            Inventory.AddItem(pickableItem);
+            pickableItem.gameObject.SetActive(false);
+            pickableItem = null;
+            return true;
+        }
+
+        if (pickableResource != null)
+        {
+            pickableResource.AddResource(Resources);
+            Destroy(pickableResource.gameObject);
+            pickableResource = null;
+            return true;
+        }
+
+        return false;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag(ITEM_TAG_NAME))
+            pickableItem = null;
+        if (other.CompareTag(RESOURCE_TAG_NAME))
+            pickableResource = null;
     }
 
     public void PlayerHitByProjectileAction(ref ProjectileData projectileData) {
