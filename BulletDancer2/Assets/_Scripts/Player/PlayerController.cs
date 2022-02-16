@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform throwableSpawn;
     [SerializeField] ProjectileManager projectileManager;
     [SerializeField] float val;
-    UIManager UIManager;
+    UiManager UIManager;
 
     public Camera GetCamera() => mainCameraController.GetCamera();
     public MainCameraController GetMainCameraController() => mainCameraController;
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour {
     Vector2 lastMovementDirection;
     float currentSpeed;
 
-    public void InitializeUIManager(UIManager UIManager) => this.UIManager = UIManager;
+    public void InitializeUIManager(UiManager UIManager) => this.UIManager = UIManager;
 
     void Start() {
         controls.Player.ShowInventory.performed += OnShowInventory;

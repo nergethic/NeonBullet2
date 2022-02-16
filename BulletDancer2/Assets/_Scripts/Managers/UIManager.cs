@@ -7,9 +7,11 @@ using UnityEngine;
 
 namespace Assets._Scripts.Player.UI
 {
-    public class UIManager : SceneManager
+    public class UiManager : SceneManager
     {
         [SerializeField] List<UIPanel> uiPanels;
+        [SerializeField] PlayerStatusBar healthBar;
+        [SerializeField] PlayerStatusBar energyBar;
         private UIPanel activePanel;
         public UIPanel ActivePanel => activePanel;
         public bool IsPanelActive => activePanel != null;
@@ -18,12 +20,18 @@ namespace Assets._Scripts.Player.UI
         {
             base.Init(masterSystem, data);
             data.playerController.InitializeUIManager(this);
+            data.player.InitializeUIManager(this);
+            InitPlayerStatusBars();
             foreach (var panel in uiPanels)
             {
                 panel.Initialize(masterSystem);
             }
             ChangeInitializationState(ManagerInitializationState.COMPLETED);
         }
+
+        public void UpdateEnergyBar(int change) => energyBar.UpdateStatusBar(change);
+
+        public void UpdateHealthBar(int change) => healthBar.UpdateStatusBar(change);
 
         public void ShowPanel(PanelType type)
         {
@@ -45,5 +53,11 @@ namespace Assets._Scripts.Player.UI
         }
 
         public override void Tick(float dt){}
+
+        private void InitPlayerStatusBars()
+        {
+            UpdateEnergyBar(data.player.Energy);
+            UpdateHealthBar(data.player.Health);
+        }
     }
 }

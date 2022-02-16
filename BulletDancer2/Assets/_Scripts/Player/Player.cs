@@ -4,6 +4,7 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Assets._Scripts.Player.UI;
 
 public class Player : MonoBehaviour {
     public event Action BlockEvent;
@@ -15,8 +16,6 @@ public class Player : MonoBehaviour {
     [SerializeField] int health;
     [SerializeField] int energy;
     [SerializeField] PlayerInventory inventory;
-    [SerializeField] PlayerStatusBar healthBar;
-    [SerializeField] PlayerStatusBar energyBar;
     [SerializeField] int ore;
     [SerializeField] int iron;
     [SerializeField] int gold;
@@ -44,8 +43,10 @@ public class Player : MonoBehaviour {
     const string PROJECTILE_TAG_NAME = "Projectile";
     const string SPIKES_TAG_NAME = "Spikes";
 
+
     Item pickableItem;
     Resource pickableResource;
+    UiManager UIManager;
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour {
         get => health;
         set {
             health = value;
-            healthBar.UpdateStatusBar(health);
+            UIManager.UpdateHealthBar(health);
         }
     }
     
@@ -63,9 +64,10 @@ public class Player : MonoBehaviour {
         get => energy;
         set {
             energy = value;
-            energyBar.UpdateStatusBar(energy);
+            UIManager.UpdateEnergyBar(energy);
         }
     }
+
     public Vector3 startPosition;
 
     public bool isImmuneToDamage;
@@ -89,8 +91,6 @@ public class Player : MonoBehaviour {
     
     void Start() {
         startPosition = gameObject.transform.position;
-        healthBar.UpdateStatusBar(health);
-        energyBar.UpdateStatusBar(Energy);
         UpdateShieldColor(false);
         SpawnEvent?.Invoke();
     }
@@ -98,6 +98,8 @@ public class Player : MonoBehaviour {
     void OnDestroy() {
         StopAllCoroutines();
     }
+
+    public void InitializeUIManager(UiManager UIManager) => this.UIManager = UIManager;
 
     void OnTriggerEnter2D(Collider2D other)
     {
