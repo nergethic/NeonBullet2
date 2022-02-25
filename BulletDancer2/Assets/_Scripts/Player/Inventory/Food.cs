@@ -5,26 +5,17 @@ using UnityEngine;
 
 public class Food : Item
 {
-    [SerializeField] FoodType type;
-	private int HealthRegen => type switch
-	{
-		FoodType.apple => 1,
-		FoodType.banana => 2,
-		FoodType.turkey => 3,
-        FoodType.medkit => 2,
-		_ => 0
-	};
+    [SerializeField] int healthToRestore;
 
     public override void Use()
     {
         base.Use();
-        if (Owner.Health < Owner.MaxHealth)
+        if (player.Health < player.MaxHealth)
         {
-            Owner.Health += HealthRegen;
-            if (Owner.Health > Owner.MaxHealth)
-            {
-                Owner.Health = Owner.MaxHealth;
-            }
+            if (player.Health + healthToRestore> player.MaxHealth)
+                player.Health = player.MaxHealth;
+            else
+                player.Health += healthToRestore;
         }
 
         ItemSlot.RemoveItemFromSlot();

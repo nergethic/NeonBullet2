@@ -17,7 +17,7 @@ public class PlayerInventory : MonoBehaviour
         {
             if (!slot.HasItem)
             {
-                item.Owner = player; 
+                item.player = player; 
                 item.transform.SetParent(this.transform);
                 slot.Item = item;
                 item.ShadowCaster.enabled = false;

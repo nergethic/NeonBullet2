@@ -1646,8 +1646,6 @@ MonoBehaviour:
   health: 3
   energy: 3
   inventory: {fileID: 1561285542673174724}
-  healthBar: {fileID: 6332311620604957368}
-  energyBar: {fileID: 4590582457492017777}
   ore: 0
   iron: 0
   gold: 0

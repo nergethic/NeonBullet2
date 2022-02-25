@@ -103,7 +103,7 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 5928702411982748089}
   ShadowCaster: {fileID: 5360255036805541673}
   playerController: {fileID: 0}
-  type: 0
+  healthToRestore: 1
 --- !u!61 &5928702411982748084
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   - {x: 3.5, y: -3.750002, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 303944
+  m_InstanceId: 71434
 --- !u!1001 &3645722352252961175
 PrefabInstance:
   m_ObjectHideFlags: 0
