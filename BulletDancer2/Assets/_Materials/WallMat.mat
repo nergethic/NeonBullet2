@@ -28,4 +28,5 @@ Material:
     - _Hide: 1
     m_Colors:
     - _CameraWorldPos: {r: 0.81, g: -0.23, b: -5, a: 0}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform throwableSpawn;
     [SerializeField] ProjectileManager projectileManager;
     [SerializeField] float val;
-    UiManager UIManager;
+    UIManager UIManager;
 
     public Camera GetCamera() => mainCameraController.GetCamera();
     public MainCameraController GetMainCameraController() => mainCameraController;
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour {
     Vector2 lastMovementDirection;
     float currentSpeed;
 
-    public void InitializeUIManager(UiManager UIManager) => this.UIManager = UIManager;
+    public void InitializeUIManager(UIManager UIManager) => this.UIManager = UIManager;
 
     void Start() {
         controls.Player.ShowInventory.performed += OnShowInventory;
@@ -143,17 +143,6 @@ public class PlayerController : MonoBehaviour {
             ThrowableItem.Throw(loadingItemAction, GetCentralizedMousePos().normalized, throwableSpawn.position);
             ThrowableItem = null;
             loadingItemAction = 0f;
-        }
-
-        if (keyboard.qKey.isPressed) {
-            //var x = FindObjectOfType<BulletBoss>();
-            //if (x != null) {
-                //playerPosition.position = x.transform.position + (x.transform.right*2f);
-            //}
-            
-            var masterSystem = FindObjectOfType<MasterSystem>(); // TODO: spawn player from master system
-            if (masterSystem != null)
-                masterSystem.LoadNextLevel();
         }
     }
 

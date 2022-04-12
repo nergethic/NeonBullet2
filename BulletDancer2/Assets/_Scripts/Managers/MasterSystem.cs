@@ -116,7 +116,7 @@ public class MasterSystem : MonoBehaviour {
                     data.itemManager = itemSceneManager;
                 else if (manager is ProjectileManager projectileManager)
                     data.projectileManager = projectileManager;
-                else if (manager is UiManager UIManager)
+                else if (manager is UIManager UIManager)
                     data.uIManager = UIManager;
                 Debug.Log($"-- manager '{manager.name}' init completed");
                 break;
@@ -185,5 +185,5 @@ public class SceneManagerData {
     public EntitySceneManager entityManager;
     public ItemSceneManager itemManager;
     public ProjectileManager projectileManager;
-    public UiManager uIManager;
+    public UIManager uIManager;
 }

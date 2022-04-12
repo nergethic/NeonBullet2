@@ -46,7 +46,7 @@ public class Player : MonoBehaviour {
 
     Item pickableItem;
     Resource pickableResource;
-    UiManager UIManager;
+    UIManager UIManager;
 
     public float playerSpeed = 1.0f;
     public float dashSpeed = 8f;
@@ -99,7 +99,7 @@ public class Player : MonoBehaviour {
         StopAllCoroutines();
     }
 
-    public void InitializeUIManager(UiManager UIManager) => this.UIManager = UIManager;
+    public void InitializeUIManager(UIManager UIManager) => this.UIManager = UIManager;
 
     void OnTriggerEnter2D(Collider2D other)
     {

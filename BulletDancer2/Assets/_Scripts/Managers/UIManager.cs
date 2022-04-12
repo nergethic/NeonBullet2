@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets._Scripts.Player.UI
 {
-    public class UiManager : SceneManager
+    public class UIManager : SceneManager
     {
         [SerializeField] List<UIPanel> uiPanels;
         [SerializeField] PlayerStatusBar healthBar;
